@@ -17,6 +17,12 @@
  ],
  "analytes": {
   "glucose": {
+   "preflightByCrew": {
+    "C001": 77.33,
+    "C002": 73.0,
+    "C003": 71.33,
+    "C004": 79.67
+   },
    "unit": "mg/dL",
    "digits": 0,
    "rangeMin": 65.0,
@@ -71,6 +77,12 @@
    }
   },
   "sodium": {
+   "preflightByCrew": {
+    "C001": 140.67,
+    "C002": 142.0,
+    "C003": 138.67,
+    "C004": 139.67
+   },
    "unit": "mmol/L",
    "digits": 0,
    "rangeMin": 135.0,
@@ -125,6 +137,12 @@
    }
   },
   "potassium": {
+   "preflightByCrew": {
+    "C001": 4.23,
+    "C002": 3.9,
+    "C003": 3.5,
+    "C004": 4.03
+   },
    "unit": "mmol/L",
    "digits": 1,
    "rangeMin": 3.5,
@@ -179,6 +197,12 @@
    }
   },
   "calcium": {
+   "preflightByCrew": {
+    "C001": 9.77,
+    "C002": 9.73,
+    "C003": 9.7,
+    "C004": 10.1
+   },
    "unit": "mg/dL",
    "digits": 1,
    "rangeMin": 8.6,
@@ -233,6 +257,12 @@
    }
   },
   "creatinine": {
+   "preflightByCrew": {
+    "C001": 1.24,
+    "C002": 0.89,
+    "C003": 1.04,
+    "C004": 1.12
+   },
    "unit": "mg/dL",
    "digits": 2,
    "rangeMin": 0.5,
@@ -287,6 +317,12 @@
    }
   },
   "hemoglobin": {
+   "preflightByCrew": {
+    "C001": 14.57,
+    "C002": 12.5,
+    "C003": 13.63,
+    "C004": 16.8
+   },
    "unit": "g/dL",
    "digits": 1,
    "rangeMin": 11.7,
@@ -341,6 +377,12 @@
    }
   },
   "hematocrit": {
+   "preflightByCrew": {
+    "C001": 44.03,
+    "C002": 38.17,
+    "C003": 41.63,
+    "C004": 49.37
+   },
    "unit": "%",
    "digits": 1,
    "rangeMin": 35.0,
@@ -395,6 +437,12 @@
    }
   },
   "wbc": {
+   "preflightByCrew": {
+    "C001": 5.97,
+    "C002": 6.37,
+    "C003": 9.57,
+    "C004": 8.23
+   },
    "unit": "10³/µL",
    "digits": 1,
    "rangeMin": 3.8,
@@ -449,6 +497,12 @@
    }
   },
   "platelets": {
+   "preflightByCrew": {
+    "C001": 245.33,
+    "C002": 237.0,
+    "C003": 241.63,
+    "C004": 253.67
+   },
    "unit": "10³/µL",
    "digits": 0,
    "rangeMin": 140.0,

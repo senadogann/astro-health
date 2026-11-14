@@ -44,8 +44,8 @@
     "url": "https://nlsp.nasa.gov/explore"
   },
   "artemis1": {
-    "title": "Artemis I radiation measurements (Nature 2024; NTRS 20230010550)",
-    "url": "https://ntrs.nasa.gov/citations/20230010550"
+    "title": "George et al., \"Space radiation measurements during the Artemis I lunar mission\", Nature 634, 48 (2024), doi:10.1038/s41586-024-07927-7 (GCR dose equivalent rates 0.96–1.24 mSv/day)",
+    "url": "https://www.nature.com/articles/s41586-024-07927-7"
   },
   "hassler2014": {
     "title": "Hassler et al., Science 2014 — Mars surface radiation (Curiosity RAD)",

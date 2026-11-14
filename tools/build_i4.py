@@ -66,7 +66,14 @@ def main(cmp_path, cbc_path, out_path):
         pre = [v for v in pre if v is not None]
         los = [v for v in (num(r[lo_col]) for r in rows) if v is not None]
         his = [v for v in (num(r[hi_col]) for r in rows) if v is not None]
+        # Pre-flight mean of each of the four crew members (C001..C004), used as personal baselines
+        # for the simulated crew in js/crew.js.
+        by_crew = {}
+        for r in rows:
+            if r['_tp'].startswith('L-') and num(r[vcol]) is not None:
+                by_crew.setdefault(r['_crew'], []).append(num(r[vcol]))
         out['analytes'][key] = {
+            'preflightByCrew': {c: round(sum(v) / len(v), 2) for c, v in sorted(by_crew.items())},
             'unit': unit, 'digits': digits,
             # Lab reference range as reported with the samples (widest range where it differs by person).
             'rangeMin': min(los), 'rangeMax': max(his),
