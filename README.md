@@ -62,7 +62,11 @@ Check-ins and preferences stay in a local IndexedDB database in the browser (wit
 
 ## NASA data and sources: real vs simulated
 
-Every card in the app carries a label: *Real NASA data*, *NASA-derived*, *Simulated*, *Self-entered* or *Illustrative*.
+Every card in the app carries a label: *Real NASA data*, *Real NOAA data*, *NASA-derived*, *Simulated*, *Self-entered*
+or *Illustrative*. A card that mixes kinds labels each value: the glucose card marks the astronaut's value as
+*Simulated* or *Self-entered* and the Inspiration4 reference next to it as *Real NASA data*. The self-care steps,
+the "when to notify the flight surgeon" criteria and the emergency checklists are marked *Illustrative*: they were
+written by the team from the NASA HRP sources and general clinical practice and are not official NASA procedures.
 
 | Data | Type | Source |
 |---|---|---|

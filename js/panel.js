@@ -79,9 +79,10 @@ export function renderPanel(el, { id, res, entries, refs, content, sources, envK
     ${current}
     ${i4Block}
     ${outlookHtml || ''}
-    <h3>${t('panel.todo')}</h3>
+    <h3>${t('panel.todo')} <span class="badge ill" title="${esc(t('panel.guidance'))}">${t('badge.ill')}</span></h3>
     ${list(L(sys.selfcare))}
-    <h3>${t('panel.notify')}</h3>
+    <h3>${t('panel.notify')} <span class="badge ill" title="${esc(t('panel.guidance'))}">${t('badge.ill')}</span></h3>
+    <p class="why">${esc(t('panel.guidance'))}</p>
     <div class="notify">
       ${list(L(sys.notify))}
       <div class="delaybox">

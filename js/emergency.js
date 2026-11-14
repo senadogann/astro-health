@@ -156,7 +156,7 @@ function render() {
   const head = (title, back) => `
     <div class="emhead">
       ${back ? `<button type="button" class="btn" data-em="${back}">←</button>` : ''}
-      <h2>${title}</h2>
+      <h2>${title} <span class="badge ill">${t('badge.ill')}</span></h2>
       <button type="button" class="btn" data-em="close">✕ ${t('em.close')}</button>
     </div>`;
 

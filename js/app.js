@@ -82,11 +82,11 @@ const dataBadge = () => (isDemo()
   ? `<span class="badge sim">${t('badge.sim')}</span>`
   : `<span class="badge self">${t('badge.self')}</span>`);
 
-function metricCard({ title, system, parts, value, extra, foot }) {
+function metricCard({ title, system, parts, value, extra, foot, tag }) {
   const top = parts.reduce((a, b) => (worst(a.status, b.status) === a.status ? a : b));
   return `
     <button type="button" class="mcard ${top.status}" data-system="${system}" title="${esc(statusText(top))} · ${esc(reasonText(top, refs))}">
-      <span class="top"><span>${esc(title)}</span><span class="dot ${top.status}" aria-label="${esc(statusText(top))}"></span></span>
+      <span class="top"><span>${esc(title)}${tag ? ` ${tag}` : ''}</span><span class="dot ${top.status}" aria-label="${esc(statusText(top))}"></span></span>
       <span class="val">${value}${extra ? ` <small>${esc(extra)}</small>` : ''}</span>
       ${top.status !== 'green' ? `<span class="why"><b>${esc(statusText(top))}</b> · ${esc(reasonText(top, refs))}</span>` : ''}
       ${foot ? `<span class="foot">${foot}</span>` : ''}
@@ -111,7 +111,7 @@ function renderOverview(res) {
   if (m.hr) cards.push(metricCard({ title: name('hr'), system: 'cardio', parts: [m.hr], value: esc(valueText(m.hr, refs)) }));
   if (m.sys && m.dia) cards.push(metricCard({ title: t('card.bp'), system: 'cardio', parts: [m.sys, m.dia], value: `${m.sys.value}/${m.dia.value}`, extra: 'mmHg' }));
   if (m.temp) cards.push(metricCard({ title: name('temp'), system: 'lungs', parts: [m.temp], value: esc(valueText(m.temp, refs)) }));
-  if (m.glucose) cards.push(metricCard({ title: name('glucose'), system: 'blood', parts: [m.glucose], value: esc(valueText(m.glucose, refs)),
+  if (m.glucose) cards.push(metricCard({ title: name('glucose'), system: 'blood', parts: [m.glucose], value: esc(valueText(m.glucose, refs)), tag: dataBadge(),
     foot: i4 ? `<span class="badge real">${t('badge.real')}</span> ${t('i4.cardShort', { v: Math.round(i4.analytes.glucose.preflightMean) })}` : '' }));
   if (m.sleepH && m.sleepQ) cards.push(metricCard({ title: t('card.sleep'), system: 'brain', parts: [m.sleepH, m.sleepQ], value: esc(valueText(m.sleepH, refs)), extra: t('card.sleepQ', { q: m.sleepQ.value }) }));
   if (m.mood) cards.push(metricCard({ title: name('mood'), system: 'brain', parts: [m.mood], value: esc(valueText(m.mood, refs)) }));
@@ -309,7 +309,7 @@ function liveAlertHtml() {
     <div class="alert pulse" role="alert">
       <span class="ico">☢</span>
       <div>
-        <h3>${t('alert.live.title', { s: spaceWx.level })} <span class="badge real">${t('badge.real')}</span></h3>
+        <h3>${t('alert.live.title', { s: spaceWx.level })} <span class="badge real">${t('badge.realNoaa')}</span></h3>
         <p>${t('alert.live.body', { flux: fmt(spaceWx.flux, 1), delay: esc(delayText(currentEnv())) })}</p>
         <button type="button" class="btn primary" style="margin-top:10px" data-act="shelter">${t('em.open.shelter')}</button>
       </div>

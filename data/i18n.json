@@ -148,7 +148,7 @@
     "em.choose": "What is happening? Works without internet.",
     "em.close": "Close",
     "em.unavailable": "Emergency checklists could not be loaded.",
-    "em.disclaimer": "Checklist support only. No diagnosis and no medication doses. Follow your vehicle's official medical checklist.",
+    "em.disclaimer": "Illustrative checklist: general first-aid steps written by the team, not an official NASA procedure. No diagnosis and no medication doses. Follow your vehicle's official medical checklist.",
     "em.progress": "{a} of {b} steps done",
     "em.timer.title": "Earth reply timer",
     "em.timer.start": "Message sent to Earth: start timer",
@@ -296,7 +296,9 @@
     "credits.libs": "Software libraries",
     "credits.note": "The modified model files are shared under the same CC BY-SA 4.0 licence. They are educational reference anatomy, not a scan of a real astronaut.",
     "layers.button": "Layers",
-    "i4.cardShort": "I4 pre-flight: {v} mg/dL"
+    "i4.cardShort": "Inspiration4 pre-flight mean: {v} mg/dL",
+    "badge.realNoaa": "Real NOAA data",
+    "panel.guidance": "Illustrative guidance written by the team from the NASA HRP sources below and general clinical practice. It is not an official NASA procedure; real criteria are set by flight surgeons."
   },
   "tr": {
     "app.name": "AstroSelf",
@@ -447,7 +449,7 @@
     "em.choose": "Ne oluyor? İnternet olmadan çalışır.",
     "em.close": "Kapat",
     "em.unavailable": "Acil durum listeleri yüklenemedi.",
-    "em.disclaimer": "Yalnızca kontrol listesi desteğidir. Teşhis koymaz, ilaç dozu vermez. Aracınızın resmi tıbbi kontrol listesini izleyin.",
+    "em.disclaimer": "Temsili kontrol listesi: takımın yazdığı genel ilk yardım adımlarıdır, resmi bir NASA prosedürü değildir. Teşhis koymaz, ilaç dozu vermez. Aracınızın resmi tıbbi kontrol listesini izleyin.",
     "em.progress": "{b} adımdan {a} tanesi tamamlandı",
     "em.timer.title": "Dünya cevap sayacı",
     "em.timer.start": "Mesaj Dünya'ya gönderildi: sayacı başlat",
@@ -595,6 +597,8 @@
     "credits.libs": "Yazılım kütüphaneleri",
     "credits.note": "Değiştirilmiş model dosyaları aynı CC BY-SA 4.0 lisansıyla paylaşılır. Bunlar eğitim amaçlı referans anatomidir; gerçek bir astronotun taraması değildir.",
     "layers.button": "Katmanlar",
-    "i4.cardShort": "I4 uçuş öncesi: {v} mg/dL"
+    "i4.cardShort": "Inspiration4 uçuş öncesi ort.: {v} mg/dL",
+    "badge.realNoaa": "Gerçek NOAA verisi",
+    "panel.guidance": "Takımın, aşağıdaki NASA HRP kaynakları ve genel klinik uygulamaya dayanarak yazdığı temsili rehberdir. Resmi bir NASA prosedürü değildir; gerçek ölçütleri uçuş doktorları belirler."
   }
 }

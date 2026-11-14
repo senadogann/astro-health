@@ -97,7 +97,8 @@ export function renderSpaceWeather(el, sw) {
     <div class="card swcard ${sw.status || ''}">
       <div class="chead">
         <h3>${t('sw.title')}</h3>
-        <span class="badge real">${t('badge.real')}</span>
+        <span class="badge real">${t('badge.realNoaa')}</span>
+        ${d ? `<span class="badge real">${t('badge.real')} · DONKI</span>` : ''}
         <span class="badge ${sw.mode === 'live' ? 'real' : 'ill'}">${t('sw.mode.' + sw.mode)}</span>
       </div>
       <div class="swgrid">
