@@ -85,12 +85,11 @@ const dataBadge = () => (isDemo()
 function metricCard({ title, system, parts, value, extra, foot }) {
   const top = parts.reduce((a, b) => (worst(a.status, b.status) === a.status ? a : b));
   return `
-    <button type="button" class="mcard ${top.status}" data-system="${system}">
-      <span class="top"><span>${esc(title)}</span></span>
+    <button type="button" class="mcard ${top.status}" data-system="${system}" title="${esc(statusText(top))} · ${esc(reasonText(top, refs))}">
+      <span class="top"><span>${esc(title)}</span><span class="dot ${top.status}" aria-label="${esc(statusText(top))}"></span></span>
       <span class="val">${value}${extra ? ` <small>${esc(extra)}</small>` : ''}</span>
-      <span class="why">${esc(reasonText(top, refs))}</span>
+      ${top.status !== 'green' ? `<span class="why"><b>${esc(statusText(top))}</b> · ${esc(reasonText(top, refs))}</span>` : ''}
       ${foot ? `<span class="foot">${foot}</span>` : ''}
-      <span class="top"><span><span class="dot ${top.status}" style="display:inline-block;vertical-align:middle"></span> ${statusText(top)}</span></span>
     </button>`;
 }
 
@@ -113,13 +112,14 @@ function renderOverview(res) {
   if (m.sys && m.dia) cards.push(metricCard({ title: t('card.bp'), system: 'cardio', parts: [m.sys, m.dia], value: `${m.sys.value}/${m.dia.value}`, extra: 'mmHg' }));
   if (m.temp) cards.push(metricCard({ title: name('temp'), system: 'lungs', parts: [m.temp], value: esc(valueText(m.temp, refs)) }));
   if (m.glucose) cards.push(metricCard({ title: name('glucose'), system: 'blood', parts: [m.glucose], value: esc(valueText(m.glucose, refs)),
-    foot: i4 ? `<span class="badge real">${t('badge.real')}</span> ${t('i4.card', { v: Math.round(i4.analytes.glucose.preflightMean) })}` : '' }));
+    foot: i4 ? `<span class="badge real">${t('badge.real')}</span> ${t('i4.cardShort', { v: Math.round(i4.analytes.glucose.preflightMean) })}` : '' }));
   if (m.sleepH && m.sleepQ) cards.push(metricCard({ title: t('card.sleep'), system: 'brain', parts: [m.sleepH, m.sleepQ], value: esc(valueText(m.sleepH, refs)), extra: t('card.sleepQ', { q: m.sleepQ.value }) }));
   if (m.mood) cards.push(metricCard({ title: name('mood'), system: 'brain', parts: [m.mood], value: esc(valueText(m.mood, refs)) }));
 
   const env = currentEnv();
   const b = res.baseline;
   const details = [
+    `${t('mission.day', { n: res.day })} · ${t('env.delay')}: ${esc(delayText(env))}`,
     b.ready ? t('baseline.ready', { n: b.days }) : t('baseline.building', { n: b.n, need: b.need }),
     `${t('env.' + state.env)}: ${t('env.note.' + state.env)}`,
     `${t('env.dose')}: ${esc(env.doseRange)} ${t('env.perDay')}`,
@@ -131,8 +131,6 @@ function renderOverview(res) {
       <span class="pill ${res.overall}"><span class="dot ${res.overall}"></span>${t('overall.' + res.overall)}</span>
       <h2>${isDemo() ? esc(DEMO_NAME) : t('mode.mine')}</h2>
       ${dataBadge()}
-      <span class="badge">${t('mission.day', { n: res.day })}</span>
-      <span class="badge" title="${t('env.delay')}">📡 ${esc(delayText(env))}</span>
       ${info(details)}
     </div>
     <div class="cards six">${cards.join('')}</div>`;
@@ -151,7 +149,7 @@ function renderChips(statuses) {
 function renderLayers() {
   const el = $('#layerBar');
   const list = body && body.getLayers ? body.getLayers() : [];
-  el.hidden = !list.length;
+  $('#layersMenu').hidden = !list.length;
   el.innerHTML = list.map((l) => `
     <button type="button" class="layer${l.on ? ' on' : ''}" data-layer="${l.id}" aria-pressed="${l.on}">
       ${l.loading ? '⏳' : l.on ? '●' : '○'} ${t('layer.' + l.id)}</button>`).join('');

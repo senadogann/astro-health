@@ -16,10 +16,7 @@
   <header class="topbar">
     <div class="brand">
       <img src="assets/icons/icon.svg" alt="" width="44" height="44">
-      <div>
-        <strong data-i18n="app.name">AstroSelf</strong>
-        <span data-i18n="app.tagline"></span>
-      </div>
+      <strong data-i18n="app.name">AstroSelf</strong>
     </div>
     <div class="topbar-controls">
       <details class="menu">
@@ -27,8 +24,7 @@
         <div class="menubox" id="demoBox"></div>
       </details>
       <label class="envpick">
-        <span data-i18n="env.label">Environment</span>
-        <select id="envSelect"></select>
+        <select id="envSelect" aria-label="Environment"></select>
       </label>
       <div class="seg lang" role="group" aria-label="Language">
         <button type="button" data-lang="en">EN</button>
@@ -57,18 +53,24 @@
       <div id="alerts"></div>
       <div class="dash">
         <div class="card bodycard">
-          <div class="seg horizon" role="group">
-            <button type="button" data-horizon="today" data-i18n="body.today">Today</button>
-            <button type="button" data-horizon="30" data-i18n="body.plus30">+30 days</button>
-          </div>
           <div class="stagewrap">
             <div id="bodyStage" class="bodystage"></div>
+            <!-- Small controls on top of the 3D view: today / +30 days, anatomy layers, help. -->
+            <div class="stagebar">
+              <div class="seg mini horizon" role="group">
+                <button type="button" data-horizon="today" data-i18n="body.today">Today</button>
+                <button type="button" data-horizon="30" data-i18n="body.plus30">+30 days</button>
+              </div>
+              <details class="menu layersmenu" id="layersMenu" hidden>
+                <summary class="iconbtn"><span aria-hidden="true">☰</span> <span data-i18n="layers.button">Layers</span></summary>
+                <div class="menubox"><div id="layerBar" class="layerbar"></div></div>
+              </details>
+              <details class="info"><summary aria-label="info">i</summary><div class="bubble" data-i18n="body.hint"></div></details>
+            </div>
             <div id="bodyLoad" class="bodyload" hidden></div>
-            <details class="info stageinfo"><summary aria-label="info">i</summary><div class="bubble" data-i18n="body.hint"></div></details>
           </div>
           <p class="projnote" id="projNote" data-i18n="body.projNote" hidden></p>
           <div class="slownote" id="slowNote" hidden></div>
-          <div id="layerBar" class="layerbar" hidden></div>
           <div id="systemChips" class="chips"></div>
         </div>
         <div class="side">

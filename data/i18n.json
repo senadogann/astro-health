@@ -67,7 +67,7 @@
     "empty.body": "Enter today's measurements, or explore the app with 30 days of simulated astronaut data.",
     "empty.cta": "Start check-in",
     "empty.demo": "View demo data",
-    "body.hint": "Drag to rotate, pinch or scroll to zoom, tap an organ. The buttons below switch anatomy layers on and off; a layer loads the first time it is switched on.",
+    "body.hint": "Drag to rotate, pinch or scroll to zoom, tap an organ. Use \"Layers\" to show the skeleton, muscles or nervous system; a layer loads the first time it is switched on.",
     "body.fallback": "3D view is not available on this device. Use the buttons below.",
     "panel.function": "What it does",
     "panel.space": "How space affects it",
@@ -294,7 +294,9 @@
     "credits.models": "3D anatomy models",
     "credits.data": "Data and standards",
     "credits.libs": "Software libraries",
-    "credits.note": "The modified model files are shared under the same CC BY-SA 4.0 licence. They are educational reference anatomy, not a scan of a real astronaut."
+    "credits.note": "The modified model files are shared under the same CC BY-SA 4.0 licence. They are educational reference anatomy, not a scan of a real astronaut.",
+    "layers.button": "Layers",
+    "i4.cardShort": "I4 pre-flight: {v} mg/dL"
   },
   "tr": {
     "app.name": "AstroSelf",
@@ -364,7 +366,7 @@
     "empty.body": "Bugünün ölçümlerini girin ya da uygulamayı 30 günlük simüle astronot verisiyle keşfedin.",
     "empty.cta": "Kontrole başla",
     "empty.demo": "Demo verisini göster",
-    "body.hint": "Döndürmek için sürükleyin, yakınlaştırmak için kıstırın ya da kaydırın, bir organa dokunun. Alttaki düğmeler anatomi katmanlarını açıp kapatır; bir katman ilk açıldığında yüklenir.",
+    "body.hint": "Döndürmek için sürükleyin, yakınlaştırmak için kıstırın ya da kaydırın, bir organa dokunun. İskelet, kas ya da sinir sistemini \"Katmanlar\" menüsünden açın; bir katman ilk açıldığında yüklenir.",
     "body.fallback": "Bu cihazda 3D görünüm kullanılamıyor. Aşağıdaki düğmeleri kullanın.",
     "panel.function": "Ne işe yarar",
     "panel.space": "Uzay onu nasıl etkiler",
@@ -591,6 +593,8 @@
     "credits.models": "3D anatomi modelleri",
     "credits.data": "Veri ve standartlar",
     "credits.libs": "Yazılım kütüphaneleri",
-    "credits.note": "Değiştirilmiş model dosyaları aynı CC BY-SA 4.0 lisansıyla paylaşılır. Bunlar eğitim amaçlı referans anatomidir; gerçek bir astronotun taraması değildir."
+    "credits.note": "Değiştirilmiş model dosyaları aynı CC BY-SA 4.0 lisansıyla paylaşılır. Bunlar eğitim amaçlı referans anatomidir; gerçek bir astronotun taraması değildir.",
+    "layers.button": "Katmanlar",
+    "i4.cardShort": "I4 uçuş öncesi: {v} mg/dL"
   }
 }

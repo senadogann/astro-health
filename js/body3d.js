@@ -18,7 +18,8 @@ const MODEL_DIR = 'assets/model/';
 // Status is shown as a glow, and only on a system that needs attention. Healthy systems keep their natural colour.
 const GLOW = { yellow: 0xffa000, red: 0xff1f33 };
 // The natural colour is also shifted toward the status colour, so thin vessels and nerves read clearly.
-const SHIFT = { yellow: 0xffc874, red: 0xff6262 };
+// Amber ("watch / caution") is a light glow over the natural colour; only red is also tinted.
+const SHIFT = { red: 0xff6262 };
 
 /* ----- natural colour of each structure, by name ----- */
 const TINT = {
@@ -363,7 +364,7 @@ export function createBody(container, { onSelect, onProgress, onLayers, onSlow }
         if (!m) continue;
         m.emissive.setHex(glow || 0x000000);
         m.color.setHex(SHIFT[sys.status] || 0xffffff);
-        m.emissiveIntensity = !glow ? 0 : sys.status === 'red' ? 0.7 : 0.5;
+        m.emissiveIntensity = !glow ? 0 : sys.status === 'red' ? 0.7 : 0.28;
       }
       sys.material.opacity = ghost ? 0.1 : 1;
       if (sys.material.transparent !== !!ghost) { sys.material.transparent = !!ghost; sys.material.needsUpdate = true; }

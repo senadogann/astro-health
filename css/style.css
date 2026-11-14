@@ -468,3 +468,34 @@ details.menu > summary { list-style: none; display: flex; align-items: center; c
   .mcard { min-height: 0; padding: 10px; }
   .mcard .val { font-size: 1.4rem; }
 }
+
+/* ---------- simplified main screen ---------- */
+.brand strong { font-size: 1.2rem; }
+.bodycard { padding: 10px; }
+.stagebar { position: absolute; top: 8px; left: 8px; right: 8px; z-index: 5; display: flex; gap: 8px; align-items: flex-start; pointer-events: none; }
+.stagebar > * { pointer-events: auto; }
+.stagebar .horizon { margin: 0; flex: none; background: rgba(22, 32, 56, .9); }
+.seg.mini button { min-height: 40px; min-width: 0; padding: 0 12px; font-size: .85rem; white-space: nowrap; }
+.stagebar .layersmenu { margin-left: auto; }
+.iconbtn {
+  list-style: none; cursor: pointer; display: flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 12px;
+  border-radius: 12px; border: 1px solid var(--border); background: rgba(22, 32, 56, .9); font-weight: 600; font-size: .85rem;
+}
+.iconbtn::-webkit-details-marker { display: none; }
+.layersmenu[open] .iconbtn { border-color: var(--accent); }
+.layersmenu .menubox { width: 230px; padding: 8px; gap: 6px; }
+.layersmenu .layerbar { display: grid; gap: 6px; margin: 0; }
+.layersmenu .layer { width: 100%; text-align: left; border-radius: 10px; }
+.stagebar details.info > summary { background: rgba(22, 32, 56, .9); }
+
+/* cards: quiet when nominal, a reason line only when something needs attention */
+.cards.six .mcard { min-height: 0; gap: 4px; }
+.mcard.green { border-left-color: var(--border); }
+.mcard .top .dot { flex: none; }
+.mcard .why b { font-weight: 700; }
+.chips { margin-top: 8px; }
+
+@media (max-width: 640px) {
+  .layersmenu .menubox { position: absolute; top: calc(100% + 8px); right: 0; left: auto; width: 220px; }
+  .seg.mini button { padding: 0 10px; }
+}
