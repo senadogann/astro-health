@@ -20,6 +20,20 @@ python -m http.server 8765
 
 Then open http://localhost:8765.
 
+## Live demo
+
+https://senadogann.github.io/astro-health/
+
+## 3D model
+
+The 3D figure is a stylised low-poly astronaut generated in code from Three.js primitives (`js/body.js`).
+No external model file is used, so there is no third-party model licence.
+
+## Data
+
+- Demo mode shows **simulated** data for a fictional astronaut ("Cmdr. A. Yıldız"); it is labelled "Simulated" in the app.
+- Reference values and their sources are in `data/references.json` and `data/sources.json`.
+
 ## Third-party libraries
 
 - [Three.js](https://threejs.org/) r160 (MIT) — `vendor/three.module.min.js`, `vendor/OrbitControls.js`

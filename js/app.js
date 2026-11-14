@@ -2,7 +2,7 @@ import { loadI18n, setLang, t, L, applyI18n, esc } from './i18n.js';
 import { state, loadState, setState, subscribe, saveEntry } from './store.js';
 import { renderCheckin } from './checkin.js';
 import { evaluate, evalMetric, computeBaseline, worst, SYSTEM_ORDER } from './rules.js';
-import { demoEntries, DEMO_NAME } from './demo.js';
+import { demoEntries, DEMO_NAME, SCENARIOS } from './demo.js';
 import { valueText, reasonText, driverLabel, delayText } from './ui.js';
 import { renderPanel } from './panel.js';
 
@@ -124,6 +124,7 @@ function renderDashboard() {
   const entries = currentEntries();
   const res = evaluate(entries, state.env, refs);
   renderEnvStrip();
+  renderDemoBar();
   renderAlerts(res);
   renderOverview(res);
   renderChips(res);
@@ -149,6 +150,18 @@ async function initBody() {
     $('#bodyHint').hidden = true;
     applyI18n($('#bodyStage'));
   }
+}
+
+/* ---------- demo mode ---------- */
+
+function renderDemoBar() {
+  const seg = (mode, label) => `<button type="button" data-mode="${mode}" class="${state.mode === mode ? 'active' : ''}">${esc(label)}</button>`;
+  const scen = (id) => `<button type="button" class="btn${id ? ' warn' : ''}${(state.scenario || '') === id ? ' active' : ''}" data-scenario="${id}">${t('scenario.' + (id || 'none'))}</button>`;
+  $('#demoBar').innerHTML = `
+    <span class="label">${t('mode.label')}</span>
+    <div class="seg">${seg('demo', t('mode.demo', { name: DEMO_NAME }))}${seg('mine', t('mode.mine'))}</div>
+    ${isDemo() ? `<span class="label">${t('scenario.label')}</span>${[''].concat(SCENARIOS).map(scen).join('')}
+      <span class="badge sim">${t('badge.sim')}</span>` : `<span class="badge self">${t('badge.self')}</span>`}`;
 }
 
 /* ---------- environment ---------- */
@@ -214,6 +227,10 @@ async function boot() {
   $('#view-dashboard').addEventListener('click', (e) => {
     const sys = e.target.closest('[data-system]');
     if (sys) return selectSystem(sys.dataset.system);
+    const mode = e.target.closest('[data-mode]');
+    if (mode) return setState({ mode: mode.dataset.mode });
+    const scen = e.target.closest('[data-scenario]');
+    if (scen) return setState({ scenario: scen.dataset.scenario || null });
     const act = e.target.closest('[data-act]');
     if (!act) return;
     if (act.dataset.act === 'close') selectSystem(null);
