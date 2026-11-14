@@ -145,7 +145,7 @@ export function riskDrivers(risk, out, content, refs) {
   for (const m of risk.metrics) {
     if (m.status === 'green' && m.flat) continue;
     const d = refs.metrics[m.key];
-    const change = m.projDay > 0 ? `${fmt(m.now, d.digits)} → ${fmt(m.proj, d.digits)}` : fmt(m.now, d.digits);
+    const change = m.projDay > 0 && !m.flat ? `${fmt(m.now, d.digits)} → ${fmt(m.proj, d.digits)}` : fmt(m.now, d.digits);
     lines.push(`${L(content.metrics[m.key].name)}: ${change} ${d.unit} · ${forecast(m)}`);
   }
   for (const key of risk.loads || []) lines.push(loadText(key, out));

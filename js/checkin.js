@@ -20,7 +20,7 @@ export function renderCheckin(root, { refs, content, entries, evalFn, onSave }) 
     const text = L(content.metrics[key].how);
     return text ? `<details><summary>${t('checkin.how')}</summary><p>${esc(text)}</p></details>` : '';
   };
-  const label = (key) => `<div class="flabel"><span>${esc(L(content.metrics[key].name))}</span><small>${esc(M[key]?.unit || '')}</small></div>`;
+  const label = (key) => `<div class="flabel"><span>${esc(L(content.metrics[key].name))}</span><small>${esc(M[key]?.unit || '')}${key === 'exercise' ? ' · ' + t('checkin.optional') : ''}</small></div>`;
   const stepper = (key, aria) => `
     <button type="button" data-step="-1" data-key="${key}" aria-label="−">−</button>
     <input type="number" inputmode="decimal" data-key="${key}" aria-label="${esc(aria)}"
