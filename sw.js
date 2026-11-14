@@ -1,5 +1,5 @@
 // Offline support. Network-first (so new deploys show up), cache fallback (so it works with no internet).
-const CACHE = 'astroself-v11';
+const CACHE = 'astroself-v12';
 const ASSETS = [
   './',
   'index.html',
