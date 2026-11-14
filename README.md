@@ -103,7 +103,7 @@ Also used: [NASA HRP 5 Hazards](https://www.nasa.gov/hrp/hazards/), [HRP Risks](
 ### Illustrative values
 
 These cut-offs were chosen by the team for the prototype and are marked `illustrative` in `data/references.json`:
-Earth reference ranges (simplified general adult ranges), the z-score levels (2 SD = yellow, 3 SD = red), daily dose
+Earth reference ranges (simplified general adult ranges), the z-score levels (2 SD = "Watch", 3 SD = "Caution"; a baseline change alone never turns red, red also needs the reference range to agree), daily dose
 alert levels (5 / 25 mSv), the simulated solar particle event dose (45 mSv), the "elevated" proton flux level (1 pfu),
 sleep debt levels (10 / 20 h) and the outlook window (14 days).
 

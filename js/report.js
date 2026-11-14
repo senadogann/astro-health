@@ -1,7 +1,7 @@
 // One-page printable report for the flight surgeon (weekly private medical conference).
 import { t, L, fmt, esc } from './i18n.js';
 import { SYSTEM_ORDER } from './rules.js';
-import { valueText, reasonText, delayText } from './ui.js';
+import { valueText, reasonText, delayText, statusText } from './ui.js';
 import { riskDrivers } from './outlook.js';
 
 const ROWS = ['hr', 'sys', 'dia', 'temp', 'glucose', 'sleepH', 'sleepQ', 'mood', 'vision', 'radiation', 'bone'];
@@ -14,14 +14,14 @@ export function renderReport(el, { res, out, entries, refs, content, envKey, who
   }
   const env = refs.environments[envKey];
   const name = (k) => L(content.metrics[k].name);
-  const st = (s) => `<span class="rs ${s}">${t('status.' + s)}</span>`;
+  const st = (x) => `<span class="rs ${x.status}">${statusText(x)}</span>`;
   const lv = (s) => `<span class="rs ${s}">${t('level.' + s)}</span>`;
   const m = res.metrics;
 
   const indicators = ROWS.filter((k) => m[k]).map((k) => `
-    <tr><td>${esc(name(k))}</td><td><b>${esc(valueText(m[k], refs))}</b></td><td>${st(m[k].status)}</td><td>${esc(reasonText(m[k], refs))}</td></tr>`).join('');
+    <tr><td>${esc(name(k))}</td><td><b>${esc(valueText(m[k], refs))}</b></td><td>${st(m[k])}</td><td>${esc(reasonText(m[k], refs))}</td></tr>`).join('');
 
-  const systems = SYSTEM_ORDER.map((id) => `<span class="rsys">${esc(L(content.systems[id].name))}: ${st(res.systems[id].status)}</span>`).join('');
+  const systems = SYSTEM_ORDER.map((id) => `<span class="rsys">${esc(L(content.systems[id].name))}: ${st(res.systems[id])}</span>`).join('');
 
   const risks = out && out.ready ? out.risks.map((r) => `
     <tr><td>${t('risk.' + r.id)}</td><td>${lv(r.status)}</td><td>${riskDrivers(r, out, content, refs).map(esc).join('; ')}</td></tr>`).join('') : '';
@@ -48,7 +48,7 @@ export function renderReport(el, { res, out, entries, refs, content, envKey, who
         </div>
       </header>
 
-      <h2>${t('report.overall')}: ${st(res.overall)}</h2>
+      <h2>${t('report.overall')}: <span class="rs ${res.overall}">${t('overall.' + res.overall)}</span></h2>
       <p class="syslist">${systems}</p>
 
       <h2>${t('report.indicators', { date: res.latest.date })}</h2>

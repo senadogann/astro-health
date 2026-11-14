@@ -132,7 +132,8 @@ main { padding: 16px; max-width: 1400px; margin: 0 auto; }
 .i4table th:first-child, .i4table td:first-child { text-align: left; }
 .i4table th { color: var(--muted); font-weight: 600; font-size: .78rem; }
 .i4table small { color: var(--muted); }
-.mcard .foot { font-size: .78rem; color: var(--green); }
+.mcard .foot { font-size: .78rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; }
+.sigma { color: var(--muted); font-size: .76rem; opacity: .85; }
 
 /* ---------- dashboard ---------- */
 .dash { display: grid; gap: 16px; grid-template-columns: 1fr; }

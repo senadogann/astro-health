@@ -195,7 +195,7 @@
   "yellow": 2,
   "red": 3,
   "illustrative": true,
-  "note": "Personal baseline = mean and standard deviation of the first 7–14 days. Deviation of 2 SD = yellow, 3 SD = red (illustrative)."
+  "note": "Personal baseline = mean and standard deviation of the first 7–14 days. A deviation of 2 SD = yellow 'Watch', 3 SD = yellow 'Caution'. A deviation from the personal baseline alone never turns red: red ('Notify doctor') needs the value to be outside the reference red limit, or 3 SD from baseline and outside the reference green range (illustrative)."
  },
  "radiation": {
   "careerLimit_mSv": 600,

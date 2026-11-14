@@ -1,7 +1,7 @@
 // Emergency Mode: offline step-by-step checklists, an "Earth reply" countdown and a report for the flight surgeon.
 // No diagnosis and no medication doses.
 import { t, L, esc, fmt, getLang } from './i18n.js';
-import { delayText, valueText } from './ui.js';
+import { delayText, valueText, statusText } from './ui.js';
 
 const KEY = 'astroself.em.v1';
 
@@ -116,7 +116,7 @@ function buildReport() {
     const val = (k) => (m[k] ? `${name(k)}: ${valueText(m[k], ctx.refs)}` : null);
     lines.push('', `${t('rep.vitals', { date: res.latest.date })}:`);
     lines.push(...['hr', 'sys', 'dia', 'temp', 'glucose', 'sleepH', 'sleepQ', 'mood', 'vision'].map(val).filter(Boolean).map((x) => '  ' + x));
-    const flags = Object.values(m).filter((x) => x.status !== 'green').map((x) => `${name(x.key)} (${t('status.' + x.status)})`);
+    const flags = Object.values(m).filter((x) => x.status !== 'green').map((x) => `${name(x.key)} (${statusText(x)})`);
     lines.push(`${t('rep.flags')}: ${flags.length ? flags.join(', ') : t('rep.none')}`);
     lines.push(`${t('dose.title')}: ${fmt(m.radiation.cumulative, 1)} mSv (${fmt(m.radiation.pct, 1)}% / ${ctx.refs.radiation.careerLimit_mSv} mSv)`);
   }

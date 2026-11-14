@@ -3,7 +3,7 @@ import { state, loadState, setState, subscribe, saveEntry, dateStr } from './sto
 import { renderCheckin } from './checkin.js';
 import { evaluate, evalMetric, computeBaseline, worst, SYSTEM_ORDER } from './rules.js';
 import { demoEntries, DEMO_NAME, SCENARIOS } from './demo.js';
-import { valueText, reasonText, driverLabel, delayText } from './ui.js';
+import { valueText, reasonText, statusText, delayText } from './ui.js';
 import { renderPanel } from './panel.js';
 import { loadSpaceWeather, renderSpaceWeather } from './spaceweather.js';
 import { initEmergency, openEmergency, renderEmergency } from './emergency.js';
@@ -56,7 +56,7 @@ function renderCheckinView() {
     refs, content, entries: state.entries,
     evalFn(key, value) {
       const r = evalMetric(key, value, refs, baseline);
-      return { status: r.status, text: reasonText(r, refs) };
+      return { status: r.status, label: statusText(r), text: reasonText(r, refs) };
     },
     onSave(entry) {
       saveEntry(entry);
@@ -81,7 +81,7 @@ function metricCard({ title, system, parts, value, extra, badgeKey, foot }) {
       <span class="val">${value}${extra ? ` <small>${esc(extra)}</small>` : ''}</span>
       <span class="why">${esc(reasonText(top, refs))}</span>
       ${foot ? `<span class="foot">${foot}</span>` : ''}
-      <span class="top"><span><span class="dot ${top.status}" style="display:inline-block;vertical-align:middle"></span> ${t('status.' + top.status)}</span><span>${esc(driverLabel(top))}</span></span>
+      <span class="top"><span><span class="dot ${top.status}" style="display:inline-block;vertical-align:middle"></span> ${statusText(top)}</span></span>
     </button>`;
 }
 
@@ -104,7 +104,7 @@ function renderOverview(res) {
   if (m.sys && m.dia) cards.push(metricCard({ title: t('card.bp'), system: 'cardio', parts: [m.sys, m.dia], value: `${m.sys.value}/${m.dia.value}`, extra: 'mmHg', badgeKey: 'sys' }));
   if (m.temp) cards.push(metricCard({ title: name('temp'), system: 'lungs', parts: [m.temp], value: esc(valueText(m.temp, refs)), badgeKey: 'temp' }));
   if (m.glucose) cards.push(metricCard({ title: name('glucose'), system: 'blood', parts: [m.glucose], value: esc(valueText(m.glucose, refs)), badgeKey: 'glucose',
-    foot: i4 ? `${t('i4.card', { v: Math.round(i4.analytes.glucose.preflightMean) })} · ${t('badge.real')}` : '' }));
+    foot: i4 ? `<span class="badge real">${t('badge.real')}</span> ${t('i4.card', { v: Math.round(i4.analytes.glucose.preflightMean) })}` : '' }));
   if (m.sleepH && m.sleepQ) cards.push(metricCard({ title: t('card.sleep'), system: 'brain', parts: [m.sleepH, m.sleepQ], value: esc(valueText(m.sleepH, refs)), extra: t('card.sleepQ', { q: m.sleepQ.value }), badgeKey: 'sleepH' }));
   if (m.mood) cards.push(metricCard({ title: name('mood'), system: 'brain', parts: [m.mood], value: esc(valueText(m.mood, refs)), badgeKey: 'mood' }));
   if (m.vision) cards.push(metricCard({ title: name('vision'), system: 'eyes', parts: [m.vision], value: `<span style="font-size:1.3rem">${esc(valueText(m.vision, refs))}</span>`, badgeKey: 'vision' }));

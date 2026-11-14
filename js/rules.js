@@ -8,6 +8,8 @@
 // Prototype values. Real medical thresholds are set by flight surgeons.
 
 const RANK = { green: 0, yellow: 1, red: 2 };
+const TIER = { green: 0, watch: 1, caution: 2, red: 3 };
+const tierOf = (x) => x.tier || (x.status === 'yellow' ? 'watch' : x.status);
 export const worst = (a, b) => (RANK[b] > RANK[a] ? b : a);
 
 // Which indicators feed which body system.
@@ -57,18 +59,28 @@ export function evalMetric(key, value, refs, baseline) {
   const m = refs.metrics[key];
   const earth = rangeStatus(value, m);
   const st = baseline && baseline.stats[key];
+  const Z = refs.zscore;
   let z = null;
-  let zStatus = 'green';
+  let dev = 0; // distance from the personal baseline in the direction that matters, in SD
   if (st) {
     z = (value - st.mean) / st.sd;
-    const dev = m.dir === 'low' ? -z : m.dir === 'high' ? z : Math.abs(z);
-    if (dev >= refs.zscore.red) zStatus = 'red';
-    else if (dev >= refs.zscore.yellow) zStatus = 'yellow';
+    dev = m.dir === 'low' ? -z : m.dir === 'high' ? z : Math.abs(z);
   }
-  const status = worst(earth, zStatus);
+  const zStatus = dev >= Z.red ? 'red' : dev >= Z.yellow ? 'yellow' : 'green';
+
+  // A change from the personal baseline alone raises an indicator to yellow at most.
+  // Red ("notify doctor") needs the clinical reference range to agree.
+  let status = earth;
+  if (dev >= Z.yellow) status = worst(status, 'yellow');
+  if (dev >= Z.red && earth !== 'green') status = 'red';
+
+  // Yellow has two steps: "watch" and the stronger "caution".
+  let tier = status;
+  if (status === 'yellow') tier = dev >= Z.red || (earth === 'yellow' && dev >= Z.yellow) ? 'caution' : 'watch';
+
   let driver = null; // what caused a non-green status
-  if (status !== 'green') driver = RANK[zStatus] >= RANK[earth] ? 'baseline' : m.label;
-  return { key, value, status, earth, z, zStatus, driver, baseline: st || null, label: m.label };
+  if (status !== 'green') driver = dev >= Z.yellow ? 'baseline' : m.label;
+  return { key, value, status, tier, earth, z, zStatus, driver, baseline: st || null, label: m.label };
 }
 
 export function missionDay(entries) {
@@ -117,7 +129,8 @@ export function evaluate(entries, envKey, refs) {
   for (const id of SYSTEM_ORDER) {
     const list = SYSTEMS[id].map((k) => metrics[k]).filter(Boolean);
     const status = list.reduce((s, m) => worst(s, m.status), 'green');
-    systems[id] = { id, status, metrics: list };
+    const tier = list.reduce((a, m) => (TIER[tierOf(m)] > TIER[a] ? tierOf(m) : a), 'green');
+    systems[id] = { id, status, tier, metrics: list };
     overall = worst(overall, status);
   }
 

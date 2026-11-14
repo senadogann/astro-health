@@ -44,9 +44,9 @@ export function reasonText(r, refs) {
     return t(isEarth ? 'reason.ok.earth' : 'reason.ok.range');
   }
   if (r.driver === 'baseline') {
-    return t(r.z > 0 ? 'reason.above' : 'reason.below', {
-      z: fmt(Math.abs(r.z), 1), mean: fmt(r.baseline.mean, m.digits), unit: m.unit,
-    });
+    // Plain words instead of statistics: "clearly higher than your normal (61 → 82 bpm)".
+    const key = `reason.${r.z > 0 ? 'above' : 'below'}${Math.abs(r.z) >= refs.zscore.red ? '.strong' : ''}`;
+    return t(key, { mean: fmt(r.baseline.mean, m.digits), value: fmt(r.value, m.digits), unit: m.unit });
   }
   return t(isEarth ? 'reason.earth' : 'reason.range', { range: rangeText(m), unit: m.unit });
 }
@@ -57,4 +57,14 @@ export function driverLabel(r) {
   if (r.label === 'nasa') return t('label.nasa');
   if (r.label === 'earth') return t('label.earth');
   return t('badge.ill');
+}
+
+// Status word for an indicator or body system: Nominal / Watch / Caution / Notify doctor.
+export function statusText(x) {
+  return t('status.' + (x.status === 'yellow' && x.tier === 'caution' ? 'caution' : x.status));
+}
+
+// The statistics behind a baseline alert, for readers who want them.
+export function sigmaNote(r) {
+  return r.z != null && r.driver === 'baseline' ? t('reason.sigma', { z: fmt(Math.abs(r.z), 1) }) : '';
 }

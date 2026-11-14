@@ -101,7 +101,7 @@ export function renderCheckin(root, { refs, content, entries, evalFn, onSave }) 
     const rank = { green: 0, yellow: 1, red: 2 };
     const top = results.reduce((a, b) => (rank[b.status] > rank[a.status] ? b : a));
     field.classList.add(top.status);
-    out.textContent = `${t('status.' + top.status)} · ${top.text}`;
+    out.textContent = `${top.label} · ${top.text}`;
   }
 
   function setNum(key, raw) {

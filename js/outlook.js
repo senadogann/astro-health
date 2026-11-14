@@ -48,7 +48,9 @@ export function computeOutlook(entries, envKey, refs, res) {
     // Current level: the fitted line today, or the mean of the last 3 days when there is no trend.
     const last3 = ys.slice(-3);
     const level = flat ? last3.reduce((s, v) => s + v, 0) / last3.length : fit.intercept + fit.slope * (ys.length - 1);
-    const at = (d) => Math.min(m.max, Math.max(m.min, level + slope * d));
+    // A trend is assumed to continue for at most as long as it has been observed, then to hold.
+    const reach = ys.length - 1;
+    const at = (d) => Math.min(m.max, Math.max(m.min, level + slope * Math.min(d, reach)));
     const statusAt = (d) => evalMetric(key, at(d), refs, baseline).status;
     let toYellow = null, toRed = null;
     for (let d = 0; d <= H; d++) {

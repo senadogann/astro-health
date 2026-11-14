@@ -2,7 +2,7 @@
 // what to do, when to notify the flight surgeon (with the communication delay), and sources.
 import { t, L, esc } from './i18n.js';
 import { clearCharts, trendChart } from './charts.js';
-import { valueText, reasonText, driverLabel, delayText } from './ui.js';
+import { valueText, reasonText, driverLabel, delayText, statusText, sigmaNote } from './ui.js';
 import { i4Html, i4Chart } from './i4.js';
 
 // Which indicators share one chart in each system's panel.
@@ -36,7 +36,8 @@ export function renderPanel(el, { id, res, entries, refs, content, sources, envK
             <span class="badge">${esc(driverLabel(r))}</span>
             <span class="v">${esc(valueText(r, refs))}</span>
           </div>
-          <div class="why">${esc(reasonText(r, refs))}</div>
+          <div class="why">${esc(statusText(r))} · ${esc(reasonText(r, refs))}</div>
+          ${sigmaNote(r) ? `<div class="sigma">ⓘ ${esc(sigmaNote(r))}</div>` : ''}
         </div>`).join('');
       charts.push(group);
       return `${rows}<div class="chartbox"><canvas data-chart="${gi}"></canvas></div>`;
@@ -54,7 +55,7 @@ export function renderPanel(el, { id, res, entries, refs, content, sources, envK
   el.hidden = false;
   el.innerHTML = `
     <div class="phead">
-      ${status ? `<span class="pill ${status}"><span class="dot ${status}"></span>${t('status.' + status)}</span>` : ''}
+      ${status ? `<span class="pill ${status}"><span class="dot ${status}"></span>${statusText(res.systems[id])}</span>` : ''}
       <h2>${esc(L(sys.name))}</h2>
       <button type="button" class="close" data-act="close" aria-label="${t('panel.close')}">✕</button>
     </div>
