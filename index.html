@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>AstroSelf — Astronaut Health Monitor</title>
+  <meta name="description" content="Self-assessment health monitor for astronauts. Works without Earth, with NASA data and standards.">
+  <meta name="theme-color" content="#070b14">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="importmap">{ "imports": { "three": "./vendor/three.module.min.js" } }</script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img src="assets/icons/icon.svg" alt="" width="44" height="44">
+      <div>
+        <strong data-i18n="app.name">AstroSelf</strong>
+        <span data-i18n="app.tagline"></span>
+      </div>
+    </div>
+    <div class="topbar-controls">
+      <label class="envpick">
+        <span data-i18n="env.label">Environment</span>
+        <select id="envSelect"></select>
+      </label>
+      <div class="seg lang" role="group" aria-label="Language">
+        <button type="button" data-lang="en">EN</button>
+        <button type="button" data-lang="tr">TR</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="envstrip" id="envStrip"></div>
+
+  <nav class="tabs" role="tablist">
+    <button type="button" class="tab" data-view="dashboard" data-i18n="nav.dashboard">Dashboard</button>
+    <button type="button" class="tab" data-view="checkin" data-i18n="nav.checkin">Daily check-in</button>
+  </nav>
+
+  <main>
+    <section id="view-dashboard" class="view">
+      <div class="demobar" id="demoBar"></div>
+      <div id="alerts"></div>
+      <div class="dash">
+        <div class="card bodycard">
+          <div id="bodyStage" class="bodystage"></div>
+          <p class="hint" id="bodyHint" data-i18n="body.hint"></p>
+          <div id="systemChips" class="chips"></div>
+        </div>
+        <div class="side">
+          <div id="overview"></div>
+          <div id="organPanel" class="card panel" hidden></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-checkin" class="view" hidden>
+      <div id="checkin"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span data-i18n="footer.disclaimer"></span>
+  </footer>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <script src="vendor/chart.umd.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

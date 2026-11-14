@@ -1,0 +1,56 @@
+// Offline support. Network-first (so new deploys show up), cache fallback (so it works with no internet).
+const CACHE = 'astroself-v1';
+const ASSETS = [
+  './',
+  'index.html',
+  'manifest.webmanifest',
+  'css/style.css',
+  'js/app.js',
+  'js/i18n.js',
+  'js/store.js',
+  'data/i18n.json',
+  'vendor/three.module.min.js',
+  'vendor/OrbitControls.js',
+  'vendor/chart.umd.js',
+  'assets/icons/icon.svg',
+  'assets/icons/icon-192.png',
+  'assets/icons/icon-512.png',
+];
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE)
+      // Add one by one so a single missing file does not break the whole install.
+      .then((cache) => Promise.all(ASSETS.map((url) => cache.add(url).catch(() => {}))))
+      .then(() => self.skipWaiting())
+  );
+});
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys()
+      .then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))))
+      .then(() => self.clients.claim())
+  );
+});
+
+function timeout(ms) {
+  return new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), ms));
+}
+
+self.addEventListener('fetch', (event) => {
+  const req = event.request;
+  if (req.method !== 'GET' || new URL(req.url).origin !== self.location.origin) return;
+
+  event.respondWith(
+    Promise.race([fetch(req), timeout(3000)])
+      .then((res) => {
+        if (res && res.ok) {
+          const copy = res.clone();
+          caches.open(CACHE).then((cache) => cache.put(req, copy));
+        }
+        return res;
+      })
+      .catch(() => caches.match(req, { ignoreSearch: true }).then((hit) => hit || caches.match('index.html')))
+  );
+});
