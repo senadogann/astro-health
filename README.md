@@ -48,14 +48,17 @@ AstroSelf is a visual self-assessment tool that an astronaut can use alone, with
 
 ## How to use it
 
-1. Open the [live demo](https://senadogann.github.io/astro-health/). It starts in **demo mode** with 30 days of
-   simulated data for a fictional astronaut.
-2. Press a **scenario** button (Solar particle event, Sleep loss, Dehydration / fluid shift) and watch the cards,
-   the 3D body and the alerts change.
-3. Tap an organ on the 3D body to open its panel.
-4. Change the **environment** (top right) to see how the delay and the radiation dose change.
-5. Press **EMERGENCY** for the checklists. Press **30-day outlook** for the risk forecast.
-6. Open **Daily check-in** to enter your own values. The app then switches to "My data" and starts building your
+1. Open the [live demo](https://senadogann.github.io/astro-health/). It starts in **demo mode** with a fictional
+   four-person crew and 180 days of **simulated** data (see "Simulated crew data" below).
+2. Drag the **mission day** slider: the 3D body and the cards show the selected astronaut as they were on that day.
+   Try day 118–126 for MS1 D. Aydın (a week of short sleep).
+3. Open **Crew** to see the four astronauts side by side on the same day; "Open in dashboard" selects one.
+4. In the **Demo** menu, pick a **scenario** (Solar particle event, Sleep loss, Dehydration / fluid shift). It changes
+   the last days of the selected astronaut's data up to the chosen day.
+5. Tap an organ on the 3D body to open its panel.
+6. Change the **environment** (top right) to see how the delay and the radiation dose change.
+7. Press **EMERGENCY** for the checklists. Under **More**: 30-day outlook, report, mission (space weather, dose).
+8. Open **Daily check-in** to enter your own values. The app then switches to "My data" and starts building your
    personal baseline (7 days).
 
 Check-ins and preferences stay in a local IndexedDB database in the browser (with a localStorage fallback). There is no account, telemetry, or shared cloud database; data is private to that browser/device and does not sync between computers.
@@ -73,13 +76,39 @@ written by the team from the NASA HRP sources and general clinical practice and 
 | Inspiration4 blood values (glucose, electrolytes, kidney, blood count) | **Real NASA data**, embedded in `data/i4_blood.json` | NASA OSDR [OSD-575](https://osdr.nasa.gov/bio/repo/data/studies/OSD-575) / [OSD-569](https://osdr.nasa.gov/bio/repo/data/studies/OSD-569) (Inspiration4) |
 | ≥10 MeV proton flux; radiation storm alert at 10 pfu (NOAA S1) | **Real, live**; falls back to the last saved data, then to `data/swpc_snapshot.json` | [NOAA SWPC GOES proton flux](https://www.swpc.noaa.gov/products/goes-proton-flux) |
 | Solar energetic particle events and flares | **Real, live** | [NASA DONKI (CCMC)](https://ccmc.gsfc.nasa.gov/tools/DONKI/) |
-| Demo astronaut "Cmdr. A. Yıldız" and the three scenarios | **Simulated** | `js/demo.js` |
+| Fictional four-person crew, 180 days, and the three what-if scenarios | **Simulated** (method below) | `js/crew.js`, `js/demo.js` |
 | Mission radiation dose | Model: mission days × environment dose rate | `js/rules.js` |
 | Bone loss | Model: NASA rate of 1–1.5% per month | `js/rules.js`, `js/outlook.js` |
 
 Inspiration4 notes: 4 civilian astronauts, 3-day mission, samples only before and after flight. The low glucose at
 R+45 is probably a sample-handling artefact and is not interpreted as a spaceflight effect. The embedded file can be
 rebuilt with `python tools/build_i4.py <cmp.csv> <cbc.csv> data/i4_blood.json`.
+
+### Simulated crew data (180 days)
+
+The demo crew is **fictional** and every value is **simulated**. The app labels it *Simulated* on the dashboard,
+the crew view, the time slider, the organ panels and the report. The data is generated in the browser by
+`js/crew.js` with a seeded random generator, so it is the same on every device. Day 180 is today.
+
+Where a NASA reference exists, the simulation is built on it:
+
+| Quantity | How it is simulated | Source |
+|---|---|---|
+| Sleep duration | Crew mean over the mission is **6.09 h** (personal means 6.29 / 5.94 / 5.84 / 6.29 h, offsets sum to zero); never above the **8.5 h** scheduled | [Barger et al., Lancet Neurology 2014](https://doi.org/10.1016/S1474-4422(14)70122-X) |
+| Fasting glucose | Each astronaut's baseline is the **real pre-flight mean of one Inspiration4 crew member** (C001 77.3, C002 73.0, C003 71.3, C004 79.7 mg/dL) | NASA OSDR [OSD-575](https://osdr.nasa.gov/bio/repo/data/studies/OSD-575), `data/i4_blood.json` (`preflightByCrew`) |
+| Daily radiation dose | Dose rate of the selected environment (ISS ~0.5, Orion 0.96–1.24, Moon 1.37, Mars transit 1.84, Mars surface 0.64 mSv/day) | `data/references.json` (LSAH 2023; George et al., Nature 2024; Zhang et al. 2020; Hassler et al. 2014) |
+| Vision change (SANS) | About 70% of long-duration crew show at least one SANS finding, so **3 of the 4** astronauts report a slight vision change from a given day on | HRP SANS Evidence Report 2022 |
+| Exercise | Six sessions a week, one rest day: meets the minimum of **3 sessions a week, 20 min or more** | NASA OCHMO exercise technical brief |
+| Bone density loss | Not simulated per day: the rules engine applies **1–1.5% per month** to the mission day | HRP Bone Fracture Evidence Report 2024 |
+
+**Illustrative (no NASA reference used):** the personal baselines for heart rate, blood pressure and body
+temperature (chosen inside normal adult ranges), mood, sleep quality, the day-to-day variation of every value
+(roughly normal noise, e.g. ±0.45 h for sleep, ±4 mg/dL for glucose, ±8% for dose), the day each vision change
+starts (days 72, 104, 151), and one event: a week of short sleep for MS1 D. Aydın on days 118–126. The what-if
+scenarios in the Demo menu are also illustrative, including the 45 mSv one-day dose of the solar particle event.
+
+Note that the ISS average of 6.09 h is below the 7 h used as the Earth reference, so the simulated crew's sleep is
+usually shown as "Watch". This is intended: short sleep is one of the risks NASA reports for ISS crews.
 
 ### Reference values (`data/references.json`)
 
@@ -88,8 +117,8 @@ rebuilt with `python tools/build_i4.py <cmp.csv> <cbc.csv> data/i4_blood.json`.
 | Career radiation limit | < 600 mSv effective dose | [NASA-STD-3001 Vol.1 Rev C](https://www.nasa.gov/reference/nasa-std-3001/) [V1 4030] |
 | Solar particle event design limit | < 250 mSv | NASA-STD-3001 [V1 4031] |
 | ISS dose rate | ~0.5 mSv/day (order of magnitude) | NASA LSAH Newsletter 2023 |
-| Orion / Artemis I dose rate | 0.96–1.24 mSv/day | Nature 2024; [NTRS 20230010550](https://ntrs.nasa.gov/citations/20230010550) |
-| Lunar surface dose rate | ~1.37 mSv/day | [Zhang et al., Science Advances 2020](https://doi.org/10.1126/sciadv.aaz1334) (Chang'E-4) |
+| Orion / Artemis I dose rate | 0.96–1.24 mSv/day (GCR dose equivalent) | [George et al., "Space radiation measurements during the Artemis I lunar mission", Nature 634, 48 (2024)](https://www.nature.com/articles/s41586-024-07927-7) |
+| Lunar surface dose rate | ~1.37 mSv/day (1,369 μSv/day) | [Zhang et al., "First measurements of the radiation dose on the lunar surface", Science Advances 6, eaaz1334 (2020)](https://doi.org/10.1126/sciadv.aaz1334) (Chang'E-4) |
 | Mars transit / surface dose rate | 1.84 ± 0.30 / 0.64 ± 0.12 mSv/day | [Hassler et al., Science 2014](https://doi.org/10.1126/science.1244797) (Curiosity RAD) |
 | Cabin CO₂ | 1-hour average ≤ 3 mmHg | [NASA-STD-3001 Vol.2](https://www.nasa.gov/ochmo/health-operations-and-oversight/hsa-standards/) [V2 6004]; OCHMO-TB-004 |
 | Bone loss | 1–1.5% per month (hip/spine) | [HRP Evidence Reports](https://humanresearchroadmap.nasa.gov/evidence/): Bone Fracture, 2024 |

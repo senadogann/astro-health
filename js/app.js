@@ -2,7 +2,8 @@ import { loadI18n, setLang, t, L, applyI18n, esc, fmt } from './i18n.js';
 import { state, loadState, setState, subscribe, saveEntry, dateStr } from './store.js';
 import { renderCheckin } from './checkin.js';
 import { evaluate, evalMetric, computeBaseline, worst, SYSTEM_ORDER, lowStreak, applyPersistence } from './rules.js';
-import { demoEntries, DEMO_NAME, SCENARIOS } from './demo.js';
+import { applyScenario, SCENARIOS } from './demo.js';
+import { CREW, crewEntries } from './crew.js';
 import { valueText, reasonText, statusText, delayText } from './ui.js';
 import { renderPanel } from './panel.js';
 import { loadSpaceWeather, renderSpaceWeather } from './spaceweather.js';
@@ -13,7 +14,7 @@ import { renderReport } from './report.js';
 
 const $ = (sel) => document.querySelector(sel);
 const ENVS = ['iss', 'orion', 'moon', 'marsTransit', 'mars'];
-const VIEWS = ['dashboard', 'checkin', 'outlook', 'report', 'mission'];
+const VIEWS = ['dashboard', 'checkin', 'crew', 'outlook', 'report', 'mission'];
 
 let view = 'dashboard';
 let selected = null;      // selected body system id
@@ -26,6 +27,8 @@ let lastRes = null;       // latest assessment, used by the emergency report
 let body = null;          // 3D figure: js/body3d.js (detailed) or js/body.js (simple); null without WebGL
 let loading = {};         // layer id -> load ratio, while model files download
 let slow = false;         // the detailed model runs slowly on this device
+let viewDay = null;       // mission day chosen on the time slider; null = the latest day
+let renderQueued = false;
 
 const getJSON = (url) => fetch(url).then((r) => r.json());
 
@@ -43,8 +46,25 @@ const info = (html) => `<details class="info"><summary aria-label="info">i</summ
 const isDemo = () => state.mode === 'demo';
 const currentEnv = () => refs.environments[state.env] || refs.environments.iss;
 
+// Simulated crew (demo) or the user's own check-ins.
+const crewIndex = () => Math.min(CREW.length - 1, Math.max(0, Number(state.crew) || 0));
+const who = () => (isDemo() ? CREW[crewIndex()].name : t('mode.mine'));
+const baseEntries = () => (isDemo() ? crewEntries(crewIndex(), currentEnv().doseRate, i4) : state.entries);
+
+// The time slider shows the mission as it was on the chosen day: only data up to that day is used.
+function upToDay(list) {
+  return viewDay == null ? list : list.slice(0, Math.max(1, Math.min(viewDay, list.length)));
+}
+
 function currentEntries() {
-  return isDemo() ? demoEntries(state.scenario, currentEnv().doseRate) : state.entries;
+  const list = upToDay(baseEntries());
+  return isDemo() ? applyScenario(list, state.scenario) : list;
+}
+
+function scheduleRender() {
+  if (renderQueued) return;
+  renderQueued = true;
+  requestAnimationFrame(() => { renderQueued = false; render(); });
 }
 
 function selectSystem(id, name) {
@@ -129,7 +149,7 @@ function renderOverview(res) {
   el.innerHTML = `
     <div class="summary">
       <span class="pill ${res.overall}"><span class="dot ${res.overall}"></span>${t('overall.' + res.overall)}</span>
-      <h2>${isDemo() ? esc(DEMO_NAME) : t('mode.mine')}</h2>
+      <h2>${esc(who())}</h2>
       ${dataBadge()}
       ${info(details)}
     </div>
@@ -222,11 +242,11 @@ function renderDashboard() {
   document.querySelectorAll('[data-horizon]').forEach((b) => b.classList.toggle('active', b.dataset.horizon === horizon));
   $('#projNote').hidden = !projected;
 
-  const who = isDemo() ? DEMO_NAME : t('mode.mine');
   if (view === 'outlook') renderOutlook($('#outlook'), out, { refs, content, sources });
   if (view === 'report') {
-    renderReport($('#report'), { res, out, entries, refs, content, envKey: state.env, spaceWx, who, simulated: isDemo() });
+    renderReport($('#report'), { res, out, entries, refs, content, envKey: state.env, spaceWx, who: who(), simulated: isDemo() });
   }
+  if (view === 'crew') renderCrew();
   if (view === 'mission') {
     renderSpaceWeather($('#spaceWeather'), spaceWx);
     renderDoseCard(res);
@@ -251,6 +271,77 @@ function renderDashboard() {
   renderSlowNote();
 }
 
+/* ---------- time slider ---------- */
+
+// Built once and then only updated, so dragging is never interrupted by a re-render.
+function renderTimebar() {
+  const el = $('#timebar');
+  const list = baseEntries();
+  const total = list.length;
+  const show = (view === 'dashboard' || view === 'crew') && total >= 2;
+  el.hidden = !show;
+  if (!show) return;
+  if (!el.dataset.ready) {
+    el.dataset.ready = '1';
+    el.innerHTML = `
+      <label class="tlabel" for="daySlider"></label>
+      <input type="range" id="daySlider" min="1" step="1">
+      <button type="button" class="btn tlast" data-day="last"></button>
+      <span class="tbadge"></span>`;
+    $('#daySlider').addEventListener('input', (e) => {
+      const v = Number(e.target.value);
+      viewDay = v >= Number(e.target.max) ? null : v;
+      scheduleRender();
+    });
+  }
+  const day = viewDay == null ? total : Math.min(viewDay, total);
+  const input = $('#daySlider');
+  input.max = total;
+  if (document.activeElement !== input) input.value = day;
+  input.setAttribute('aria-valuetext', t('time.label', { d: day, n: total }));
+  el.querySelector('.tlabel').innerHTML = `<b>${t('time.label', { d: day, n: total })}</b> <small>${esc(list[day - 1].date)}</small>`;
+  const last = el.querySelector('.tlast');
+  last.textContent = t('time.last');
+  last.disabled = viewDay == null;
+  el.querySelector('.tbadge').innerHTML = isDemo() ? `<span class="badge sim">${t('badge.sim')}</span>` : `<span class="badge self">${t('badge.self')}</span>`;
+}
+
+/* ---------- crew view: the four simulated astronauts side by side ---------- */
+
+function renderCrew() {
+  const name = (k) => L(content.metrics[k].name);
+  const cards = CREW.map((c, i) => {
+    let list = upToDay(crewEntries(i, currentEnv().doseRate, i4));
+    const active = isDemo() && i === crewIndex();
+    if (active) list = applyScenario(list, state.scenario); // a what-if scenario applies to the selected astronaut
+    const res = evaluate(list, state.env, refs);
+    const m = res.metrics;
+    const val = (k, text) => (m[k] ? `<div class="cv ${m[k].status}"><span>${esc(name(k))}</span><b>${text}</b></div>` : '');
+    const flags = Object.values(m).filter((x) => x.status !== 'green')
+      .map((x) => `<li><span class="dot ${x.status}"></span>${esc(name(x.key))}: ${esc(statusText(x))}</li>`);
+    return `
+      <div class="card crewcard ${res.overall}${active ? ' active' : ''}">
+        <div class="chead"><h3>${esc(c.name)}</h3><span class="badge sim">${t('badge.sim')}</span></div>
+        <div class="why">${t('role.' + c.role)}</div>
+        <span class="pill ${res.overall}"><span class="dot ${res.overall}"></span>${t('overall.' + res.overall)}</span>
+        <div class="crewvals">
+          ${val('hr', esc(valueText(m.hr, refs)))}
+          ${m.sys && m.dia ? `<div class="cv ${worst(m.sys.status, m.dia.status)}"><span>${t('card.bp')}</span><b>${m.sys.value}/${m.dia.value}</b></div>` : ''}
+          ${val('sleepH', esc(valueText(m.sleepH, refs)))}
+          ${val('mood', esc(valueText(m.mood, refs)))}
+          ${val('glucose', esc(valueText(m.glucose, refs)))}
+        </div>
+        <div class="crewsys">${SYSTEM_ORDER.map((id) => `<span><span class="dot ${res.systems[id].status}"></span>${esc(L(content.systems[id].short || content.systems[id].name))}</span>`).join('')}</div>
+        <div class="crewflags">${flags.length ? `<b>${t('crew.attention')}</b><ul>${flags.join('')}</ul>` : `<span class="why">${t('crew.allOk')}</span>`}</div>
+        <button type="button" class="btn${active ? ' primary' : ''}" data-crew="${i}">${t(active ? 'crew.current' : 'crew.open')}</button>
+      </div>`;
+  });
+  $('#crew').innerHTML = `
+    <div class="crewhead"><h2>${t('crew.title')}</h2><span class="badge sim">${t('badge.sim')}</span>
+      <details class="info"><summary aria-label="info">i</summary><div class="bubble">${t('crew.info')}</div></details></div>
+    <div class="crewgrid">${cards.join('')}</div>`;
+}
+
 /* ---------- "Demo" menu: data source, scenarios, 3D model ---------- */
 
 function renderDemoMenu() {
@@ -259,7 +350,9 @@ function renderDemoMenu() {
   $('#demoBox').innerHTML = `
     <span class="label">${t('mode.label')}</span>
     <div class="seg">${seg('mode', 'demo', t('mode.demoShort'), isDemo())}${seg('mode', 'mine', t('mode.mine'), !isDemo())}</div>
-    ${isDemo() ? `<span class="label">${t('scenario.label')}</span>${[''].concat(SCENARIOS).map(scen).join('')}` : ''}
+    ${isDemo() ? `<span class="label">${t('crew.pick')}</span>
+      ${CREW.map((c, i) => `<button type="button" class="btn${i === crewIndex() ? ' active' : ''}" data-crew="${i}">${esc(c.name)}</button>`).join('')}
+      <span class="label">${t('scenario.label')}</span>${[''].concat(SCENARIOS).map(scen).join('')}` : ''}
     <span class="label">${t('model.label')}</span>
     <div class="seg">${seg('model', 'detailed', t('model.detailed'), state.model !== 'simple')}${seg('model', 'simple', t('model.simple'), state.model === 'simple')}</div>`;
 }
@@ -348,12 +441,15 @@ function renderChrome() {
 function render() {
   setLang(state.lang);
   renderChrome();
+  renderTimebar();
   renderDashboard();
   if (view === 'checkin') renderCheckinView();
   renderEmergency();
 }
 
 function setView(v) {
+  if (!v) return; // e.g. the "More" menu title itself
+  document.querySelectorAll('details.more-nav[open]').forEach((d) => { d.open = false; });
   view = v;
   render();
   window.scrollTo(0, 0);
@@ -362,7 +458,7 @@ function setView(v) {
 // One click handler for every button the app renders.
 function onClick(e) {
   // Close open "i" bubbles and menus when the tap is somewhere else.
-  document.querySelectorAll('details.info[open], details.menu[open]').forEach((d) => { if (!d.contains(e.target)) d.open = false; });
+  document.querySelectorAll('details.info[open], details.menu[open], details.more-nav[open]').forEach((d) => { if (!d.contains(e.target)) d.open = false; });
 
   const pick = (attr) => e.target.closest(`[data-${attr}]`);
   let el;
@@ -380,6 +476,13 @@ function onClick(e) {
     return undefined;
   }
   if ((el = pick('goto'))) return setView(el.dataset.goto);
+  if ((el = pick('day'))) { viewDay = null; return render(); }
+  if ((el = pick('crew'))) {
+    selected = null;
+    document.querySelectorAll('details.menu[open]').forEach((d) => { d.open = false; });
+    setState({ crew: Number(el.dataset.crew), mode: 'demo' });
+    return setView('dashboard');
+  }
   if (!(el = pick('act'))) return undefined;
   const act = el.dataset.act;
   if (act === 'close') selectSystem(null);
@@ -401,14 +504,14 @@ async function boot() {
   ]);
 
   document.querySelectorAll('[data-lang]').forEach((b) => b.addEventListener('click', () => setState({ lang: b.dataset.lang })));
-  document.querySelectorAll('.tab').forEach((b) => b.addEventListener('click', () => setView(b.dataset.view)));
+  document.querySelectorAll('.tab[data-view]').forEach((b) => b.addEventListener('click', () => setView(b.dataset.view)));
   $('#envSelect').addEventListener('change', (e) => setState({ env: e.target.value }));
   document.addEventListener('click', onClick);
 
   // Emergency mode is available on every screen and works offline.
   initEmergency($('#emergency'), () => ({
     res: lastRes, refs, content, envKey: state.env, spaceWx,
-    who: isDemo() ? DEMO_NAME : t('mode.mine'), simulated: isDemo(),
+    who: who(), simulated: isDemo(),
   }));
   $('#emBtn').addEventListener('click', () => openEmergency());
 
