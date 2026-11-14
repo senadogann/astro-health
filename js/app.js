@@ -1,10 +1,33 @@
 import { loadI18n, setLang, t, applyI18n } from './i18n.js';
-import { state, loadState, setState, subscribe } from './store.js';
+import { state, loadState, setState, subscribe, saveEntry } from './store.js';
+import { renderCheckin } from './checkin.js';
 
 const $ = (sel) => document.querySelector(sel);
 const ENVS = ['iss', 'orion', 'moon', 'marsTransit', 'mars'];
 
 let view = 'dashboard';
+let refs, content, sources;
+
+const getJSON = (url) => fetch(url).then((r) => r.json());
+
+function toast(msg) {
+  const el = $('#toast');
+  el.textContent = msg;
+  el.hidden = false;
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => { el.hidden = true; }, 2200);
+}
+
+function renderCheckinView() {
+  renderCheckin($('#checkin'), {
+    refs, content, entries: state.entries,
+    onSave(entry) {
+      saveEntry(entry);
+      toast(t('checkin.saved'));
+      setView('dashboard');
+    },
+  });
+}
 
 function renderChrome() {
   applyI18n();
@@ -18,6 +41,7 @@ function renderChrome() {
 function render() {
   setLang(state.lang);
   renderChrome();
+  if (view === 'checkin') renderCheckinView();
 }
 
 function setView(v) {
@@ -27,7 +51,9 @@ function setView(v) {
 
 async function boot() {
   loadState();
-  await loadI18n();
+  [, refs, content, sources] = await Promise.all([
+    loadI18n(), getJSON('data/references.json'), getJSON('data/content.json'), getJSON('data/sources.json'),
+  ]);
 
   document.querySelectorAll('[data-lang]').forEach((b) => b.addEventListener('click', () => setState({ lang: b.dataset.lang })));
   document.querySelectorAll('.tab').forEach((b) => b.addEventListener('click', () => setView(b.dataset.view)));

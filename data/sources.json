@@ -1,0 +1,21 @@
+{
+  "hrp_hazards":   { "title": "NASA HRP — 5 Hazards of Human Spaceflight", "url": "https://www.nasa.gov/hrp/hazards/" },
+  "hrp_risks":     { "title": "NASA HRP — Human Research Program Risks", "url": "https://www.nasa.gov/hrp/risks/" },
+  "hrp_research":  { "title": "NASA HRP — Ongoing Research", "url": "https://www.nasa.gov/hrp/ongoing-hrp-research/" },
+  "hrp_evidence":  { "title": "NASA Human Research Roadmap — Evidence Reports", "url": "https://humanresearchroadmap.nasa.gov/evidence/" },
+  "hrp_bone":      { "title": "HRP Evidence Report: Risk of Bone Fracture (2024)", "url": "https://humanresearchroadmap.nasa.gov/evidence/" },
+  "hrp_sans":      { "title": "HRP Evidence Report: Spaceflight Associated Neuro-ocular Syndrome (2022)", "url": "https://humanresearchroadmap.nasa.gov/evidence/" },
+  "nasa_std_3001_v1": { "title": "NASA-STD-3001 Vol.1 Rev C — Crew Health [V1 4030, V1 4031]", "url": "https://www.nasa.gov/hrp/risks/" },
+  "nasa_std_3001_v2": { "title": "NASA-STD-3001 Vol.2 [V2 6004] / OCHMO-TB-004 — Cabin CO₂", "url": "https://www.nasa.gov/hrp/risks/" },
+  "ochmo_exercise": { "title": "NASA OCHMO — Exercise technical brief", "url": "https://www.nasa.gov/hrp/risks/" },
+  "lsah2023":      { "title": "NASA Lifetime Surveillance of Astronaut Health (LSAH) Newsletter 2023", "url": "https://nlsp.nasa.gov/explore" },
+  "nlsp":          { "title": "NASA Life Sciences Portal — LSAH protocol MR089S (vital signs)", "url": "https://nlsp.nasa.gov/explore" },
+  "artemis1":      { "title": "Artemis I radiation measurements (Nature 2024; NTRS 20230010550)", "url": "https://ntrs.nasa.gov/citations/20230010550" },
+  "hassler2014":   { "title": "Hassler et al., Science 2014 — Mars surface radiation (Curiosity RAD)", "url": "https://doi.org/10.1126/science.1244797" },
+  "zhang2020":     { "title": "Zhang et al., Science Advances 2020 — Radiation dose on the lunar surface (Chang'E-4)", "url": "https://doi.org/10.1126/sciadv.aaz1334" },
+  "barger2014":    { "title": "Barger et al., Lancet Neurology 2014 — Sleep deficiency in spaceflight", "url": "https://doi.org/10.1016/S1474-4422(14)70122-X" },
+  "csa_radiation": { "title": "CSA — Monitoring radiation and astronaut health", "url": "https://www.asc-csa.gc.ca/eng/news/articles/2026/2026-02-26-monitoring-radiation-astronaut-health.asp" },
+  "csa_science":   { "title": "CSA — Why do we conduct science experiments in space?", "url": "https://www.asc-csa.gc.ca/eng/iss/science/why-do-we-conduct-science-experiments-in-space.asp" },
+  "radlab":        { "title": "NASA OSDR RadLab — space radiation data", "url": "https://visualization.osdr.nasa.gov/radlab/gui/overview/" },
+  "earth_vitals":  { "title": "Earth reference: general adult clinical ranges (simplified for this prototype)", "url": "" }
+}
