@@ -11,6 +11,7 @@ const ENVS = ['iss', 'orion', 'moon', 'marsTransit', 'mars'];
 let view = 'dashboard';
 let selected = null; // selected body system id
 let refs, content, sources;
+let body = null; // 3D figure (js/body.js); stays null if WebGL is unavailable
 
 const getJSON = (url) => fetch(url).then((r) => r.json());
 
@@ -123,6 +124,23 @@ function renderDashboard() {
   const res = evaluate(entries, state.env, refs);
   renderOverview(res);
   renderChips(res);
+  if (body) {
+    body.setStatuses(res.empty ? {} : Object.fromEntries(SYSTEM_ORDER.map((id) => [id, res.systems[id].status])));
+    body.setSelected(selected);
+  }
+}
+
+// The figure is loaded separately so the app still works without WebGL.
+async function initBody() {
+  try {
+    const { createBody } = await import('./body.js');
+    body = createBody($('#bodyStage'), { onSelect: selectSystem });
+    renderDashboard();
+  } catch (e) {
+    $('#bodyStage').innerHTML = '<div class="fallback" data-i18n="body.fallback"></div>';
+    $('#bodyHint').hidden = true;
+    applyI18n($('#bodyStage'));
+  }
 }
 
 /* ---------- chrome ---------- */
@@ -171,6 +189,7 @@ async function boot() {
 
   subscribe(render);
   render();
+  initBody();
 
   if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
     navigator.serviceWorker.register('sw.js').catch(() => {});
