@@ -5,7 +5,6 @@
     "nav.dashboard": "Dashboard",
     "nav.checkin": "Daily check-in",
     "footer.disclaimer": "Prototype — not a medical device. Prototype values. Real medical thresholds are set by flight surgeons.",
-
     "env.label": "Environment",
     "env.iss": "ISS (low Earth orbit)",
     "env.orion": "Orion (lunar transit)",
@@ -24,7 +23,6 @@
     "delay.seconds": "≈ {s} s",
     "delay.upto": "up to {b} min",
     "delay.range": "{a}–{b} min",
-
     "mode.label": "Data",
     "mode.demo": "Demo: {name}",
     "mode.mine": "My data",
@@ -38,7 +36,6 @@
     "badge.real": "Real NASA data",
     "badge.ill": "Illustrative",
     "mission.day": "Mission day {n}",
-
     "status.green": "Nominal",
     "status.yellow": "Watch",
     "status.red": "Act now",
@@ -63,18 +60,14 @@
     "card.bp": "Blood pressure",
     "card.sleep": "Sleep",
     "card.sleepQ": "quality {q}/7",
-
     "alert.spe.title": "Solar particle event — go to shelter",
     "alert.spe.body": "Radiation dose is far above normal. Move to the radiation shelter now and keep your dosimeter with you. Earth round-trip delay: {delay}.",
-
     "empty.title": "No check-ins yet",
     "empty.body": "Enter today's measurements, or explore the app with 30 days of simulated astronaut data.",
     "empty.cta": "Start check-in",
     "empty.demo": "View demo data",
-
     "body.hint": "Drag to rotate · pinch or scroll to zoom · tap an organ",
     "body.fallback": "3D view is not available on this device. Use the buttons below.",
-
     "panel.function": "What it does",
     "panel.space": "How space affects it",
     "panel.current": "Current status",
@@ -87,7 +80,6 @@
     "panel.close": "Close",
     "panel.fine": "Prototype values. Real medical thresholds are set by flight surgeons.",
     "chart.baseline": "Your baseline",
-
     "checkin.title": "Daily check-in",
     "checkin.intro": "Why every day? In space your body changes quietly. Small daily measurements show a trend long before symptoms do, and they build the personal baseline that all alerts are based on.",
     "checkin.date": "Date",
@@ -106,7 +98,9 @@
     "mood.5": "Very good",
     "vision.0": "No change",
     "vision.1": "Slight blur",
-    "vision.2": "Marked change"
+    "vision.2": "Marked change",
+    "reason.range": "Outside the reference range ({range} {unit})",
+    "reason.ok.range": "Within the reference range"
   },
   "tr": {
     "app.name": "AstroSelf",
@@ -114,7 +108,6 @@
     "nav.dashboard": "Gösterge paneli",
     "nav.checkin": "Günlük kontrol",
     "footer.disclaimer": "Prototiptir, tıbbi cihaz değildir. Değerler prototip amaçlıdır. Gerçek tıbbi eşikleri uçuş doktorları belirler.",
-
     "env.label": "Ortam",
     "env.iss": "ISS (alçak Dünya yörüngesi)",
     "env.orion": "Orion (Ay transferi)",
@@ -133,7 +126,6 @@
     "delay.seconds": "≈ {s} sn",
     "delay.upto": "{b} dakikaya kadar",
     "delay.range": "{a}–{b} dk",
-
     "mode.label": "Veri",
     "mode.demo": "Demo: {name}",
     "mode.mine": "Benim verim",
@@ -147,7 +139,6 @@
     "badge.real": "Gerçek NASA verisi",
     "badge.ill": "Temsili",
     "mission.day": "Görev günü {n}",
-
     "status.green": "Normal",
     "status.yellow": "İzle",
     "status.red": "Hemen müdahale",
@@ -172,18 +163,14 @@
     "card.bp": "Tansiyon",
     "card.sleep": "Uyku",
     "card.sleepQ": "kalite {q}/7",
-
     "alert.spe.title": "Güneş parçacık fırtınası — sığınağa geçin",
     "alert.spe.body": "Radyasyon dozu normalin çok üstünde. Hemen radyasyon sığınağına geçin ve dozimetrenizi yanınızda tutun. Dünya ile gidiş-dönüş gecikmesi: {delay}.",
-
     "empty.title": "Henüz kayıt yok",
     "empty.body": "Bugünün ölçümlerini girin ya da uygulamayı 30 günlük simüle astronot verisiyle keşfedin.",
     "empty.cta": "Kontrole başla",
     "empty.demo": "Demo verisini göster",
-
     "body.hint": "Döndürmek için sürükleyin · yakınlaştırmak için kıstırın ya da kaydırın · bir organa dokunun",
     "body.fallback": "Bu cihazda 3D görünüm kullanılamıyor. Aşağıdaki düğmeleri kullanın.",
-
     "panel.function": "Ne işe yarar",
     "panel.space": "Uzay onu nasıl etkiler",
     "panel.current": "Güncel durum",
@@ -196,7 +183,6 @@
     "panel.close": "Kapat",
     "panel.fine": "Değerler prototip amaçlıdır. Gerçek tıbbi eşikleri uçuş doktorları belirler.",
     "chart.baseline": "Kişisel referansınız",
-
     "checkin.title": "Günlük kontrol",
     "checkin.intro": "Neden her gün? Uzayda vücudunuz sessizce değişir. Küçük günlük ölçümler, belirtiler ortaya çıkmadan çok önce gidişatı gösterir ve bütün uyarıların dayandığı kişisel referansı oluşturur.",
     "checkin.date": "Tarih",
@@ -215,6 +201,8 @@
     "mood.5": "Çok iyi",
     "vision.0": "Değişiklik yok",
     "vision.1": "Hafif bulanıklık",
-    "vision.2": "Belirgin değişiklik"
+    "vision.2": "Belirgin değişiklik",
+    "reason.range": "Referans aralığının dışında ({range} {unit})",
+    "reason.ok.range": "Referans aralığının içinde"
   }
 }
