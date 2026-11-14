@@ -65,6 +65,14 @@ a { color: var(--accent); }
   background: var(--panel); color: var(--muted); font-weight: 600;
 }
 .tab.active { background: var(--panel2); color: var(--text); box-shadow: inset 0 3px 0 var(--accent); }
+.more-nav { position: relative; }
+.more-nav > summary { list-style: none; display: flex; align-items: center; }
+.more-nav > summary::-webkit-details-marker { display: none; }
+.more-nav > summary::after { content: '⌄'; margin-left: 8px; }
+.more-nav-menu { position: absolute; top: calc(100% + 6px); right: 0; z-index: 30; min-width: 210px; display: grid; gap: 6px; padding: 8px; border: 1px solid var(--border); border-radius: 14px; background: var(--panel); box-shadow: 0 12px 30px #0008; }
+.more-nav-menu .tab { text-align: left; border: 0; border-radius: 9px; }
+.bodystage canvas { cursor: grab; }
+.bodystage canvas:active { cursor: grabbing; }
 
 main { padding: 16px; max-width: 1400px; margin: 0 auto; }
 .card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }

@@ -38,12 +38,17 @@
     </div>
   </header>
 
-  <nav class="tabs" role="tablist">
+  <nav class="tabs" role="tablist" aria-label="Main screens">
     <button type="button" class="tab" data-view="dashboard" data-i18n="nav.dashboard">Dashboard</button>
     <button type="button" class="tab" data-view="checkin" data-i18n="nav.checkin">Daily check-in</button>
-    <button type="button" class="tab" data-view="outlook" data-i18n="nav.outlook">30-day outlook</button>
-    <button type="button" class="tab" data-view="report" data-i18n="nav.report">Report</button>
-    <button type="button" class="tab" data-view="mission" data-i18n="nav.mission">Mission</button>
+    <details class="more-nav">
+      <summary class="tab" data-i18n="nav.more">More</summary>
+      <div class="more-nav-menu">
+        <button type="button" class="tab" data-view="outlook" data-i18n="nav.outlook">30-day outlook</button>
+        <button type="button" class="tab" data-view="report" data-i18n="nav.report">Report</button>
+        <button type="button" class="tab" data-view="mission" data-i18n="nav.mission">Mission</button>
+      </div>
+    </details>
   </nav>
 
   <main>

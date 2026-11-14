@@ -1,4 +1,5 @@
-// App state, kept in localStorage (no backend, no login).
+// App state in a local-first demo database (IndexedDB, with localStorage fallback).
+import { readSnapshot, writeSnapshot } from './database.js';
 const KEY = 'astroself.v1';
 
 export const state = {
@@ -12,19 +13,29 @@ export const state = {
 };
 
 const subs = new Set();
+let persistQueue = Promise.resolve();
 
-export function loadState() {
-  try {
-    const raw = localStorage.getItem(KEY);
-    if (raw) Object.assign(state, JSON.parse(raw));
-  } catch (e) { /* storage unavailable or corrupt: keep defaults */ }
+export async function loadState() {
+  let saved = await readSnapshot();
+  if (!saved) {
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (raw) {
+        saved = JSON.parse(raw);
+        // One-time migration: preserve existing check-ins and preferences.
+        writeSnapshot(saved);
+      }
+    } catch (e) { /* storage unavailable or corrupt: keep defaults */ }
+  }
+  if (saved && typeof saved === 'object') Object.assign(state, saved);
   if (!Array.isArray(state.entries)) state.entries = [];
   if (!state.tasks || typeof state.tasks !== 'object') state.tasks = {};
 }
 
 export function setState(patch) {
   Object.assign(state, patch);
-  try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* ignore */ }
+  const snapshot = { ...state, entries: [...state.entries], tasks: { ...state.tasks } };
+  persistQueue = persistQueue.then(() => writeSnapshot(snapshot)).catch(() => {});
   subs.forEach((fn) => fn(state));
 }
 

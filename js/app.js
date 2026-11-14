@@ -397,7 +397,7 @@ function onClick(e) {
 }
 
 async function boot() {
-  loadState();
+  await loadState();
   [, refs, content, sources] = await Promise.all([
     loadI18n(), getJSON('data/references.json'), getJSON('data/content.json'), getJSON('data/sources.json'),
   ]);

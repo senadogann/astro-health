@@ -9,7 +9,8 @@
 import * as THREE from 'three';
 import { OrbitControls } from '../vendor/OrbitControls.js';
 
-const COLORS = { green: 0x2ee59d, yellow: 0xffc93c, red: 0xff4d5e, none: 0x7f8fb5 };
+// Healthy systems are a neutral colour; only systems that need attention are amber or red.
+const COLORS = { green: 0xa9bbdd, yellow: 0xffa000, red: 0xff3344, none: 0x7f8fb5 };
 
 export function createBody(container, { onSelect } = {}) {
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); // throws if WebGL is missing

@@ -58,7 +58,7 @@ AstroSelf is a visual self-assessment tool that an astronaut can use alone, with
 6. Open **Daily check-in** to enter your own values. The app then switches to "My data" and starts building your
    personal baseline (7 days).
 
-Data stays on the device (localStorage). There is no backend, no login and no tracking.
+Check-ins and preferences stay in a local IndexedDB database in the browser (with a localStorage fallback). There is no account, telemetry, or shared cloud database; data is private to that browser/device and does not sync between computers.
 
 ## NASA data and sources: real vs simulated
 
