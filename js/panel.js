@@ -15,7 +15,7 @@ const CHART_GROUPS = {
   blood: [['glucose'], ['temp'], ['radiation']],
 };
 
-export function renderPanel(el, { id, res, entries, refs, content, sources, envKey, badge, i4 }) {
+export function renderPanel(el, { id, res, entries, refs, content, sources, envKey, badge, i4, outlookHtml }) {
   clearCharts();
   if (!id) { el.hidden = true; el.innerHTML = ''; return; }
 
@@ -65,6 +65,7 @@ export function renderPanel(el, { id, res, entries, refs, content, sources, envK
     <div class="tags">${sys.hazards.map((h) => `<span class="badge ill">${esc(L(content.hazards[h]))}</span>`).join('')}</div>
     ${current}
     ${i4Block}
+    ${outlookHtml || ''}
     <h3>${t('panel.todo')}</h3>
     ${list(L(sys.selfcare))}
     <h3>${t('panel.notify')}</h3>

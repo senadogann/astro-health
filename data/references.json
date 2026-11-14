@@ -1,55 +1,349 @@
 {
-  "note": "Prototype values. Real medical thresholds are set by flight surgeons.",
-
-  "metrics": {
-    "hr":      { "unit": "bpm",   "min": 30,  "max": 220, "step": 1,   "start": 65,   "digits": 0, "green": [50, 100],   "yellow": [40, 120],   "dir": "both", "sdFloor": 5,   "label": "earth", "source": "earth_vitals" },
-    "sys":     { "unit": "mmHg",  "min": 60,  "max": 250, "step": 1,   "start": 118,  "digits": 0, "green": [90, 129],   "yellow": [80, 159],   "dir": "both", "sdFloor": 6,   "label": "earth", "source": "earth_vitals" },
-    "dia":     { "unit": "mmHg",  "min": 30,  "max": 150, "step": 1,   "start": 76,   "digits": 0, "green": [60, 84],    "yellow": [50, 99],    "dir": "both", "sdFloor": 5,   "label": "earth", "source": "earth_vitals" },
-    "temp":    { "unit": "°C",    "min": 33,  "max": 42,  "step": 0.1, "start": 36.7, "digits": 1, "green": [36.1, 37.5], "yellow": [35.0, 38.4], "dir": "both", "sdFloor": 0.2, "label": "earth", "source": "earth_vitals" },
-    "glucose": { "unit": "mg/dL", "min": 30,  "max": 500, "step": 1,   "start": 90,   "digits": 0, "green": [70, 99],    "yellow": [54, 179],   "dir": "both", "sdFloor": 7,   "label": "earth", "source": "earth_vitals" },
-    "sleepH":  { "unit": "h",     "min": 0,   "max": 16,  "step": 0.5, "start": 7.5,  "digits": 1, "green": [7, null],   "yellow": [5, null],   "dir": "low",  "sdFloor": 0.6, "label": "earth", "source": "barger2014" },
-    "sleepQ":  { "unit": "/7",    "min": 1,   "max": 7,   "step": 1,   "start": 5,    "digits": 0, "green": [5, null],   "yellow": [3, null],   "dir": "low",  "sdFloor": 0.8, "label": "illustrative" },
-    "mood":    { "unit": "/5",    "min": 1,   "max": 5,   "step": 1,   "start": 4,    "digits": 0, "green": [3, null],   "yellow": [2, null],   "dir": "low",  "sdFloor": 0.7, "label": "illustrative" },
-    "vision":  { "unit": "",      "min": 0,   "max": 2,   "step": 1,   "start": 0,    "digits": 0, "green": [null, 0],   "yellow": [null, 1],   "dir": "high", "label": "illustrative" }
+ "note": "Prototype values. Real medical thresholds are set by flight surgeons.",
+ "metrics": {
+  "hr": {
+   "unit": "bpm",
+   "min": 30,
+   "max": 220,
+   "step": 1,
+   "start": 65,
+   "digits": 0,
+   "green": [
+    50,
+    100
+   ],
+   "yellow": [
+    40,
+    120
+   ],
+   "dir": "both",
+   "sdFloor": 5,
+   "label": "earth",
+   "source": "earth_vitals"
   },
-  "metricsNote": "Earth reference = general adult clinical ranges, simplified for this prototype (illustrative cut-offs). Sleep: adults need 7 h or more; ISS crews average 6.09 h against 8.5 h scheduled (Barger et al. 2014).",
-
-  "zscore": { "minDays": 7, "maxDays": 14, "yellow": 2, "red": 3, "illustrative": true,
-    "note": "Personal baseline = mean and standard deviation of the first 7–14 days. Deviation of 2 SD = yellow, 3 SD = red (illustrative)." },
-
-  "radiation": {
-    "careerLimit_mSv": 600, "careerSource": "nasa_std_3001_v1",
-    "speLimit_mSv": 250,
-    "careerYellowPct": 50, "careerRedPct": 80,
-    "dailyYellow_mSv": 5, "dailyRed_mSv": 25,
-    "illustrative": ["careerYellowPct", "careerRedPct", "dailyYellow_mSv", "dailyRed_mSv"]
+  "sys": {
+   "unit": "mmHg",
+   "min": 60,
+   "max": 250,
+   "step": 1,
+   "start": 118,
+   "digits": 0,
+   "green": [
+    90,
+    129
+   ],
+   "yellow": [
+    80,
+    159
+   ],
+   "dir": "both",
+   "sdFloor": 6,
+   "label": "earth",
+   "source": "earth_vitals"
   },
-
-  "bone": { "lossPctPerMonthLow": 1.0, "lossPctPerMonthHigh": 1.5, "yellowPct": 5, "redPct": 10, "source": "hrp_bone",
-    "illustrative": ["yellowPct", "redPct"] },
-
-  "environments": {
-    "iss":         { "doseRate": 0.5,  "doseRange": "~0.5",      "delayMinSec": 0,   "delayMaxSec": 0,    "source": "lsah2023" },
-    "orion":       { "doseRate": 1.1,  "doseRange": "0.96–1.24", "delayMinSec": 2.6, "delayMaxSec": 2.6,  "source": "artemis1" },
-    "moon":        { "doseRate": 1.37, "doseRange": "~1.37",     "delayMinSec": 2.6, "delayMaxSec": 2.6,  "source": "zhang2020" },
-    "marsTransit": { "doseRate": 1.84, "doseRange": "1.84 ± 0.30", "delayMinSec": 0, "delayMaxSec": 2640, "source": "hassler2014" },
-    "mars":        { "doseRate": 0.64, "doseRange": "0.64 ± 0.12", "delayMinSec": 360, "delayMaxSec": 2640, "source": "hassler2014" }
+  "dia": {
+   "unit": "mmHg",
+   "min": 30,
+   "max": 150,
+   "step": 1,
+   "start": 76,
+   "digits": 0,
+   "green": [
+    60,
+    84
+   ],
+   "yellow": [
+    50,
+    99
+   ],
+   "dir": "both",
+   "sdFloor": 5,
+   "label": "earth",
+   "source": "earth_vitals"
   },
-  "environmentsNote": "Earth–Moon delay ≈ 1.3 s one way. Earth–Mars delay ≈ 3–22 min one way (6–44 min round trip).",
-
-  "table": [
-    { "id": "careerLimit", "value": "< 600 mSv effective dose", "source": "NASA-STD-3001 Vol.1 Rev C [V1 4030]" },
-    { "id": "speLimit", "value": "< 250 mSv", "source": "NASA-STD-3001 [V1 4031]" },
-    { "id": "issDose", "value": "~0.5 mSv/day (order of magnitude)", "source": "NASA LSAH Newsletter 2023" },
-    { "id": "artemisDose", "value": "0.96–1.24 mSv/day", "source": "Nature 2024; NTRS 20230010550" },
-    { "id": "marsDose", "value": "1.84 ± 0.30 (transit) / 0.64 ± 0.12 (surface) mSv/day", "source": "Hassler et al., Science 2014 (Curiosity RAD)" },
-    { "id": "moonDose", "value": "~1.37 mSv/day (lunar surface)", "source": "Zhang et al., Science Advances 2020 (Chang'E-4 LND)" },
-    { "id": "shelter", "value": "dose rate > 75 μGy/min", "source": "Hu et al., Space Weather & Space Climate 2025" },
-    { "id": "co2", "value": "1-hour average ≤ 3 mmHg", "source": "NASA-STD-3001 Vol.2 [V2 6004]; OCHMO-TB-004" },
-    { "id": "bone", "value": "1–1.5% per month (hip/spine)", "source": "HRP Bone Fracture Evidence Report 2024" },
-    { "id": "sleep", "value": "6.09 h average on ISS (8.5 h scheduled)", "source": "Barger et al., Lancet Neurol 2014" },
-    { "id": "sans", "value": "~70% of long-duration crew show at least one finding", "source": "HRP SANS Evidence Report 2022" },
-    { "id": "exercise", "value": "≥ 70% of peak heart rate, ≥ 3 sessions/week, ≥ 20 min", "source": "NASA OCHMO exercise technical brief" },
-    { "id": "vitals", "value": "heart rate, blood pressure, temperature, respiration, height, weight", "source": "NLSP LSAH protocol MR089S" }
+  "temp": {
+   "unit": "°C",
+   "min": 33,
+   "max": 42,
+   "step": 0.1,
+   "start": 36.7,
+   "digits": 1,
+   "green": [
+    36.1,
+    37.5
+   ],
+   "yellow": [
+    35.0,
+    38.4
+   ],
+   "dir": "both",
+   "sdFloor": 0.2,
+   "label": "earth",
+   "source": "earth_vitals"
+  },
+  "glucose": {
+   "unit": "mg/dL",
+   "min": 30,
+   "max": 500,
+   "step": 1,
+   "start": 90,
+   "digits": 0,
+   "green": [
+    70,
+    99
+   ],
+   "yellow": [
+    54,
+    179
+   ],
+   "dir": "both",
+   "sdFloor": 7,
+   "label": "earth",
+   "source": "earth_vitals"
+  },
+  "sleepH": {
+   "unit": "h",
+   "min": 0,
+   "max": 16,
+   "step": 0.5,
+   "start": 7.5,
+   "digits": 1,
+   "green": [
+    7,
+    null
+   ],
+   "yellow": [
+    5,
+    null
+   ],
+   "dir": "low",
+   "sdFloor": 0.6,
+   "label": "earth",
+   "source": "barger2014"
+  },
+  "sleepQ": {
+   "unit": "/7",
+   "min": 1,
+   "max": 7,
+   "step": 1,
+   "start": 5,
+   "digits": 0,
+   "green": [
+    5,
+    null
+   ],
+   "yellow": [
+    3,
+    null
+   ],
+   "dir": "low",
+   "sdFloor": 0.8,
+   "label": "illustrative"
+  },
+  "mood": {
+   "unit": "/5",
+   "min": 1,
+   "max": 5,
+   "step": 1,
+   "start": 4,
+   "digits": 0,
+   "green": [
+    3,
+    null
+   ],
+   "yellow": [
+    2,
+    null
+   ],
+   "dir": "low",
+   "sdFloor": 0.7,
+   "label": "illustrative"
+  },
+  "vision": {
+   "unit": "",
+   "min": 0,
+   "max": 2,
+   "step": 1,
+   "start": 0,
+   "digits": 0,
+   "green": [
+    null,
+    0
+   ],
+   "yellow": [
+    null,
+    1
+   ],
+   "dir": "high",
+   "label": "illustrative"
+  },
+  "exercise": {
+   "unit": "min",
+   "min": 0,
+   "max": 300,
+   "step": 5,
+   "start": 60,
+   "digits": 0,
+   "label": "nasa",
+   "source": "ochmo_exercise"
+  }
+ },
+ "metricsNote": "Earth reference = general adult clinical ranges, simplified for this prototype (illustrative cut-offs). Sleep: adults need 7 h or more; ISS crews average 6.09 h against 8.5 h scheduled (Barger et al. 2014).",
+ "zscore": {
+  "minDays": 7,
+  "maxDays": 14,
+  "yellow": 2,
+  "red": 3,
+  "illustrative": true,
+  "note": "Personal baseline = mean and standard deviation of the first 7–14 days. Deviation of 2 SD = yellow, 3 SD = red (illustrative)."
+ },
+ "radiation": {
+  "careerLimit_mSv": 600,
+  "careerSource": "nasa_std_3001_v1",
+  "speLimit_mSv": 250,
+  "careerYellowPct": 50,
+  "careerRedPct": 80,
+  "dailyYellow_mSv": 5,
+  "dailyRed_mSv": 25,
+  "illustrative": [
+   "careerYellowPct",
+   "careerRedPct",
+   "dailyYellow_mSv",
+   "dailyRed_mSv"
   ]
+ },
+ "bone": {
+  "lossPctPerMonthLow": 1.0,
+  "lossPctPerMonthHigh": 1.5,
+  "yellowPct": 5,
+  "redPct": 10,
+  "source": "hrp_bone",
+  "illustrative": [
+   "yellowPct",
+   "redPct"
+  ]
+ },
+ "environments": {
+  "iss": {
+   "doseRate": 0.5,
+   "doseRange": "~0.5",
+   "delayMinSec": 0,
+   "delayMaxSec": 0,
+   "source": "lsah2023"
+  },
+  "orion": {
+   "doseRate": 1.1,
+   "doseRange": "0.96–1.24",
+   "delayMinSec": 2.6,
+   "delayMaxSec": 2.6,
+   "source": "artemis1"
+  },
+  "moon": {
+   "doseRate": 1.37,
+   "doseRange": "~1.37",
+   "delayMinSec": 2.6,
+   "delayMaxSec": 2.6,
+   "source": "zhang2020"
+  },
+  "marsTransit": {
+   "doseRate": 1.84,
+   "doseRange": "1.84 ± 0.30",
+   "delayMinSec": 0,
+   "delayMaxSec": 2640,
+   "source": "hassler2014"
+  },
+  "mars": {
+   "doseRate": 0.64,
+   "doseRange": "0.64 ± 0.12",
+   "delayMinSec": 360,
+   "delayMaxSec": 2640,
+   "source": "hassler2014"
+  }
+ },
+ "environmentsNote": "Earth–Moon delay ≈ 1.3 s one way. Earth–Mars delay ≈ 3–22 min one way (6–44 min round trip).",
+ "table": [
+  {
+   "id": "careerLimit",
+   "value": "< 600 mSv effective dose",
+   "source": "NASA-STD-3001 Vol.1 Rev C [V1 4030]"
+  },
+  {
+   "id": "speLimit",
+   "value": "< 250 mSv",
+   "source": "NASA-STD-3001 [V1 4031]"
+  },
+  {
+   "id": "issDose",
+   "value": "~0.5 mSv/day (order of magnitude)",
+   "source": "NASA LSAH Newsletter 2023"
+  },
+  {
+   "id": "artemisDose",
+   "value": "0.96–1.24 mSv/day",
+   "source": "Nature 2024; NTRS 20230010550"
+  },
+  {
+   "id": "marsDose",
+   "value": "1.84 ± 0.30 (transit) / 0.64 ± 0.12 (surface) mSv/day",
+   "source": "Hassler et al., Science 2014 (Curiosity RAD)"
+  },
+  {
+   "id": "moonDose",
+   "value": "~1.37 mSv/day (lunar surface)",
+   "source": "Zhang et al., Science Advances 2020 (Chang'E-4 LND)"
+  },
+  {
+   "id": "shelter",
+   "value": "dose rate > 75 μGy/min",
+   "source": "Hu et al., Space Weather & Space Climate 2025"
+  },
+  {
+   "id": "co2",
+   "value": "1-hour average ≤ 3 mmHg",
+   "source": "NASA-STD-3001 Vol.2 [V2 6004]; OCHMO-TB-004"
+  },
+  {
+   "id": "bone",
+   "value": "1–1.5% per month (hip/spine)",
+   "source": "HRP Bone Fracture Evidence Report 2024"
+  },
+  {
+   "id": "sleep",
+   "value": "6.09 h average on ISS (8.5 h scheduled)",
+   "source": "Barger et al., Lancet Neurol 2014"
+  },
+  {
+   "id": "sans",
+   "value": "~70% of long-duration crew show at least one finding",
+   "source": "HRP SANS Evidence Report 2022"
+  },
+  {
+   "id": "exercise",
+   "value": "≥ 70% of peak heart rate, ≥ 3 sessions/week, ≥ 20 min",
+   "source": "NASA OCHMO exercise technical brief"
+  },
+  {
+   "id": "vitals",
+   "value": "heart rate, blood pressure, temperature, respiration, height, weight",
+   "source": "NLSP LSAH protocol MR089S"
+  }
+ ],
+ "outlook": {
+  "windowDays": 14,
+  "minDays": 5,
+  "horizonDays": 30,
+  "sleepNeedH": 7,
+  "sleepDebtYellowH": 10,
+  "sleepDebtRedH": 20,
+  "exerciseSessionMin": 20,
+  "exerciseSessionsPerWeek": 3,
+  "visionRedReports": 4,
+  "illustrative": [
+   "windowDays",
+   "sleepDebtYellowH",
+   "sleepDebtRedH",
+   "visionRedReports"
+  ],
+  "note": "Linear trend over the last 14 days, projected 30 days. Exercise target from the NASA OCHMO exercise brief (3 or more aerobic sessions a week, 20 min or longer)."
+ }
 }

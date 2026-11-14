@@ -7,12 +7,14 @@ import { valueText, reasonText, driverLabel, delayText } from './ui.js';
 import { renderPanel } from './panel.js';
 import { loadSpaceWeather, renderSpaceWeather } from './spaceweather.js';
 import { initEmergency, openEmergency, renderEmergency } from './emergency.js';
+import { computeOutlook, renderOutlook, riskDrivers } from './outlook.js';
 
 const $ = (sel) => document.querySelector(sel);
 const ENVS = ['iss', 'orion', 'moon', 'marsTransit', 'mars'];
 
 let view = 'dashboard';
 let selected = null; // selected body system id
+let horizon = 'today'; // what the 3D figure shows: 'today' or '30' (projected)
 let refs, content, sources;
 let i4 = null;         // Inspiration4 blood values (real NASA data)
 let spaceWx = null;    // latest space weather (live, cached or snapshot)
@@ -119,9 +121,9 @@ function renderOverview(res) {
     <p class="infoline">${t('panel.fine')}</p>`;
 }
 
-function renderChips(res) {
+function renderChips(statuses) {
   $('#systemChips').innerHTML = SYSTEM_ORDER.map((id) => {
-    const status = res.empty ? '' : res.systems[id].status;
+    const status = statuses[id] || '';
     return `<button type="button" class="chip${selected === id ? ' active' : ''}" data-system="${id}">
       <span class="dot ${status}"></span><span>${esc(L(content.systems[id].name))}</span></button>`;
   }).join('');
@@ -137,14 +139,26 @@ function renderDashboard() {
   renderSpaceWeather($('#spaceWeather'), spaceWx);
   renderDoseCard(res);
   renderOverview(res);
-  renderChips(res);
+
+  // 30-day outlook. The figure and the chips show either today's status or the projection.
+  const out = res.empty ? { ready: false, n: 0, need: 5 } : computeOutlook(entries, state.env, refs, res);
+  const projected = horizon === '30' && out.ready;
+  const statuses = res.empty ? {} : projected ? out.systems
+    : Object.fromEntries(SYSTEM_ORDER.map((id) => [id, res.systems[id].status]));
+  renderChips(statuses);
+  document.querySelectorAll('[data-horizon]').forEach((b) => b.classList.toggle('active', b.dataset.horizon === horizon));
+  $('#projNote').hidden = !projected;
+  if (view === 'outlook') renderOutlook($('#outlook'), out, { refs, content, sources });
+  const outlookHtml = selected && out.ready ? `<h3>${t('panel.outlook')}</h3>` + out.risks.filter((r) => r.system === selected).map((r) => `
+    <div class="riskline"><span class="pill ${r.status}"><span class="dot ${r.status}"></span>${t('level.' + r.status)}</span><b>${t('risk.' + r.id)}</b></div>
+    <ul>${riskDrivers(r, out, content, refs).map((x) => `<li>${esc(x)}</li>`).join('')}</ul>`).join('') : '';
   // On wide screens the panel replaces the cards; "close" brings them back.
   $('#overview').hidden = !!selected;
   renderPanel($('#organPanel'), {
-    id: selected, res, entries, refs, content, sources, envKey: state.env, badge: dataBadge('hr'), i4,
+    id: selected, res, entries, refs, content, sources, envKey: state.env, badge: dataBadge('hr'), i4, outlookHtml,
   });
   if (body) {
-    body.setStatuses(res.empty ? {} : Object.fromEntries(SYSTEM_ORDER.map((id) => [id, res.systems[id].status])));
+    body.setStatuses(statuses);
     body.setSelected(selected);
   }
 }
@@ -246,6 +260,7 @@ function renderChrome() {
   $('#envSelect').innerHTML = ENVS.map((e) => `<option value="${e}"${e === state.env ? ' selected' : ''}>${t('env.' + e)}</option>`).join('');
   $('#view-dashboard').hidden = view !== 'dashboard';
   $('#view-checkin').hidden = view !== 'checkin';
+  $('#view-outlook').hidden = view !== 'outlook';
 }
 
 function render() {
@@ -276,6 +291,8 @@ async function boot() {
   $('#view-dashboard').addEventListener('click', (e) => {
     const sys = e.target.closest('[data-system]');
     if (sys) return selectSystem(sys.dataset.system);
+    const hz = e.target.closest('[data-horizon]');
+    if (hz) { horizon = hz.dataset.horizon; return render(); }
     const mode = e.target.closest('[data-mode]');
     if (mode) return setState({ mode: mode.dataset.mode });
     const scen = e.target.closest('[data-scenario]');

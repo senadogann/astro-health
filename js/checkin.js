@@ -59,6 +59,7 @@ export function renderCheckin(root, { refs, content, entries, evalFn, onSave }) 
         ${numField('temp')}
         ${numField('glucose')}
         ${numField('sleepH')}
+        ${numField('exercise')}
         <div class="field" data-field="sleepQ">
           ${label('sleepQ')}
           ${scale('sleepQ', 7, 1, (v) => v)}
@@ -89,7 +90,7 @@ export function renderCheckin(root, { refs, content, entries, evalFn, onSave }) 
   const input = (key) => form.querySelector(`input[data-key="${key}"]`);
 
   function live(key) {
-    if (!evalFn) return;
+    if (!evalFn || key === 'exercise') return;
     const fieldKey = key === 'sys' || key === 'dia' ? 'bp' : key;
     const field = form.querySelector(`[data-field="${fieldKey}"]`);
     const keys = fieldKey === 'bp' ? ['sys', 'dia'] : [key];
@@ -150,6 +151,7 @@ export function renderCheckin(root, { refs, content, entries, evalFn, onSave }) 
     }
     const entry = { date: vals.date, vision: vals.vision || 0, sleepQ: vals.sleepQ, mood: vals.mood };
     NUMERIC.forEach((k) => { entry[k] = vals[k]; });
+    if (Number.isFinite(vals.exercise) && vals.exercise >= 0 && vals.exercise <= M.exercise.max) entry.exercise = vals.exercise; // optional
     vals = null;
     onSave(entry);
   });

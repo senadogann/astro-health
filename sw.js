@@ -1,5 +1,5 @@
 // Offline support. Network-first (so new deploys show up), cache fallback (so it works with no internet).
-const CACHE = 'astroself-v7';
+const CACHE = 'astroself-v9';
 const ASSETS = [
   './',
   'index.html',
@@ -18,6 +18,7 @@ const ASSETS = [
   'js/i4.js',
   'js/spaceweather.js',
   'js/emergency.js',
+  'js/outlook.js',
   'data/i18n.json',
   'data/references.json',
   'data/content.json',
@@ -59,7 +60,7 @@ self.addEventListener('fetch', (event) => {
   if (req.method !== 'GET' || new URL(req.url).origin !== self.location.origin) return;
 
   event.respondWith(
-    Promise.race([fetch(req), timeout(3000)])
+    Promise.race([fetch(req, { cache: 'no-cache' }), timeout(3000)]) // always revalidate, so files of one deploy stay in step
       .then((res) => {
         if (res && res.ok) {
           const copy = res.clone();

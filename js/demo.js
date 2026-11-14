@@ -19,6 +19,7 @@ export function demoEntries(scenario, doseRate = 0.5, days = 30) {
   const r = rng(20260115);
   // Roughly normal noise, clipped so a healthy day never looks like an alert.
   const g = () => Math.max(-1.4, Math.min(1.4, (r() + r() + r() - 1.5) * 2));
+  const rx = rng(77);
   const today = new Date();
   const out = [];
   for (let i = 0; i < days; i++) {
@@ -36,6 +37,7 @@ export function demoEntries(scenario, doseRate = 0.5, days = 30) {
       mood: r() < 0.25 ? 5 : 4,
       vision: 0,
       dose: +(doseRate * (1 + 0.08 * g())).toFixed(2),
+      exercise: i % 7 === 6 ? 0 : Math.round(60 + 30 * rx()), // one rest day a week
     });
   }
 
@@ -47,11 +49,11 @@ export function demoEntries(scenario, doseRate = 0.5, days = 30) {
     tail(1, (e) => { e.dose = 45; e.hr = 75; e.mood = 3; e.sleepH = 6.2; e.sleepQ = 4; });
   } else if (scenario === 'sleep') {
     const h = [5.6, 5.2, 4.8, 4.5, 4.3, 4.2], q = [3, 3, 2, 2, 2, 2], m = [3, 3, 3, 2, 2, 2];
-    tail(6, (e, k) => { e.sleepH = h[k]; e.sleepQ = q[k]; e.mood = m[k]; e.hr = 64 + 2 * k; });
+    tail(6, (e, k) => { e.sleepH = h[k]; e.sleepQ = q[k]; e.mood = m[k]; e.hr = 64 + 2 * k; e.exercise = k < 2 ? 30 : 10; });
   } else if (scenario === 'fluid') {
     tail(4, (e, k) => {
       e.hr = 70 + 4 * k; e.sys = 110 - 4 * k; e.dia = 70 - 2 * k;
-      e.temp = +(36.9 + 0.1 * k).toFixed(1); e.vision = k > 0 ? 1 : 0;
+      e.temp = +(36.9 + 0.1 * k).toFixed(1); e.vision = k > 0 ? 1 : 0; e.exercise = 15;
     });
   }
   return out;

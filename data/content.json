@@ -1,86 +1,148 @@
 {
   "hazards": {
-    "radiation": { "en": "Space radiation", "tr": "Uzay radyasyonu" },
-    "isolation": { "en": "Isolation & confinement", "tr": "İzolasyon ve kapalı ortam" },
-    "distance":  { "en": "Distance from Earth", "tr": "Dünya'dan uzaklık" },
-    "gravity":   { "en": "Gravity fields", "tr": "Yerçekimi değişimi" },
-    "hostile":   { "en": "Hostile / closed environment", "tr": "Zorlu / kapalı çevre" }
+    "radiation": {
+      "en": "Space radiation",
+      "tr": "Uzay radyasyonu"
+    },
+    "isolation": {
+      "en": "Isolation & confinement",
+      "tr": "İzolasyon ve kapalı ortam"
+    },
+    "distance": {
+      "en": "Distance from Earth",
+      "tr": "Dünya'dan uzaklık"
+    },
+    "gravity": {
+      "en": "Gravity fields",
+      "tr": "Yerçekimi değişimi"
+    },
+    "hostile": {
+      "en": "Hostile / closed environment",
+      "tr": "Zorlu / kapalı çevre"
+    }
   },
-
   "metrics": {
     "hr": {
-      "name": { "en": "Heart rate", "tr": "Nabız" },
+      "name": {
+        "en": "Heart rate",
+        "tr": "Nabız"
+      },
       "how": {
         "en": "Sit still and rest for 5 minutes. Clip the pulse oximeter on a finger, or count the pulse at your wrist for 30 seconds and multiply by 2. Do not measure right after exercise or caffeine.",
         "tr": "5 dakika hareketsiz oturup dinlenin. Pulse oksimetreyi parmağınıza takın ya da bileğinizden nabzı 30 saniye sayıp 2 ile çarpın. Egzersizden ya da kafeinden hemen sonra ölçmeyin."
       }
     },
     "sys": {
-      "name": { "en": "Blood pressure (systolic)", "tr": "Tansiyon (sistolik)" }
+      "name": {
+        "en": "Blood pressure (systolic)",
+        "tr": "Tansiyon (sistolik)"
+      }
     },
     "dia": {
-      "name": { "en": "Blood pressure (diastolic)", "tr": "Tansiyon (diastolik)" }
+      "name": {
+        "en": "Blood pressure (diastolic)",
+        "tr": "Tansiyon (diastolik)"
+      }
     },
     "bp": {
-      "name": { "en": "Blood pressure", "tr": "Tansiyon" },
+      "name": {
+        "en": "Blood pressure",
+        "tr": "Tansiyon"
+      },
       "how": {
         "en": "Rest for 5 minutes. Put the cuff on your bare upper arm at heart level and stay still and silent. Take two readings one minute apart and enter the average.",
         "tr": "5 dakika dinlenin. Manşonu çıplak üst kolunuza, kalp hizasında takın; kıpırdamayın ve konuşmayın. Bir dakika arayla iki ölçüm alıp ortalamasını girin."
       }
     },
     "temp": {
-      "name": { "en": "Body temperature", "tr": "Vücut sıcaklığı" },
+      "name": {
+        "en": "Body temperature",
+        "tr": "Vücut sıcaklığı"
+      },
       "how": {
         "en": "Use the thermometer (ear or mouth) at the same time every day, before eating. Wait 30 minutes after exercise or a hot drink.",
         "tr": "Termometreyi (kulak ya da ağız) her gün aynı saatte, yemekten önce kullanın. Egzersizden ya da sıcak içecekten sonra 30 dakika bekleyin."
       }
     },
     "glucose": {
-      "name": { "en": "Blood glucose (fasting)", "tr": "Kan şekeri (açlık)" },
+      "name": {
+        "en": "Blood glucose (fasting)",
+        "tr": "Kan şekeri (açlık)"
+      },
       "how": {
         "en": "Measure before breakfast with the fingerstick glucometer. Clean and dry the finger, prick the side of the fingertip, and touch the drop to the test strip.",
         "tr": "Kahvaltıdan önce parmak ucu şeker ölçüm cihazıyla ölçün. Parmağı temizleyip kurulayın, parmak ucunun yanından delin ve damlayı test çubuğuna değdirin."
       }
     },
     "sleepH": {
-      "name": { "en": "Sleep duration", "tr": "Uyku süresi" },
+      "name": {
+        "en": "Sleep duration",
+        "tr": "Uyku süresi"
+      },
       "how": {
         "en": "Enter the hours you actually slept in your last sleep period, not the time spent in the sleep station. Use your actigraphy watch if you wear one.",
         "tr": "Son uyku döneminde gerçekten uyuduğunuz saati girin, uyku kabininde geçirdiğiniz süreyi değil. Aktigrafi saati takıyorsanız onu kullanın."
       }
     },
     "sleepQ": {
-      "name": { "en": "Sleep quality", "tr": "Uyku kalitesi" },
+      "name": {
+        "en": "Sleep quality",
+        "tr": "Uyku kalitesi"
+      },
       "how": {
         "en": "How rested do you feel? Rate last night's sleep from 1 (very poor) to 7 (excellent).",
         "tr": "Ne kadar dinlenmiş hissediyorsunuz? Dün geceki uykunuzu 1 (çok kötü) ile 7 (mükemmel) arasında puanlayın."
       }
     },
     "mood": {
-      "name": { "en": "Mood", "tr": "Ruh hâli" },
+      "name": {
+        "en": "Mood",
+        "tr": "Ruh hâli"
+      },
       "how": {
         "en": "Pick the option that best describes how you have felt today overall. There is no wrong answer; honest answers make the trend useful.",
         "tr": "Bugün genel olarak nasıl hissettiğinizi en iyi anlatan seçeneği işaretleyin. Yanlış cevap yoktur; dürüst cevaplar gidişatı anlamlı kılar."
       }
     },
     "vision": {
-      "name": { "en": "Vision change", "tr": "Görme değişikliği" },
+      "name": {
+        "en": "Vision change",
+        "tr": "Görme değişikliği"
+      },
       "how": {
         "en": "Cover one eye at a time and read your near-vision card at arm's length. Compare with yesterday: is the text blurrier, or do you need to hold it at a different distance?",
         "tr": "Gözlerinizi sırayla kapatıp yakın görme kartını kol mesafesinden okuyun. Dünle karşılaştırın: yazı daha mı bulanık, kartı farklı bir mesafede mi tutmanız gerekiyor?"
       }
     },
     "radiation": {
-      "name": { "en": "Radiation dose (today)", "tr": "Radyasyon dozu (bugün)" }
+      "name": {
+        "en": "Radiation dose (today)",
+        "tr": "Radyasyon dozu (bugün)"
+      }
     },
     "bone": {
-      "name": { "en": "Estimated bone density loss", "tr": "Tahmini kemik yoğunluğu kaybı" }
+      "name": {
+        "en": "Estimated bone density loss",
+        "tr": "Tahmini kemik yoğunluğu kaybı"
+      }
+    },
+    "exercise": {
+      "name": {
+        "en": "Exercise today",
+        "tr": "Bugünkü egzersiz"
+      },
+      "how": {
+        "en": "Enter the total minutes of aerobic and resistive exercise today (treadmill, cycle, resistive device). Do not count set-up time. Enter 0 on a rest day.",
+        "tr": "Bugünkü aerobik ve direnç egzersizinin toplam dakikasını girin (koşu bandı, bisiklet, direnç cihazı). Hazırlık süresini saymayın. Dinlenme gününde 0 girin."
+      }
     }
   },
-
   "systems": {
     "cardio": {
-      "name": { "en": "Heart & circulation", "tr": "Kalp ve dolaşım" },
+      "name": {
+        "en": "Heart & circulation",
+        "tr": "Kalp ve dolaşım"
+      },
       "function": {
         "en": "The heart pumps blood through the vessels and carries oxygen and nutrients to every organ.",
         "tr": "Kalp kanı damarlara pompalar; oksijeni ve besinleri bütün organlara taşır."
@@ -89,7 +151,10 @@
         "en": "Without gravity, body fluids move toward the head and the heart works against less load. Blood volume drops and the cardiovascular system deconditions, which can cause dizziness or fainting when gravity returns. Radiation may add to long-term cardiovascular risk.",
         "tr": "Yerçekimi olmayınca vücut sıvıları başa doğru kayar ve kalp daha az yüke karşı çalışır. Kan hacmi azalır, kalp-damar sistemi kondisyon kaybeder; bu da yerçekimine dönüldüğünde baş dönmesine ya da bayılmaya yol açabilir. Radyasyon uzun vadeli kalp-damar riskini artırabilir."
       },
-      "hazards": ["gravity", "radiation"],
+      "hazards": [
+        "gravity",
+        "radiation"
+      ],
       "selfcare": {
         "en": [
           "Rest seated for 5 minutes and measure again.",
@@ -116,11 +181,17 @@
           "Art arda 3 gün sarı kalan bir değer."
         ]
       },
-      "sources": ["hrp_hazards", "hrp_risks", "ochmo_exercise"]
+      "sources": [
+        "hrp_hazards",
+        "hrp_risks",
+        "ochmo_exercise"
+      ]
     },
-
     "lungs": {
-      "name": { "en": "Lungs & breathing", "tr": "Akciğer ve solunum" },
+      "name": {
+        "en": "Lungs & breathing",
+        "tr": "Akciğer ve solunum"
+      },
       "function": {
         "en": "The lungs bring oxygen into the blood and remove carbon dioxide.",
         "tr": "Akciğerler oksijeni kana geçirir ve karbondioksiti uzaklaştırır."
@@ -129,7 +200,9 @@
         "en": "A spacecraft is a closed environment. Carbon dioxide does not rise away from your face without airflow, so it can build up in poorly ventilated corners and cause headaches and poor concentration. NASA limits cabin CO₂ to a 1-hour average of 3 mmHg or less. Germs spread easily in a sealed cabin, and on the Moon or Mars fine dust is an extra hazard. In this prototype, body temperature is the self-measured sign for this system.",
         "tr": "Uzay aracı kapalı bir ortamdır. Hava akımı olmayınca karbondioksit yüzünüzün önünden uzaklaşmaz; iyi havalanmayan köşelerde birikerek baş ağrısına ve dikkat dağınıklığına yol açabilir. NASA kabin CO₂ değerini 1 saatlik ortalamada en fazla 3 mmHg ile sınırlar. Kapalı kabinde mikroplar kolay yayılır; Ay'da ve Mars'ta ince toz ek bir tehlikedir. Bu prototipte bu sistemin kişisel ölçüm göstergesi vücut sıcaklığıdır."
       },
-      "hazards": ["hostile"],
+      "hazards": [
+        "hostile"
+      ],
       "selfcare": {
         "en": [
           "Check the cabin CO₂ reading and move to a well-ventilated area.",
@@ -156,11 +229,16 @@
           "Yüksek kabin CO₂ değeriyle birlikte geçmeyen baş ağrısı."
         ]
       },
-      "sources": ["nasa_std_3001_v2", "hrp_hazards"]
+      "sources": [
+        "nasa_std_3001_v2",
+        "hrp_hazards"
+      ]
     },
-
     "brain": {
-      "name": { "en": "Brain, sleep & mood", "tr": "Beyin, uyku ve ruh hâli" },
+      "name": {
+        "en": "Brain, sleep & mood",
+        "tr": "Beyin, uyku ve ruh hâli"
+      },
       "function": {
         "en": "The brain controls attention, memory, decisions and emotions. Sleep is when it recovers.",
         "tr": "Beyin dikkati, hafızayı, kararları ve duyguları yönetir. Uyku, beynin kendini toparladığı zamandır."
@@ -169,7 +247,10 @@
         "en": "Isolation, confinement, a heavy workload and an unnatural light cycle (16 sunrises a day on the ISS) disturb sleep and mood. ISS crews sleep 6.09 hours on average although 8.5 hours are scheduled. Lost sleep adds up and leads to mistakes, and far from Earth there is less support from home.",
         "tr": "İzolasyon, kapalı ortam, yoğun iş yükü ve doğal olmayan ışık döngüsü (ISS'te günde 16 gün doğumu) uykuyu ve ruh hâlini bozar. ISS mürettebatı, planlanan 8,5 saate karşılık ortalama 6,09 saat uyur. Kaybedilen uyku birikir ve hataya yol açar; Dünya'dan uzaklaştıkça evden gelen destek de azalır."
       },
-      "hazards": ["isolation", "distance"],
+      "hazards": [
+        "isolation",
+        "distance"
+      ],
       "selfcare": {
         "en": [
           "Go to sleep and wake up at the same times every day.",
@@ -200,11 +281,17 @@
           "Görevler sırasında hata ya da dikkat kaybı fark ediyorsanız."
         ]
       },
-      "sources": ["barger2014", "hrp_hazards", "hrp_risks"]
+      "sources": [
+        "barger2014",
+        "hrp_hazards",
+        "hrp_risks"
+      ]
     },
-
     "bones": {
-      "name": { "en": "Bones & muscles", "tr": "Kemik ve kas" },
+      "name": {
+        "en": "Bones & muscles",
+        "tr": "Kemik ve kas"
+      },
       "function": {
         "en": "Bones and muscles carry the body, make movement possible and store calcium.",
         "tr": "Kemikler ve kaslar vücudu taşır, hareketi sağlar ve kalsiyum depolar."
@@ -213,7 +300,9 @@
         "en": "Without the load of gravity, weight-bearing bones such as the hip and spine lose 1–1.5% of their mineral density every month, and muscles shrink. Lost bone calcium also raises the risk of kidney stones. The estimate shown here is a model based on mission day, not a measurement.",
         "tr": "Yerçekimi yükü olmayınca kalça ve omurga gibi yük taşıyan kemikler her ay mineral yoğunluğunun %1–1,5'ini kaybeder, kaslar da küçülür. Kemikten çözülen kalsiyum böbrek taşı riskini de artırır. Burada gösterilen tahmin, görev gününe dayalı bir modeldir; ölçüm değildir."
       },
-      "hazards": ["gravity"],
+      "hazards": [
+        "gravity"
+      ],
       "selfcare": {
         "en": [
           "Do your resistive and aerobic exercise every day; do not skip sessions.",
@@ -240,11 +329,17 @@
           "Böğürde ya da sırtta keskin ağrı ya da idrarda kan (böbrek taşı olabilir)."
         ]
       },
-      "sources": ["hrp_bone", "ochmo_exercise", "hrp_hazards"]
+      "sources": [
+        "hrp_bone",
+        "ochmo_exercise",
+        "hrp_hazards"
+      ]
     },
-
     "eyes": {
-      "name": { "en": "Eyes (SANS)", "tr": "Göz (SANS)" },
+      "name": {
+        "en": "Eyes (SANS)",
+        "tr": "Göz (SANS)"
+      },
       "function": {
         "en": "The eyes and the optic nerve turn light into the images you need for every task on board.",
         "tr": "Gözler ve görme siniri, ışığı araçtaki her iş için gereken görüntüye çevirir."
@@ -253,7 +348,9 @@
         "en": "In weightlessness, fluid shifts toward the head and changes the pressure around the eye. This can swell the optic disc, flatten the back of the eye and blur near vision. It is called Spaceflight Associated Neuro-ocular Syndrome (SANS). About 70% of long-duration crew members show at least one sign.",
         "tr": "Ağırlıksız ortamda sıvı başa doğru kayar ve göz çevresindeki basıncı değiştirir. Bu durum görme siniri başında şişmeye, gözün arka kısmında düzleşmeye ve yakın görmede bulanıklığa yol açabilir. Buna Uzay Uçuşuyla İlişkili Nöro-oküler Sendrom (SANS) denir. Uzun görevlerde mürettebatın yaklaşık %70'inde en az bir bulgu görülür."
       },
-      "hazards": ["gravity"],
+      "hazards": [
+        "gravity"
+      ],
       "selfcare": {
         "en": [
           "Check near vision each day with your reading card, one eye at a time.",
@@ -280,11 +377,16 @@
           "Baş ağrısıyla birlikte görme değişikliği."
         ]
       },
-      "sources": ["hrp_sans", "hrp_hazards"]
+      "sources": [
+        "hrp_sans",
+        "hrp_hazards"
+      ]
     },
-
     "blood": {
-      "name": { "en": "Blood, immunity & metabolism", "tr": "Kan, bağışıklık ve metabolizma" },
+      "name": {
+        "en": "Blood, immunity & metabolism",
+        "tr": "Kan, bağışıklık ve metabolizma"
+      },
       "function": {
         "en": "Blood carries oxygen and immune cells. Metabolism keeps blood sugar and energy in balance.",
         "tr": "Kan, oksijeni ve bağışıklık hücrelerini taşır. Metabolizma kan şekerini ve enerjiyi dengede tutar."
@@ -293,7 +395,11 @@
         "en": "Space radiation damages DNA and the blood-forming cells of the bone marrow; a solar particle event can deliver a large dose within hours. Stress, poor sleep and a closed cabin weaken immune defences, and changes in diet, sleep and activity affect blood sugar control. NASA limits the career dose of an astronaut to 600 mSv.",
         "tr": "Uzay radyasyonu DNA'ya ve kemik iliğindeki kan yapıcı hücrelere zarar verir; bir güneş parçacık fırtınası saatler içinde yüksek doz verebilir. Stres, kötü uyku ve kapalı kabin bağışıklığı zayıflatır; beslenme, uyku ve hareketteki değişiklikler kan şekeri kontrolünü etkiler. NASA bir astronotun kariyer dozunu 600 mSv ile sınırlar."
       },
-      "hazards": ["radiation", "hostile", "isolation"],
+      "hazards": [
+        "radiation",
+        "hostile",
+        "isolation"
+      ],
       "selfcare": {
         "en": [
           "On a solar particle event alert, go to the radiation shelter and stay until the all-clear.",
@@ -324,7 +430,12 @@
           "Dozimetrenizde günlük doz uyarısı."
         ]
       },
-      "sources": ["nasa_std_3001_v1", "hrp_hazards", "csa_radiation", "radlab"]
+      "sources": [
+        "nasa_std_3001_v1",
+        "hrp_hazards",
+        "csa_radiation",
+        "radlab"
+      ]
     }
   }
 }

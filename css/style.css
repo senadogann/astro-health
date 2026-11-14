@@ -288,3 +288,20 @@ main { padding: 16px; max-width: 1400px; margin: 0 auto; }
 .emreport { min-height: 55vh; font-family: ui-monospace, Consolas, monospace; font-size: .9rem; white-space: pre; }
 .emactions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px; }
 .emactions .btn { min-height: 64px; }
+
+/* ---------- 30-day outlook ---------- */
+.horizon { display: flex; margin-bottom: 8px; }
+.horizon button { flex: 1; }
+.projnote { margin: 8px 4px 0; padding: 8px 10px; border-radius: 10px; font-size: .85rem; color: var(--yellow); border: 1px dashed var(--yellow); }
+.outlook h2 { font-size: 1.5rem; }
+.outlook .sect { margin: 22px 0 10px; font-size: .85rem; text-transform: uppercase; letter-spacing: .1em; color: var(--accent); }
+.notebox { margin: 10px 0; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--yellow); background: rgba(255, 201, 60, .08); color: var(--yellow); font-weight: 600; }
+.riskgrid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.riskcard { border-left: 6px solid var(--border); }
+.riskcard.green { border-left-color: var(--green); }
+.riskcard.yellow { border-left-color: var(--yellow); }
+.riskcard.red { border-left-color: var(--red); }
+.riskcard ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: .92rem; }
+.riskcard p { color: var(--muted); font-size: .92rem; }
+.riskline { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 6px 0; }
+.tabs { flex-wrap: wrap; }
