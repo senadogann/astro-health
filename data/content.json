@@ -1,24 +1,29 @@
 {
   "hazards": {
     "radiation": {
+      "icon": "☢️",
       "en": "Space radiation",
       "tr": "Uzay radyasyonu"
     },
     "isolation": {
-      "en": "Isolation & confinement",
-      "tr": "İzolasyon ve kapalı ortam"
+      "icon": "🚪",
+      "en": "Isolation and confinement",
+      "tr": "İzolasyon ve kapalı alan"
     },
     "distance": {
+      "icon": "📡",
       "en": "Distance from Earth",
       "tr": "Dünya'dan uzaklık"
     },
     "gravity": {
+      "icon": "🪐",
       "en": "Gravity fields",
       "tr": "Yerçekimi değişimi"
     },
     "hostile": {
-      "en": "Hostile / closed environment",
-      "tr": "Zorlu / kapalı çevre"
+      "icon": "🛰️",
+      "en": "Hostile / closed environments",
+      "tr": "Kapalı / düşmanca ortam"
     }
   },
   "metrics": {
@@ -147,13 +152,10 @@
         "en": "The heart pumps blood through the vessels and carries oxygen and nutrients to every organ.",
         "tr": "Kalp kanı damarlara pompalar; oksijeni ve besinleri bütün organlara taşır."
       },
-      "space": {
-        "en": "Without gravity, body fluids move toward the head and the heart works against less load. Blood volume drops and the cardiovascular system deconditions, which can cause dizziness or fainting when gravity returns. Radiation may add to long-term cardiovascular risk.",
-        "tr": "Yerçekimi olmayınca vücut sıvıları başa doğru kayar ve kalp daha az yüke karşı çalışır. Kan hacmi azalır, kalp-damar sistemi kondisyon kaybeder; bu da yerçekimine dönüldüğünde baş dönmesine ya da bayılmaya yol açabilir. Radyasyon uzun vadeli kalp-damar riskini artırabilir."
-      },
       "hazards": [
         "gravity",
-        "radiation"
+        "radiation",
+        "isolation"
       ],
       "selfcare": {
         "en": [
@@ -185,7 +187,28 @@
         "hrp_hazards",
         "hrp_risks",
         "ochmo_exercise"
-      ]
+      ],
+      "effects": [
+        {
+          "hazard": "gravity",
+          "en": "Body fluids move toward the head and the heart works against less load. Blood volume drops and the cardiovascular system deconditions, which can cause dizziness or fainting when gravity returns.",
+          "tr": "Vücut sıvıları başa doğru kayar ve kalp daha az yüke karşı çalışır. Kan hacmi azalır, kalp-damar sistemi kondisyon kaybeder; yerçekimine dönüldüğünde baş dönmesi ya da bayılma görülebilir."
+        },
+        {
+          "hazard": "radiation",
+          "en": "Radiation can damage the lining of blood vessels and may add to the long-term risk of cardiovascular disease.",
+          "tr": "Radyasyon damarların iç yüzeyine zarar verebilir ve uzun vadeli kalp-damar hastalığı riskini artırabilir."
+        },
+        {
+          "hazard": "isolation",
+          "en": "Stress, a heavy workload and poor sleep raise heart rate and blood pressure.",
+          "tr": "Stres, yoğun iş yükü ve kötü uyku nabzı ve tansiyonu yükseltir."
+        }
+      ],
+      "short": {
+        "en": "Heart",
+        "tr": "Kalp"
+      }
     },
     "lungs": {
       "name": {
@@ -196,12 +219,9 @@
         "en": "The lungs bring oxygen into the blood and remove carbon dioxide.",
         "tr": "Akciğerler oksijeni kana geçirir ve karbondioksiti uzaklaştırır."
       },
-      "space": {
-        "en": "A spacecraft is a closed environment. Carbon dioxide does not rise away from your face without airflow, so it can build up in poorly ventilated corners and cause headaches and poor concentration. NASA limits cabin CO₂ to a 1-hour average of 3 mmHg or less. Germs spread easily in a sealed cabin, and on the Moon or Mars fine dust is an extra hazard. In this prototype, body temperature is the self-measured sign for this system.",
-        "tr": "Uzay aracı kapalı bir ortamdır. Hava akımı olmayınca karbondioksit yüzünüzün önünden uzaklaşmaz; iyi havalanmayan köşelerde birikerek baş ağrısına ve dikkat dağınıklığına yol açabilir. NASA kabin CO₂ değerini 1 saatlik ortalamada en fazla 3 mmHg ile sınırlar. Kapalı kabinde mikroplar kolay yayılır; Ay'da ve Mars'ta ince toz ek bir tehlikedir. Bu prototipte bu sistemin kişisel ölçüm göstergesi vücut sıcaklığıdır."
-      },
       "hazards": [
-        "hostile"
+        "hostile",
+        "gravity"
       ],
       "selfcare": {
         "en": [
@@ -232,7 +252,27 @@
       "sources": [
         "nasa_std_3001_v2",
         "hrp_hazards"
-      ]
+      ],
+      "effects": [
+        {
+          "hazard": "hostile",
+          "en": "A spacecraft is a sealed cabin. Without airflow, carbon dioxide builds up around your face and causes headaches and poor concentration; NASA limits cabin CO₂ to a 1-hour average of 3 mmHg or less. Germs spread easily, and on the Moon or Mars fine dust is an extra hazard.",
+          "tr": "Uzay aracı kapalı bir kabindir. Hava akımı olmayınca karbondioksit yüzünüzün çevresinde birikir, baş ağrısına ve dikkat dağınıklığına yol açar; NASA kabin CO₂ değerini 1 saatlik ortalamada en fazla 3 mmHg ile sınırlar. Mikroplar kolay yayılır; Ay'da ve Mars'ta ince toz ek bir tehlikedir."
+        },
+        {
+          "hazard": "gravity",
+          "en": "In weightlessness, dust and droplets do not settle. They keep floating and are easier to breathe in.",
+          "tr": "Ağırlıksız ortamda toz ve damlacıklar yere çökmez. Havada asılı kalır ve daha kolay solunur."
+        }
+      ],
+      "note": {
+        "en": "In this prototype, body temperature is the self-measured sign for this system.",
+        "tr": "Bu prototipte bu sistemin kişisel ölçüm göstergesi vücut sıcaklığıdır."
+      },
+      "short": {
+        "en": "Lungs",
+        "tr": "Akciğer"
+      }
     },
     "brain": {
       "name": {
@@ -243,13 +283,12 @@
         "en": "The brain controls attention, memory, decisions and emotions. Sleep is when it recovers.",
         "tr": "Beyin dikkati, hafızayı, kararları ve duyguları yönetir. Uyku, beynin kendini toparladığı zamandır."
       },
-      "space": {
-        "en": "Isolation, confinement, a heavy workload and an unnatural light cycle (16 sunrises a day on the ISS) disturb sleep and mood. ISS crews sleep 6.09 hours on average although 8.5 hours are scheduled. Lost sleep adds up and leads to mistakes, and far from Earth there is less support from home.",
-        "tr": "İzolasyon, kapalı ortam, yoğun iş yükü ve doğal olmayan ışık döngüsü (ISS'te günde 16 gün doğumu) uykuyu ve ruh hâlini bozar. ISS mürettebatı, planlanan 8,5 saate karşılık ortalama 6,09 saat uyur. Kaybedilen uyku birikir ve hataya yol açar; Dünya'dan uzaklaştıkça evden gelen destek de azalır."
-      },
       "hazards": [
         "isolation",
-        "distance"
+        "distance",
+        "hostile",
+        "gravity",
+        "radiation"
       ],
       "selfcare": {
         "en": [
@@ -285,7 +324,38 @@
         "barger2014",
         "hrp_hazards",
         "hrp_risks"
-      ]
+      ],
+      "effects": [
+        {
+          "hazard": "isolation",
+          "en": "Months in a small space with the same few people, a heavy workload and little privacy wear down mood, motivation and sleep.",
+          "tr": "Küçük bir alanda aynı birkaç kişiyle geçen aylar, yoğun iş yükü ve mahremiyet eksikliği ruh hâlini, motivasyonu ve uykuyu yıpratır."
+        },
+        {
+          "hazard": "distance",
+          "en": "Far from Earth there is less support from home, and a conversation with family or a psychologist is delayed by minutes. The crew has to cope on its own.",
+          "tr": "Dünya'dan uzaklaştıkça evden gelen destek azalır; aileyle ya da psikologla konuşma dakikalarca gecikir. Mürettebat kendi başının çaresine bakmak zorundadır."
+        },
+        {
+          "hazard": "hostile",
+          "en": "Constant noise and an unnatural light cycle (16 sunrises a day on the ISS) disturb the body clock. ISS crews sleep 6.09 hours on average although 8.5 hours are scheduled.",
+          "tr": "Sürekli gürültü ve doğal olmayan ışık döngüsü (ISS'te günde 16 gün doğumu) vücut saatini bozar. ISS mürettebatı, planlanan 8,5 saate karşılık ortalama 6,09 saat uyur."
+        },
+        {
+          "hazard": "gravity",
+          "en": "The balance system has to relearn up and down. This can cause space motion sickness and disorientation in the first days and again after landing.",
+          "tr": "Denge sistemi yukarıyı ve aşağıyı yeniden öğrenmek zorunda kalır. Bu durum ilk günlerde ve inişten sonra uzay tutmasına ve yön duygusu kaybına yol açabilir."
+        },
+        {
+          "hazard": "radiation",
+          "en": "NASA is studying whether deep-space radiation affects the central nervous system, including memory and attention.",
+          "tr": "NASA, derin uzay radyasyonunun hafıza ve dikkat dahil merkezi sinir sistemini etkileyip etkilemediğini araştırıyor."
+        }
+      ],
+      "short": {
+        "en": "Brain",
+        "tr": "Beyin"
+      }
     },
     "bones": {
       "name": {
@@ -296,12 +366,10 @@
         "en": "Bones and muscles carry the body, make movement possible and store calcium.",
         "tr": "Kemikler ve kaslar vücudu taşır, hareketi sağlar ve kalsiyum depolar."
       },
-      "space": {
-        "en": "Without the load of gravity, weight-bearing bones such as the hip and spine lose 1–1.5% of their mineral density every month, and muscles shrink. Lost bone calcium also raises the risk of kidney stones. The estimate shown here is a model based on mission day, not a measurement.",
-        "tr": "Yerçekimi yükü olmayınca kalça ve omurga gibi yük taşıyan kemikler her ay mineral yoğunluğunun %1–1,5'ini kaybeder, kaslar da küçülür. Kemikten çözülen kalsiyum böbrek taşı riskini de artırır. Burada gösterilen tahmin, görev gününe dayalı bir modeldir; ölçüm değildir."
-      },
       "hazards": [
-        "gravity"
+        "gravity",
+        "distance",
+        "hostile"
       ],
       "selfcare": {
         "en": [
@@ -333,7 +401,28 @@
         "hrp_bone",
         "ochmo_exercise",
         "hrp_hazards"
-      ]
+      ],
+      "effects": [
+        {
+          "hazard": "gravity",
+          "en": "Without the load of gravity, weight-bearing bones such as the hip and spine lose 1–1.5% of their mineral density every month, and muscles shrink. Calcium released from bone also raises the risk of kidney stones. The estimate shown here is a model based on mission day, not a measurement.",
+          "tr": "Yerçekimi yükü olmayınca kalça ve omurga gibi yük taşıyan kemikler her ay mineral yoğunluğunun %1–1,5'ini kaybeder, kaslar da küçülür. Kemikten çözülen kalsiyum böbrek taşı riskini de artırır. Burada gösterilen tahmin görev gününe dayalı bir modeldir; ölçüm değildir."
+        },
+        {
+          "hazard": "distance",
+          "en": "A fracture far from Earth cannot be treated in a hospital, so prevention through daily exercise matters even more.",
+          "tr": "Dünya'dan uzakta bir kırık hastanede tedavi edilemez; bu yüzden günlük egzersizle önlem almak daha da önemlidir."
+        },
+        {
+          "hazard": "hostile",
+          "en": "A small cabin limits everyday movement. Exercise devices are the only way to load bones and muscles.",
+          "tr": "Küçük kabin günlük hareketi kısıtlar. Kemiklere ve kaslara yük bindirmenin tek yolu egzersiz cihazlarıdır."
+        }
+      ],
+      "short": {
+        "en": "Bones & muscles",
+        "tr": "Kemik-kas"
+      }
     },
     "eyes": {
       "name": {
@@ -344,12 +433,10 @@
         "en": "The eyes and the optic nerve turn light into the images you need for every task on board.",
         "tr": "Gözler ve görme siniri, ışığı araçtaki her iş için gereken görüntüye çevirir."
       },
-      "space": {
-        "en": "In weightlessness, fluid shifts toward the head and changes the pressure around the eye. This can swell the optic disc, flatten the back of the eye and blur near vision. It is called Spaceflight Associated Neuro-ocular Syndrome (SANS). About 70% of long-duration crew members show at least one sign.",
-        "tr": "Ağırlıksız ortamda sıvı başa doğru kayar ve göz çevresindeki basıncı değiştirir. Bu durum görme siniri başında şişmeye, gözün arka kısmında düzleşmeye ve yakın görmede bulanıklığa yol açabilir. Buna Uzay Uçuşuyla İlişkili Nöro-oküler Sendrom (SANS) denir. Uzun görevlerde mürettebatın yaklaşık %70'inde en az bir bulgu görülür."
-      },
       "hazards": [
-        "gravity"
+        "gravity",
+        "radiation",
+        "hostile"
       ],
       "selfcare": {
         "en": [
@@ -380,7 +467,28 @@
       "sources": [
         "hrp_sans",
         "hrp_hazards"
-      ]
+      ],
+      "effects": [
+        {
+          "hazard": "gravity",
+          "en": "In weightlessness, fluid shifts toward the head and changes the pressure around the eye. This can swell the optic disc, flatten the back of the eye and blur near vision: Spaceflight Associated Neuro-ocular Syndrome (SANS). About 70% of long-duration crew members show at least one sign.",
+          "tr": "Ağırlıksız ortamda sıvı başa doğru kayar ve göz çevresindeki basıncı değiştirir. Bu durum görme siniri başında şişmeye, gözün arka kısmında düzleşmeye ve yakın görmede bulanıklığa yol açabilir: Uzay Uçuşuyla İlişkili Nöro-oküler Sendrom (SANS). Uzun görevlerde mürettebatın yaklaşık %70'inde en az bir bulgu görülür."
+        },
+        {
+          "hazard": "radiation",
+          "en": "Radiation raises the risk of cataracts (clouding of the lens) later in life.",
+          "tr": "Radyasyon, ilerleyen yıllarda katarakt (göz merceğinin bulanıklaşması) riskini artırır."
+        },
+        {
+          "hazard": "hostile",
+          "en": "Raised cabin CO₂ is being studied as a possible contributor to SANS.",
+          "tr": "Yükselmiş kabin CO₂ düzeyi, SANS'a katkıda bulunabilecek bir etken olarak araştırılıyor."
+        }
+      ],
+      "short": {
+        "en": "Eyes",
+        "tr": "Göz"
+      }
     },
     "blood": {
       "name": {
@@ -391,14 +499,10 @@
         "en": "Blood carries oxygen and immune cells. Metabolism keeps blood sugar and energy in balance.",
         "tr": "Kan, oksijeni ve bağışıklık hücrelerini taşır. Metabolizma kan şekerini ve enerjiyi dengede tutar."
       },
-      "space": {
-        "en": "Space radiation damages DNA and the blood-forming cells of the bone marrow; a solar particle event can deliver a large dose within hours. Stress, poor sleep and a closed cabin weaken immune defences, and changes in diet, sleep and activity affect blood sugar control. NASA limits the career dose of an astronaut to 600 mSv.",
-        "tr": "Uzay radyasyonu DNA'ya ve kemik iliğindeki kan yapıcı hücrelere zarar verir; bir güneş parçacık fırtınası saatler içinde yüksek doz verebilir. Stres, kötü uyku ve kapalı kabin bağışıklığı zayıflatır; beslenme, uyku ve hareketteki değişiklikler kan şekeri kontrolünü etkiler. NASA bir astronotun kariyer dozunu 600 mSv ile sınırlar."
-      },
       "hazards": [
         "radiation",
-        "hostile",
-        "isolation"
+        "isolation",
+        "hostile"
       ],
       "selfcare": {
         "en": [
@@ -435,7 +539,28 @@
         "hrp_hazards",
         "csa_radiation",
         "radlab"
-      ]
+      ],
+      "effects": [
+        {
+          "hazard": "radiation",
+          "en": "Space radiation damages DNA and the blood-forming cells of the bone marrow. A solar particle event can deliver a large dose within hours. NASA limits the career dose of an astronaut to 600 mSv.",
+          "tr": "Uzay radyasyonu DNA'ya ve kemik iliğindeki kan yapıcı hücrelere zarar verir. Bir güneş parçacık fırtınası saatler içinde yüksek doz verebilir. NASA bir astronotun kariyer dozunu 600 mSv ile sınırlar."
+        },
+        {
+          "hazard": "isolation",
+          "en": "Stress and poor sleep weaken the immune system, and dormant viruses can become active again.",
+          "tr": "Stres ve kötü uyku bağışıklık sistemini zayıflatır; uyku hâlindeki virüsler yeniden etkinleşebilir."
+        },
+        {
+          "hazard": "hostile",
+          "en": "In a sealed cabin germs pass easily between crew members. A changed diet and less activity also affect blood sugar control.",
+          "tr": "Kapalı kabinde mikroplar mürettebat arasında kolayca bulaşır. Değişen beslenme ve azalan hareket kan şekeri kontrolünü de etkiler."
+        }
+      ],
+      "short": {
+        "en": "Blood & immunity",
+        "tr": "Kan-bağışıklık"
+      }
     }
   }
 }

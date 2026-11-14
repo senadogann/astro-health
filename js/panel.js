@@ -15,7 +15,7 @@ const CHART_GROUPS = {
   blood: [['glucose'], ['temp'], ['radiation']],
 };
 
-export function renderPanel(el, { id, res, entries, refs, content, sources, envKey, badge, i4, outlookHtml }) {
+export function renderPanel(el, { id, res, entries, refs, content, sources, envKey, badge, i4, outlookHtml, structure }) {
   clearCharts();
   if (!id) { el.hidden = true; el.innerHTML = ''; return; }
 
@@ -48,22 +48,34 @@ export function renderPanel(el, { id, res, entries, refs, content, sources, envK
   const glucose = !res.empty && res.metrics.glucose ? res.metrics.glucose.value : null;
   const i4Block = id === 'blood' ? i4Html(i4, glucose) : '';
 
-  const srcLinks = sys.sources.map((sid) => sources[sid]).filter(Boolean).map((s) => (
+  // Sources: the three NASA HRP pages for every system, the CSA radiation article where radiation matters.
+  const srcIds = ['hrp_hazards', 'hrp_risks', 'hrp_research'];
+  if (sys.hazards.includes('radiation')) srcIds.push('csa_radiation');
+  sys.sources.forEach((sid) => { if (!srcIds.includes(sid)) srcIds.push(sid); });
+  const srcLinks = srcIds.map((sid) => sources[sid]).filter(Boolean).map((s) => (
     s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)} ↗</a>` : `<span>${esc(s.title)}</span>`
   )).join('');
+
+  // "How space affects it", organised by the five hazards of human spaceflight (NASA HRP).
+  const hazards = sys.effects.map((e) => {
+    const h = content.hazards[e.hazard];
+    return `<div class="hazard"><span class="hico" aria-hidden="true">${h.icon}</span><div><b>${esc(L(h))}</b><p>${esc(L(e))}</p></div></div>`;
+  }).join('');
 
   el.hidden = false;
   el.innerHTML = `
     <div class="phead">
       ${status ? `<span class="pill ${status}"><span class="dot ${status}"></span>${statusText(res.systems[id])}</span>` : ''}
-      <h2>${esc(L(sys.name))}</h2>
+      <h2>${esc(L(sys.name))}${structure ? `<small>${esc(t('panel.structure', { name: structure }))}</small>` : ''}</h2>
       <button type="button" class="close" data-act="close" aria-label="${t('panel.close')}">✕</button>
     </div>
     <h3>${t('panel.function')}</h3>
     <p>${esc(L(sys.function))}</p>
-    <h3>${t('panel.space')}</h3>
-    <p>${esc(L(sys.space))}</p>
-    <div class="tags">${sys.hazards.map((h) => `<span class="badge ill">${esc(L(content.hazards[h]))}</span>`).join('')}</div>
+    <h3>${t('panel.space')}
+      <details class="info"><summary aria-label="info">i</summary><div class="bubble">${t('panel.hazards.note')}
+        <a href="${esc(sources.hrp_hazards.url)}" target="_blank" rel="noopener">nasa.gov/hrp/hazards ↗</a></div></details></h3>
+    <div class="hazards">${hazards}</div>
+    ${sys.note ? `<p class="why">${esc(L(sys.note))}</p>` : ''}
     ${current}
     ${i4Block}
     ${outlookHtml || ''}
