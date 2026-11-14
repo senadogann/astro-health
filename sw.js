@@ -1,5 +1,5 @@
 // Offline support. Network-first (so new deploys show up), cache fallback (so it works with no internet).
-const CACHE = 'astroself-v14';
+const CACHE = 'astroself-v15';
 const ASSETS = [
   './',
   'index.html',
@@ -13,6 +13,7 @@ const ASSETS = [
   'js/demo.js',
   'js/ui.js',
   'js/body.js',
+  'js/body3d.js',
   'js/panel.js',
   'js/charts.js',
   'js/i4.js',
@@ -30,7 +31,13 @@ const ASSETS = [
   'data/emergency.json',
   'vendor/three.module.min.js',
   'vendor/OrbitControls.js',
+  'vendor/loaders/GLTFLoader.js',
+  'vendor/utils/BufferGeometryUtils.js',
+  'vendor/libs/meshopt_decoder.module.js',
   'vendor/chart.umd.js',
+  // The two anatomy layers shown at start. The other three are cached the first time they are opened.
+  'assets/model/VisceralSystem100.glb',
+  'assets/model/CardioVascular41.glb',
   'assets/icons/icon.svg',
   'assets/icons/icon-192.png',
   'assets/icons/icon-512.png',
@@ -62,7 +69,9 @@ self.addEventListener('fetch', (event) => {
   if (req.method !== 'GET' || new URL(req.url).origin !== self.location.origin) return;
 
   event.respondWith(
-    Promise.race([fetch(req, { cache: 'no-cache' }), timeout(3000)]) // always revalidate, so files of one deploy stay in step
+    // Always revalidate, so files of one deploy stay in step. Page navigations cannot be re-issued with new
+    // options, so they are fetched by URL.
+    Promise.race([req.mode === 'navigate' ? fetch(req.url, { cache: 'no-cache' }) : fetch(req, { cache: 'no-cache' }), timeout(req.url.endsWith('.glb') ? 60000 : 3000)])
       .then((res) => {
         if (res && res.ok) {
           const copy = res.clone();
