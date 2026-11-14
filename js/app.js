@@ -4,6 +4,7 @@ import { renderCheckin } from './checkin.js';
 import { evaluate, evalMetric, computeBaseline, worst, SYSTEM_ORDER } from './rules.js';
 import { demoEntries, DEMO_NAME } from './demo.js';
 import { valueText, reasonText, driverLabel } from './ui.js';
+import { renderPanel } from './panel.js';
 
 const $ = (sel) => document.querySelector(sel);
 const ENVS = ['iss', 'orion', 'moon', 'marsTransit', 'mars'];
@@ -124,6 +125,11 @@ function renderDashboard() {
   const res = evaluate(entries, state.env, refs);
   renderOverview(res);
   renderChips(res);
+  // On wide screens the panel replaces the cards; "close" brings them back.
+  $('#overview').hidden = !!selected;
+  renderPanel($('#organPanel'), {
+    id: selected, res, entries, refs, content, sources, envKey: state.env, badge: dataBadge('hr'),
+  });
   if (body) {
     body.setStatuses(res.empty ? {} : Object.fromEntries(SYSTEM_ORDER.map((id) => [id, res.systems[id].status])));
     body.setSelected(selected);
@@ -183,6 +189,7 @@ async function boot() {
     if (sys) return selectSystem(sys.dataset.system);
     const act = e.target.closest('[data-act]');
     if (!act) return;
+    if (act.dataset.act === 'close') selectSystem(null);
     if (act.dataset.act === 'checkin') setView('checkin');
     if (act.dataset.act === 'demo') setState({ mode: 'demo' });
   });
