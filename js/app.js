@@ -3,7 +3,7 @@ import { state, loadState, setState, subscribe, saveEntry } from './store.js';
 import { renderCheckin } from './checkin.js';
 import { evaluate, evalMetric, computeBaseline, worst, SYSTEM_ORDER } from './rules.js';
 import { demoEntries, DEMO_NAME } from './demo.js';
-import { valueText, reasonText, driverLabel } from './ui.js';
+import { valueText, reasonText, driverLabel, delayText } from './ui.js';
 import { renderPanel } from './panel.js';
 
 const $ = (sel) => document.querySelector(sel);
@@ -123,6 +123,8 @@ function renderChips(res) {
 function renderDashboard() {
   const entries = currentEntries();
   const res = evaluate(entries, state.env, refs);
+  renderEnvStrip();
+  renderAlerts(res);
   renderOverview(res);
   renderChips(res);
   // On wide screens the panel replaces the cards; "close" brings them back.
@@ -147,6 +149,31 @@ async function initBody() {
     $('#bodyHint').hidden = true;
     applyI18n($('#bodyStage'));
   }
+}
+
+/* ---------- environment ---------- */
+
+// The environment changes the communication delay, the radiation dose rate and the advice texts.
+function renderEnvStrip() {
+  const env = currentEnv();
+  const src = sources[env.source];
+  $('#envStrip').innerHTML = `
+    <span>📡 ${t('env.delay')}: <b>${esc(delayText(env))}</b></span>
+    <span>☢ ${t('env.dose')}: <b>${esc(env.doseRange)} ${t('env.perDay')}</b>
+      ${src && src.url ? `<a href="${esc(src.url)}" target="_blank" rel="noopener" title="${esc(src.title)}">↗</a>` : ''}</span>
+    <span class="note">${t('env.note.' + state.env)}</span>`;
+}
+
+function renderAlerts(res) {
+  $('#alerts').innerHTML = !res.empty && res.shelter ? `
+    <div class="alert pulse" role="alert">
+      <span class="ico">☢</span>
+      <div>
+        <h3>${t('alert.spe.title')}</h3>
+        <p>${t('alert.spe.body', { delay: esc(delayText(currentEnv())) })}</p>
+        <button type="button" class="btn" style="margin-top:10px" data-system="blood">${esc(L(content.systems.blood.name))} →</button>
+      </div>
+    </div>` : '';
 }
 
 /* ---------- chrome ---------- */

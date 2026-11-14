@@ -154,7 +154,7 @@
     "reason.ok.earth": "Dünya referansının içinde",
     "reason.vision.1": "Hafif görme değişikliği bildirildi",
     "reason.vision.2": "Belirgin görme değişikliği bildirildi",
-    "reason.radiation.ok": "Görev toplamı {cum} mSv · kariyer limitinin %{pct}'i",
+    "reason.radiation.ok": "Görev toplamı {cum} mSv · kariyer limiti kullanımı: %{pct}",
     "reason.radiation.high": "Günlük doz, normal {rate} mSv/gün değerinin çok üstünde",
     "reason.bone": "Model: önlem alınmazsa ayda %1–1,5 ({lo}–{hi}%)",
     "label.earth": "Dünya referansı",
