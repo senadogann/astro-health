@@ -1,5 +1,5 @@
 // Offline support. Network-first (so new deploys show up), cache fallback (so it works with no internet).
-const CACHE = 'astroself-v5';
+const CACHE = 'astroself-v6';
 const ASSETS = [
   './',
   'index.html',
@@ -15,10 +15,14 @@ const ASSETS = [
   'js/body.js',
   'js/panel.js',
   'js/charts.js',
+  'js/i4.js',
+  'js/spaceweather.js',
   'data/i18n.json',
   'data/references.json',
   'data/content.json',
   'data/sources.json',
+  'data/i4_blood.json',
+  'data/swpc_snapshot.json',
   'vendor/three.module.min.js',
   'vendor/OrbitControls.js',
   'vendor/chart.umd.js',

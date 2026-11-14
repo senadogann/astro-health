@@ -29,10 +29,22 @@ https://senadogann.github.io/astro-health/
 The 3D figure is a stylised low-poly astronaut generated in code from Three.js primitives (`js/body.js`).
 No external model file is used, so there is no third-party model licence.
 
-## Data
+## Data: real vs simulated
 
-- Demo mode shows **simulated** data for a fictional astronaut ("Cmdr. A. Yıldız"); it is labelled "Simulated" in the app.
-- Reference values and their sources are in `data/references.json` and `data/sources.json`.
+Every card in the app is labelled.
+
+| Data | Type | Source |
+|---|---|---|
+| Inspiration4 blood values (glucose, electrolytes, kidney, blood count) | **Real NASA data**, embedded in `data/i4_blood.json` | NASA OSDR [OSD-575](https://osdr.nasa.gov/bio/repo/data/studies/OSD-575) / [OSD-569](https://osdr.nasa.gov/bio/repo/data/studies/OSD-569) (Inspiration4) |
+| Live ≥10 MeV proton flux (radiation storm alert at 10 pfu, NOAA S1) | **Real, live** (falls back to last saved data, then to `data/swpc_snapshot.json`) | [NOAA SWPC GOES](https://services.swpc.noaa.gov/json/goes/primary/integral-protons-6-hour.json) |
+| Solar energetic particle events and flares | **Real, live** | [NASA DONKI (CCMC)](https://ccmc.gsfc.nasa.gov/tools/DONKI/) |
+| Limits and reference values (career dose 600 mSv, dose rates, bone loss, sleep, ...) | NASA-derived, sourced | `data/references.json`, `data/sources.json` |
+| Demo astronaut "Cmdr. A. Yıldız" and the three scenarios | **Simulated** | `js/demo.js` |
+| Mission radiation dose | Model: mission days × environment dose rate | `js/rules.js` |
+
+Inspiration4 notes: 4 civilian astronauts, 3-day mission, pre- and post-flight samples only. The low glucose at R+45
+is probably a sample-handling artefact and is not interpreted as a spaceflight effect.
+Rebuild the embedded file with `python tools/build_i4.py <cmp.csv> <cbc.csv> data/i4_blood.json`.
 
 ## Third-party libraries
 

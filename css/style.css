@@ -100,6 +100,40 @@ main { padding: 16px; max-width: 1400px; margin: 0 auto; }
 .alert.pulse { animation: alertpulse 1.2s ease-in-out infinite; }
 @keyframes alertpulse { 50% { box-shadow: 0 0 0 6px rgba(255, 77, 94, .25); } }
 
+/* ---------- mission row: space weather + radiation dose ---------- */
+.missionrow { display: grid; gap: 16px; grid-template-columns: 1fr; margin-bottom: 16px; }
+@media (min-width: 900px) { .missionrow { grid-template-columns: 7fr 5fr; } }
+.missionrow .card { height: 100%; border-left: 6px solid var(--border); }
+.missionrow .card.green { border-left-color: var(--green); }
+.missionrow .card.yellow { border-left-color: var(--yellow); }
+.missionrow .card.red { border-left-color: var(--red); }
+.chead { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 10px; }
+.chead h3 { font-size: 1.05rem; margin-right: auto; }
+.swgrid { display: grid; grid-template-columns: minmax(170px, 1fr) 2fr; gap: 14px; align-items: center; }
+.swgrid .chartbox { height: 110px; margin: 0; }
+.lbl { color: var(--muted); font-size: .85rem; }
+.big { font-size: 1.9rem; font-weight: 700; line-height: 1.2; }
+.big small { font-size: .9rem; font-weight: 500; color: var(--muted); }
+.why { color: var(--muted); font-size: .88rem; }
+.swcard p { margin-top: 8px; font-size: .92rem; }
+.bar { height: 18px; border-radius: 999px; background: #0a1020; border: 1px solid var(--border); overflow: hidden; margin: 10px 0 6px; }
+.bar i { display: block; height: 100%; min-width: 4px; border-radius: 999px; background: var(--green); transition: width .5s; }
+.bar i.yellow { background: var(--yellow); }
+.bar i.red { background: var(--red); }
+
+/* ---------- Inspiration4 comparison ---------- */
+.cmp { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin: 10px 0; }
+.cmpbox { background: var(--panel2); border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; }
+.cmpbox span { color: var(--muted); font-size: .8rem; }
+.cmpbox b { font-size: 1.25rem; }
+.cmpbox small { color: var(--muted); font-size: .78rem; min-height: 1em; }
+.i4table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: .9rem; }
+.i4table th, .i4table td { text-align: right; padding: 7px 6px; border-top: 1px solid var(--border); }
+.i4table th:first-child, .i4table td:first-child { text-align: left; }
+.i4table th { color: var(--muted); font-weight: 600; font-size: .78rem; }
+.i4table small { color: var(--muted); }
+.mcard .foot { font-size: .78rem; color: var(--green); }
+
 /* ---------- dashboard ---------- */
 .dash { display: grid; gap: 16px; grid-template-columns: 1fr; }
 @media (min-width: 900px) { .dash { grid-template-columns: minmax(340px, 5fr) 7fr; align-items: start; } }

@@ -1,10 +1,11 @@
-import { loadI18n, setLang, t, L, applyI18n, esc } from './i18n.js';
+import { loadI18n, setLang, t, L, applyI18n, esc, fmt } from './i18n.js';
 import { state, loadState, setState, subscribe, saveEntry } from './store.js';
 import { renderCheckin } from './checkin.js';
 import { evaluate, evalMetric, computeBaseline, worst, SYSTEM_ORDER } from './rules.js';
 import { demoEntries, DEMO_NAME, SCENARIOS } from './demo.js';
 import { valueText, reasonText, driverLabel, delayText } from './ui.js';
 import { renderPanel } from './panel.js';
+import { loadSpaceWeather, renderSpaceWeather } from './spaceweather.js';
 
 const $ = (sel) => document.querySelector(sel);
 const ENVS = ['iss', 'orion', 'moon', 'marsTransit', 'mars'];
@@ -12,6 +13,8 @@ const ENVS = ['iss', 'orion', 'moon', 'marsTransit', 'mars'];
 let view = 'dashboard';
 let selected = null; // selected body system id
 let refs, content, sources;
+let i4 = null;         // Inspiration4 blood values (real NASA data)
+let spaceWx = null;    // latest space weather (live, cached or snapshot)
 let body = null; // 3D figure (js/body.js); stays null if WebGL is unavailable
 
 const getJSON = (url) => fetch(url).then((r) => r.json());
@@ -64,13 +67,14 @@ function dataBadge(key) {
   return isDemo() ? `<span class="badge sim">${t('badge.sim')}</span>` : `<span class="badge self">${t('badge.self')}</span>`;
 }
 
-function metricCard({ title, system, parts, value, extra, badgeKey }) {
+function metricCard({ title, system, parts, value, extra, badgeKey, foot }) {
   const top = parts.reduce((a, b) => (worst(a.status, b.status) === a.status ? a : b));
   return `
     <button type="button" class="mcard ${top.status}" data-system="${system}">
       <span class="top"><span>${esc(title)}</span>${dataBadge(badgeKey)}</span>
       <span class="val">${value}${extra ? ` <small>${esc(extra)}</small>` : ''}</span>
       <span class="why">${esc(reasonText(top, refs))}</span>
+      ${foot ? `<span class="foot">${foot}</span>` : ''}
       <span class="top"><span><span class="dot ${top.status}" style="display:inline-block;vertical-align:middle"></span> ${t('status.' + top.status)}</span><span>${esc(driverLabel(top))}</span></span>
     </button>`;
 }
@@ -93,7 +97,8 @@ function renderOverview(res) {
   if (m.hr) cards.push(metricCard({ title: name('hr'), system: 'cardio', parts: [m.hr], value: esc(valueText(m.hr, refs)), badgeKey: 'hr' }));
   if (m.sys && m.dia) cards.push(metricCard({ title: t('card.bp'), system: 'cardio', parts: [m.sys, m.dia], value: `${m.sys.value}/${m.dia.value}`, extra: 'mmHg', badgeKey: 'sys' }));
   if (m.temp) cards.push(metricCard({ title: name('temp'), system: 'lungs', parts: [m.temp], value: esc(valueText(m.temp, refs)), badgeKey: 'temp' }));
-  if (m.glucose) cards.push(metricCard({ title: name('glucose'), system: 'blood', parts: [m.glucose], value: esc(valueText(m.glucose, refs)), badgeKey: 'glucose' }));
+  if (m.glucose) cards.push(metricCard({ title: name('glucose'), system: 'blood', parts: [m.glucose], value: esc(valueText(m.glucose, refs)), badgeKey: 'glucose',
+    foot: i4 ? `${t('i4.card', { v: Math.round(i4.analytes.glucose.preflightMean) })} · ${t('badge.real')}` : '' }));
   if (m.sleepH && m.sleepQ) cards.push(metricCard({ title: t('card.sleep'), system: 'brain', parts: [m.sleepH, m.sleepQ], value: esc(valueText(m.sleepH, refs)), extra: t('card.sleepQ', { q: m.sleepQ.value }), badgeKey: 'sleepH' }));
   if (m.mood) cards.push(metricCard({ title: name('mood'), system: 'brain', parts: [m.mood], value: esc(valueText(m.mood, refs)), badgeKey: 'mood' }));
   if (m.vision) cards.push(metricCard({ title: name('vision'), system: 'eyes', parts: [m.vision], value: `<span style="font-size:1.3rem">${esc(valueText(m.vision, refs))}</span>`, badgeKey: 'vision' }));
@@ -126,12 +131,14 @@ function renderDashboard() {
   renderEnvStrip();
   renderDemoBar();
   renderAlerts(res);
+  renderSpaceWeather($('#spaceWeather'), spaceWx);
+  renderDoseCard(res);
   renderOverview(res);
   renderChips(res);
   // On wide screens the panel replaces the cards; "close" brings them back.
   $('#overview').hidden = !!selected;
   renderPanel($('#organPanel'), {
-    id: selected, res, entries, refs, content, sources, envKey: state.env, badge: dataBadge('hr'),
+    id: selected, res, entries, refs, content, sources, envKey: state.env, badge: dataBadge('hr'), i4,
   });
   if (body) {
     body.setStatuses(res.empty ? {} : Object.fromEntries(SYSTEM_ORDER.map((id) => [id, res.systems[id].status])));
@@ -177,16 +184,52 @@ function renderEnvStrip() {
     <span class="note">${t('env.note.' + state.env)}</span>`;
 }
 
-function renderAlerts(res) {
-  $('#alerts').innerHTML = !res.empty && res.shelter ? `
+// Cumulative mission dose against the NASA career limit (600 mSv).
+function renderDoseCard(res) {
+  const el = $('#doseCard');
+  if (res.empty) { el.innerHTML = ''; return; }
+  const r = res.metrics.radiation;
+  const limit = refs.radiation.careerLimit_mSv;
+  const src = sources[refs.radiation.careerSource];
+  const daysLeft = Math.max(0, Math.round((limit - r.cumulative) / r.rate));
+  el.innerHTML = `
+    <button type="button" class="card dosecard ${r.status}" data-system="blood" style="width:100%;text-align:left">
+      <div class="chead"><h3>${t('dose.title')}</h3><span class="badge">${t('label.nasa')}</span>${isDemo() ? `<span class="badge sim">${t('badge.sim')}</span>` : ''}</div>
+      <div class="big">${fmt(r.cumulative, 1)} <small>mSv ${t('dose.of', { limit })} · ${fmt(r.pct, 1)}%</small></div>
+      <div class="bar"><i class="${r.status}" style="width:${Math.min(100, r.pct).toFixed(1)}%"></i></div>
+      <div class="why">${t('dose.rate', { env: t('env.' + state.env), rate: fmt(r.rate, 2) })}. ${t('dose.left', { days: fmt(daysLeft) })}</div>
+      <div class="why">${r.event ? t('dose.spe') : t('dose.model')}</div>
+      <div class="fine">${esc(src.title)}</div>
+    </button>`;
+}
+
+function liveAlertHtml() {
+  if (!spaceWx || spaceWx.mode !== 'live' || spaceWx.status !== 'red') return '';
+  return `
     <div class="alert pulse" role="alert">
       <span class="ico">☢</span>
       <div>
-        <h3>${t('alert.spe.title')}</h3>
+        <h3>${t('alert.live.title', { s: spaceWx.level })} <span class="badge real">${t('badge.real')}</span></h3>
+        <p>${t('alert.live.body', { flux: fmt(spaceWx.flux, 1), delay: esc(delayText(currentEnv())) })}</p>
+      </div>
+    </div>`;
+}
+
+function renderAlerts(res) {
+  $('#alerts').innerHTML = liveAlertHtml() + (!res.empty && res.shelter ? `
+    <div class="alert pulse" role="alert">
+      <span class="ico">☢</span>
+      <div>
+        <h3>${t('alert.spe.title')} <span class="badge sim">${t('badge.sim')}</span></h3>
         <p>${t('alert.spe.body', { delay: esc(delayText(currentEnv())) })}</p>
         <button type="button" class="btn" style="margin-top:10px" data-system="blood">${esc(L(content.systems.blood.name))} →</button>
       </div>
-    </div>` : '';
+    </div>` : '');
+}
+
+async function refreshSpaceWeather() {
+  spaceWx = await loadSpaceWeather();
+  render();
 }
 
 /* ---------- chrome ---------- */
@@ -241,6 +284,12 @@ async function boot() {
   subscribe(render);
   render();
   initBody();
+
+  // Real NASA data. Both are optional: the app works without them.
+  getJSON('data/i4_blood.json').then((d) => { i4 = d; render(); }).catch(() => {});
+  refreshSpaceWeather();
+  setInterval(refreshSpaceWeather, 5 * 60 * 1000);
+  window.addEventListener('online', refreshSpaceWeather);
 
   if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
     navigator.serviceWorker.register('sw.js').catch(() => {});

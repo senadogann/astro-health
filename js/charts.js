@@ -8,8 +8,8 @@ export function clearCharts() {
 }
 
 // series: [{ label, data, status }]   baseline: { label, value } or null
-export function trendChart(canvas, { labels, series, baseline }) {
-  if (!window.Chart) return; // library missing: the panel still works without charts
+export function trendChart(canvas, { labels, series, baseline }, { track = true } = {}) {
+  if (!window.Chart || !canvas) return null; // library missing: the panel still works without charts
   const datasets = series.map((s, i) => {
     const last = s.data.length - 1;
     return {
@@ -37,7 +37,7 @@ export function trendChart(canvas, { labels, series, baseline }) {
   }
   const grid = { color: 'rgba(154,167,199,.12)' };
   const ticks = { color: '#9aa7c7', font: { size: 11 }, maxTicksLimit: 6 };
-  live.push(new window.Chart(canvas, {
+  const chart = new window.Chart(canvas, {
     type: 'line',
     data: { labels, datasets },
     options: {
@@ -50,5 +50,7 @@ export function trendChart(canvas, { labels, series, baseline }) {
       },
       scales: { x: { grid, ticks }, y: { grid, ticks, grace: '10%' } },
     },
-  }));
+  });
+  if (track) live.push(chart); // tracked charts are removed by clearCharts()
+  return chart;
 }
