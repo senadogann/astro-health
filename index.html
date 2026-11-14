@@ -22,6 +22,7 @@
       </div>
     </div>
     <div class="topbar-controls">
+      <button type="button" id="emBtn" class="embtn">🚨 <span data-i18n="em.button">EMERGENCY</span></button>
       <label class="envpick">
         <span data-i18n="env.label">Environment</span>
         <select id="envSelect"></select>
@@ -70,6 +71,7 @@
     <span data-i18n="footer.disclaimer"></span>
   </footer>
 
+  <div id="emergency" class="emg" role="dialog" aria-modal="true" hidden></div>
   <div id="toast" class="toast" hidden></div>
 
   <script src="vendor/chart.umd.js"></script>

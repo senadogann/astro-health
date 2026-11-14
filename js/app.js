@@ -6,6 +6,7 @@ import { demoEntries, DEMO_NAME, SCENARIOS } from './demo.js';
 import { valueText, reasonText, driverLabel, delayText } from './ui.js';
 import { renderPanel } from './panel.js';
 import { loadSpaceWeather, renderSpaceWeather } from './spaceweather.js';
+import { initEmergency, openEmergency, renderEmergency } from './emergency.js';
 
 const $ = (sel) => document.querySelector(sel);
 const ENVS = ['iss', 'orion', 'moon', 'marsTransit', 'mars'];
@@ -15,6 +16,7 @@ let selected = null; // selected body system id
 let refs, content, sources;
 let i4 = null;         // Inspiration4 blood values (real NASA data)
 let spaceWx = null;    // latest space weather (live, cached or snapshot)
+let lastRes = null;    // latest assessment, used by the emergency report
 let body = null; // 3D figure (js/body.js); stays null if WebGL is unavailable
 
 const getJSON = (url) => fetch(url).then((r) => r.json());
@@ -128,6 +130,7 @@ function renderChips(res) {
 function renderDashboard() {
   const entries = currentEntries();
   const res = evaluate(entries, state.env, refs);
+  lastRes = res;
   renderEnvStrip();
   renderDemoBar();
   renderAlerts(res);
@@ -211,6 +214,7 @@ function liveAlertHtml() {
       <div>
         <h3>${t('alert.live.title', { s: spaceWx.level })} <span class="badge real">${t('badge.real')}</span></h3>
         <p>${t('alert.live.body', { flux: fmt(spaceWx.flux, 1), delay: esc(delayText(currentEnv())) })}</p>
+        <button type="button" class="btn primary" style="margin-top:10px" data-act="shelter">${t('em.open.shelter')}</button>
       </div>
     </div>`;
 }
@@ -222,6 +226,7 @@ function renderAlerts(res) {
       <div>
         <h3>${t('alert.spe.title')} <span class="badge sim">${t('badge.sim')}</span></h3>
         <p>${t('alert.spe.body', { delay: esc(delayText(currentEnv())) })}</p>
+        <button type="button" class="btn primary" style="margin-top:10px" data-act="shelter">${t('em.open.shelter')}</button>
         <button type="button" class="btn" style="margin-top:10px" data-system="blood">${esc(L(content.systems.blood.name))} →</button>
       </div>
     </div>` : '');
@@ -248,6 +253,7 @@ function render() {
   renderChrome();
   renderDashboard();
   if (view === 'checkin') renderCheckinView();
+  renderEmergency();
 }
 
 function setView(v) {
@@ -277,9 +283,17 @@ async function boot() {
     const act = e.target.closest('[data-act]');
     if (!act) return;
     if (act.dataset.act === 'close') selectSystem(null);
+    if (act.dataset.act === 'shelter') openEmergency('radiation');
     if (act.dataset.act === 'checkin') setView('checkin');
     if (act.dataset.act === 'demo') setState({ mode: 'demo' });
   });
+
+  // Emergency mode is available on every screen and works offline.
+  initEmergency($('#emergency'), () => ({
+    res: lastRes, refs, content, envKey: state.env, spaceWx,
+    who: isDemo() ? DEMO_NAME : t('mode.mine'), simulated: isDemo(),
+  }));
+  $('#emBtn').addEventListener('click', () => openEmergency());
 
   subscribe(render);
   render();

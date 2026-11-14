@@ -250,3 +250,41 @@ main { padding: 16px; max-width: 1400px; margin: 0 auto; }
 }
 
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+
+/* ---------- emergency mode ---------- */
+.embtn {
+  min-height: var(--touch); padding: 0 20px; border-radius: 12px; border: 2px solid #ff8a95; background: var(--red);
+  color: #fff; font-weight: 800; letter-spacing: .06em; font-size: 1rem; box-shadow: 0 0 18px rgba(255, 77, 94, .45);
+}
+.emg { position: fixed; inset: 0; z-index: 100; overflow-y: auto; background: #12060a; padding: 16px; }
+.embox { max-width: 900px; margin: 0 auto; }
+.emhead { display: flex; align-items: center; gap: 12px; padding-bottom: 14px; border-bottom: 2px solid var(--red); margin-bottom: 14px; }
+.emhead h2 { flex: 1; font-size: 1.5rem; color: #ffd5d9; }
+.emsub { color: var(--muted); margin: 10px 0; }
+.emgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+.emtile {
+  display: flex; align-items: center; gap: 14px; min-height: 96px; padding: 16px; text-align: left; font-size: 1.2rem; font-weight: 700;
+  border-radius: var(--radius); border: 2px solid #7a2630; background: #2a0d13; color: #fff;
+}
+.emtile .ico { font-size: 2.2rem; }
+.emtimer {
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between;
+  padding: 14px; border-radius: var(--radius); border: 1px solid var(--yellow); background: rgba(255, 201, 60, .08);
+}
+.emtimer b { font-size: 1.3rem; color: var(--yellow); }
+.emsteps { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.emsteps label {
+  display: flex; gap: 14px; align-items: flex-start; min-height: 64px; padding: 14px; cursor: pointer; font-size: 1.08rem;
+  border-radius: var(--radius); border: 1px solid #5a2028; background: #1d0a0e;
+}
+.emsteps input { width: 32px; height: 32px; flex: none; accent-color: var(--green); }
+.emsteps li.done label { border-color: var(--green); background: rgba(46, 229, 157, .08); color: #b9c6dd; }
+.emsteps small { color: var(--green); white-space: nowrap; }
+.emnotes { display: block; margin-top: 14px; color: var(--muted); font-size: .9rem; }
+.emnotes textarea, .emreport {
+  display: block; width: 100%; margin-top: 6px; padding: 12px; border-radius: 12px; border: 1px solid var(--border);
+  background: #0a1020; color: var(--text); font: inherit;
+}
+.emreport { min-height: 55vh; font-family: ui-monospace, Consolas, monospace; font-size: .9rem; white-space: pre; }
+.emactions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px; }
+.emactions .btn { min-height: 64px; }

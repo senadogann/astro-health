@@ -1,0 +1,161 @@
+{
+  "note": "Checklist support only. No diagnosis and no medication doses. Real crews follow their vehicle's official medical checklist.",
+  "protocols": [
+    {
+      "id": "radiation",
+      "icon": "☢",
+      "title": { "en": "Radiation storm", "tr": "Radyasyon fırtınası" },
+      "steps": {
+        "en": [
+          "Stop your current work and alert the whole crew.",
+          "If anyone is outside the vehicle (EVA or surface), bring them inside now.",
+          "Move to the radiation shelter: the most shielded part of the vehicle or habitat.",
+          "Build extra shielding around you with water bags, food and stowed cargo.",
+          "Keep your personal dosimeter on you. Write down its reading and the time.",
+          "Stay in the shelter until the proton flux is back below the alert level and the commander gives the all-clear.",
+          "Watch every crew member for nausea, vomiting or unusual tiredness. Note when it starts.",
+          "Send dose readings and symptoms to the flight surgeon."
+        ],
+        "tr": [
+          "Yaptığınız işi bırakın ve bütün mürettebata haber verin.",
+          "Araç dışında (EVA ya da yüzeyde) kimse varsa hemen içeri alın.",
+          "Radyasyon sığınağına geçin: aracın ya da üssün en iyi korunan bölümü.",
+          "Su torbaları, yiyecek ve depolanmış kargo ile çevrenize ek kalkan oluşturun.",
+          "Kişisel dozimetrenizi üzerinizde tutun. Değerini ve saati yazın.",
+          "Proton akısı uyarı seviyesinin altına inene ve komutan tehlike geçti diyene kadar sığınakta kalın.",
+          "Her mürettebat üyesini bulantı, kusma ve olağan dışı yorgunluk açısından izleyin. Başlama saatini not edin.",
+          "Doz değerlerini ve belirtileri uçuş doktoruna gönderin."
+        ]
+      }
+    },
+    {
+      "id": "unconscious",
+      "icon": "🫥",
+      "title": { "en": "Loss of consciousness", "tr": "Bilinç kaybı" },
+      "steps": {
+        "en": [
+          "Check that the area is safe (air, pressure, electricity) and call the whole crew for help.",
+          "Check for a response: speak loudly and tap both shoulders.",
+          "Open the airway and check for normal breathing for up to 10 seconds.",
+          "Not breathing normally: restrain the person and yourself, start chest compressions as trained, and send someone for the defibrillator.",
+          "Breathing normally: keep the airway open, restrain the person on their side and do not leave them alone.",
+          "Measure and record pulse, blood pressure, oxygen saturation and blood glucose, with the time.",
+          "Give nothing to eat or drink.",
+          "Report to the flight surgeon: what happened, when, and the readings."
+        ],
+        "tr": [
+          "Ortamın güvenli olduğunu kontrol edin (hava, basınç, elektrik) ve bütün mürettebatı yardıma çağırın.",
+          "Tepki verip vermediğine bakın: yüksek sesle seslenin ve iki omzuna dokunun.",
+          "Hava yolunu açın ve en fazla 10 saniye normal solunum olup olmadığına bakın.",
+          "Normal nefes almıyorsa: kişiyi ve kendinizi sabitleyin, eğitimde öğrendiğiniz gibi göğüs basısına başlayın ve birini defibrilatörü getirmeye gönderin.",
+          "Normal nefes alıyorsa: hava yolunu açık tutun, kişiyi yan yatar şekilde sabitleyin ve yalnız bırakmayın.",
+          "Nabzı, tansiyonu, oksijen satürasyonunu ve kan şekerini ölçüp saatiyle kaydedin.",
+          "Yiyecek ya da içecek vermeyin.",
+          "Uçuş doktoruna bildirin: ne oldu, ne zaman oldu ve ölçüm değerleri."
+        ]
+      }
+    },
+    {
+      "id": "chest",
+      "icon": "❤",
+      "title": { "en": "Chest pain", "tr": "Göğüs ağrısı" },
+      "steps": {
+        "en": [
+          "Stop all activity. Rest in a comfortable position and call the crew medical officer.",
+          "Loosen tight clothing and breathe slowly.",
+          "Measure heart rate, blood pressure and oxygen saturation.",
+          "Record when the pain started, where it is, and whether it spreads to the arm, jaw or back.",
+          "Bring the medical kit and the defibrillator next to the person. Connect the ECG if you have one.",
+          "Do not leave the person alone.",
+          "Contact the flight surgeon now. For any medication follow the official medical checklist; this app gives no doses.",
+          "If the person stops responding or breathing, switch to \"Loss of consciousness\"."
+        ],
+        "tr": [
+          "Bütün aktiviteyi durdurun. Rahat bir pozisyonda dinlenin ve mürettebat sağlık görevlisini çağırın.",
+          "Sıkı giysileri gevşetin ve yavaş nefes alın.",
+          "Nabzı, tansiyonu ve oksijen satürasyonunu ölçün.",
+          "Ağrının ne zaman başladığını, nerede olduğunu ve kola, çeneye ya da sırta yayılıp yayılmadığını kaydedin.",
+          "Tıbbi çantayı ve defibrilatörü kişinin yanına getirin. Varsa EKG'yi bağlayın.",
+          "Kişiyi yalnız bırakmayın.",
+          "Uçuş doktoruyla hemen iletişime geçin. İlaç için resmi tıbbi kontrol listesini izleyin; bu uygulama doz vermez.",
+          "Kişi tepki vermez ya da nefes almaz hâle gelirse \"Bilinç kaybı\" listesine geçin."
+        ]
+      }
+    },
+    {
+      "id": "pressure",
+      "icon": "🫧",
+      "title": { "en": "Cabin pressure loss", "tr": "Kabin basınç kaybı" },
+      "steps": {
+        "en": [
+          "Alert the whole crew and confirm with the cabin pressure reading.",
+          "If pressure is falling fast, put on oxygen masks or suits as your vehicle procedure says.",
+          "Gather everyone at the safe haven or return vehicle and count heads.",
+          "Close hatches to isolate the leaking module, following the vehicle procedure.",
+          "Record the pressure, how fast it is falling, and the time.",
+          "Watch the crew for confusion, tingling, blue lips, shortness of breath or joint pain.",
+          "Report to mission control: pressure, rate, crew status."
+        ],
+        "tr": [
+          "Bütün mürettebata haber verin ve kabin basınç değeriyle doğrulayın.",
+          "Basınç hızla düşüyorsa araç prosedürünüzde yazdığı gibi oksijen maskelerini ya da giysileri takın.",
+          "Herkesi güvenli bölmede ya da dönüş aracında toplayın ve sayım yapın.",
+          "Araç prosedürünü izleyerek kapakları kapatın ve sızdıran modülü ayırın.",
+          "Basıncı, düşüş hızını ve saati kaydedin.",
+          "Mürettebatı bilinç bulanıklığı, karıncalanma, dudaklarda morarma, nefes darlığı ve eklem ağrısı açısından izleyin.",
+          "Görev kontrole bildirin: basınç, düşüş hızı, mürettebatın durumu."
+        ]
+      }
+    },
+    {
+      "id": "injury",
+      "icon": "🩹",
+      "title": { "en": "Severe injury", "tr": "Ciddi yaralanma" },
+      "steps": {
+        "en": [
+          "Make the area safe, call the crew and put on gloves and eye protection.",
+          "Heavy bleeding: press firmly on the wound with a clean dressing. Do not remove a soaked dressing; add another on top.",
+          "Catch floating blood with absorbent material so it does not spread in the cabin.",
+          "Possible broken bone: do not move the limb. Support and splint it in the position found.",
+          "Keep the person restrained and warm. Watch for pale skin, a fast pulse or confusion.",
+          "Measure and record pulse and blood pressure, with the time.",
+          "Report to the flight surgeon and follow the official medical checklist."
+        ],
+        "tr": [
+          "Ortamı güvenli hâle getirin, mürettebatı çağırın, eldiven ve göz koruması takın.",
+          "Şiddetli kanama: temiz bir pansumanla yaranın üzerine sıkıca bastırın. Islanan pansumanı kaldırmayın; üstüne yenisini ekleyin.",
+          "Havada süzülen kanı emici malzemeyle toplayın; kabine yayılmasın.",
+          "Kırık şüphesi: uzvu hareket ettirmeyin. Bulduğunuz pozisyonda destekleyip atele alın.",
+          "Kişiyi sabit ve sıcak tutun. Solgun cilt, hızlı nabız ve bilinç bulanıklığı açısından izleyin.",
+          "Nabzı ve tansiyonu ölçüp saatiyle kaydedin.",
+          "Uçuş doktoruna bildirin ve resmi tıbbi kontrol listesini izleyin."
+        ]
+      }
+    },
+    {
+      "id": "panic",
+      "icon": "🧠",
+      "title": { "en": "Panic / psychological crisis", "tr": "Panik / psikolojik kriz" },
+      "steps": {
+        "en": [
+          "Stay with the person. Speak calmly, in short and simple sentences.",
+          "Move to a quiet place away from hazards. Lower noise and light.",
+          "Breathe together: in for 4 seconds, out for 6 seconds, for a few minutes.",
+          "Ground the person: name 5 things you can see, 4 you can touch, 3 you can hear.",
+          "Ask directly about thoughts of harming themselves or others. If yes, do not leave them alone and tell the commander.",
+          "Offer water and rest. Reduce the workload for today.",
+          "Arrange a private conference with the flight surgeon or psychological support."
+        ],
+        "tr": [
+          "Kişinin yanında kalın. Sakin, kısa ve basit cümlelerle konuşun.",
+          "Tehlikelerden uzak, sessiz bir yere geçin. Gürültüyü ve ışığı azaltın.",
+          "Birlikte nefes alın: 4 saniye nefes al, 6 saniye ver; birkaç dakika boyunca.",
+          "Kişiyi ana getirin: görebildiği 5 şeyi, dokunabildiği 4 şeyi, duyabildiği 3 şeyi saymasını isteyin.",
+          "Kendine ya da başkasına zarar verme düşüncesi olup olmadığını doğrudan sorun. Varsa yalnız bırakmayın ve komutana haber verin.",
+          "Su ve dinlenme önerin. Bugünkü iş yükünü azaltın.",
+          "Uçuş doktoruyla ya da psikolojik destekle özel görüşme ayarlayın."
+        ]
+      }
+    }
+  ]
+}
