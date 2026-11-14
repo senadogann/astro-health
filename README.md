@@ -28,8 +28,8 @@ AstroSelf is a visual self-assessment tool that an astronaut can use alone, with
 - **Assessment engine** with three layers: a *personal baseline* (mean and standard deviation of the first 7–14 days,
   z-score), *Earth reference* ranges, and *NASA-derived* limits. Every indicator and body system is green, yellow or red,
   and the app says why.
-- **3D body** that can be rotated and zoomed. Six systems (heart, lungs, brain, bones and muscles, eyes, blood and
-  immunity) change colour with their status and pulse when red.
+- **3D anatomy model** (Z-Anatomy, CC BY-SA 4.0) that can be rotated and zoomed, with switchable layers. Six systems
+  (heart, lungs, brain, bones and muscles, eyes, blood and immunity) change colour with their status and pulse when red.
 - **Organ panel**: what the system does, how the five hazards of spaceflight affect it, current values with trend
   charts, what to do, **when to notify the flight surgeon**, and the communication delay.
 - **Environment selector**: ISS, Orion, lunar base, Mars transit, Mars base. It changes the communication delay,
@@ -111,15 +111,27 @@ sleep debt levels (10 / 20 h) and the outlook window (14 days).
 
 Plain HTML, CSS and JavaScript (ES modules). No build step, no backend.
 
-- [Three.js](https://threejs.org/) r160 (MIT) for the 3D body, [Chart.js](https://www.chartjs.org/) 4.4.1 (MIT) for charts;
+- [Three.js](https://threejs.org/) r160 (MIT) with GLTFLoader and the meshoptimizer decoder (MIT) for the 3D body, [Chart.js](https://www.chartjs.org/) 4.4.1 (MIT) for charts;
   both are stored in `vendor/` so the app works offline.
 - `sw.js` caches the whole app (network first, cache fallback). `manifest.webmanifest` makes it installable.
 - All interface text is in `data/i18n.json`; organ and emergency content in `data/content.json` and `data/emergency.json`.
 
-### 3D model licence
+### 3D anatomy models
 
-The 3D figure is a stylised low-poly astronaut generated in code from Three.js primitives (`js/body.js`).
-No external model file is used, so there is no third-party model licence. `js/body.js` is a replaceable module.
+3D anatomy models: Z-Anatomy (github.com/LluisV/Z-Anatomy), derived from BodyParts3D (DBCLS), CC BY-SA 4.0.
+Converted, compressed and simplified; colors applied at runtime.
+
+- Source: [Z-Anatomy](https://github.com/LluisV/Z-Anatomy), derived from [BodyParts3D](https://lifesciencedb.jp/bp3d/)
+  (The Database Center for Life Science). Licence: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
+- Files: five Meshopt-compressed GLB layers in `assets/model/` (organs, heart and vessels, skeleton, muscles, nervous
+  system). The full notices are in [`assets/model/NOTICE.md`](assets/model/NOTICE.md) and
+  [`assets/model/ATTRIBUTION.md`](assets/model/ATTRIBUTION.md). The modified model files stay under CC BY-SA 4.0.
+- Loading: organs and vessels load at start (about 4 MB); skeleton, muscles and nervous system load when their layer
+  button is switched on. `js/body3d.js` maps each anatomical structure name to one of the six health systems, joins
+  the structures of a system into one mesh, and colours it green / yellow / red.
+- The models are educational reference anatomy, not a scan of a real astronaut.
+- A light, code-generated figure (`js/body.js`) remains as a fallback: Demo menu → 3D model → Simple. The app offers
+  it when the detailed model runs slowly, and uses it automatically if the detailed model cannot be loaded.
 
 ### Run locally
 
@@ -135,6 +147,7 @@ Then open http://localhost:8765. Static checks for translations and the offline 
 - The in-app texts (organ descriptions, self-care steps, emergency checklists) and the Turkish/English translations
   were drafted with Claude and reviewed by the team.
 - The idea, the scope decisions, the choice of content and data sources, testing and the presentation are the team's.
+- The 3D anatomy models are third-party open models (Z-Anatomy, CC BY-SA 4.0); they were not generated with SI.
 - The app icon was drawn in code. **No NASA logo was generated with SI and no NASA logo is used.**
 - The app itself contains no SI chat assistant: all assessments come from fixed rules in `js/rules.js` and `js/outlook.js`.
 

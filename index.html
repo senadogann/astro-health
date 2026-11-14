@@ -22,7 +22,10 @@
       </div>
     </div>
     <div class="topbar-controls">
-      <button type="button" id="emBtn" class="embtn">🚨 <span data-i18n="em.button">EMERGENCY</span></button>
+      <details class="menu">
+        <summary class="btn" data-i18n="menu.demo">Demo</summary>
+        <div class="menubox" id="demoBox"></div>
+      </details>
       <label class="envpick">
         <span data-i18n="env.label">Environment</span>
         <select id="envSelect"></select>
@@ -31,21 +34,21 @@
         <button type="button" data-lang="en">EN</button>
         <button type="button" data-lang="tr">TR</button>
       </div>
+      <button type="button" id="emBtn" class="embtn">🚨 <span data-i18n="em.button">EMERGENCY</span></button>
     </div>
   </header>
-
-  <div class="envstrip" id="envStrip"></div>
 
   <nav class="tabs" role="tablist">
     <button type="button" class="tab" data-view="dashboard" data-i18n="nav.dashboard">Dashboard</button>
     <button type="button" class="tab" data-view="checkin" data-i18n="nav.checkin">Daily check-in</button>
     <button type="button" class="tab" data-view="outlook" data-i18n="nav.outlook">30-day outlook</button>
     <button type="button" class="tab" data-view="report" data-i18n="nav.report">Report</button>
+    <button type="button" class="tab" data-view="mission" data-i18n="nav.mission">Mission</button>
   </nav>
 
   <main>
+    <!-- Main screen: 3D body + six indicator cards. Everything else lives in the other tabs. -->
     <section id="view-dashboard" class="view">
-      <div class="demobar" id="demoBar"></div>
       <div id="alerts"></div>
       <div class="dash">
         <div class="card bodycard">
@@ -53,9 +56,14 @@
             <button type="button" data-horizon="today" data-i18n="body.today">Today</button>
             <button type="button" data-horizon="30" data-i18n="body.plus30">+30 days</button>
           </div>
-          <div id="bodyStage" class="bodystage"></div>
+          <div class="stagewrap">
+            <div id="bodyStage" class="bodystage"></div>
+            <div id="bodyLoad" class="bodyload" hidden></div>
+            <details class="info stageinfo"><summary aria-label="info">i</summary><div class="bubble" data-i18n="body.hint"></div></details>
+          </div>
           <p class="projnote" id="projNote" data-i18n="body.projNote" hidden></p>
-          <p class="hint" id="bodyHint" data-i18n="body.hint"></p>
+          <div class="slownote" id="slowNote" hidden></div>
+          <div id="layerBar" class="layerbar" hidden></div>
           <div id="systemChips" class="chips"></div>
         </div>
         <div class="side">
@@ -63,11 +71,6 @@
           <div id="organPanel" class="card panel" hidden></div>
         </div>
       </div>
-      <div class="missionrow">
-        <div id="spaceWeather"></div>
-        <div id="doseCard"></div>
-      </div>
-      <div class="missionrow" id="routine"></div>
     </section>
 
     <section id="view-checkin" class="view" hidden>
@@ -81,10 +84,21 @@
     <section id="view-report" class="view" hidden>
       <div id="report"></div>
     </section>
+
+    <!-- Mission: live space weather, radiation dose, reminders, streak, credits. -->
+    <section id="view-mission" class="view" hidden>
+      <div class="missionrow">
+        <div id="spaceWeather"></div>
+        <div id="doseCard"></div>
+      </div>
+      <div class="missionrow" id="routine"></div>
+      <div class="card credits" id="credits"></div>
+    </section>
   </main>
 
   <footer class="footer">
     <span data-i18n="footer.disclaimer"></span>
+    · <button type="button" class="linkbtn" data-goto="mission" data-i18n="credits.title">Credits</button>
   </footer>
 
   <div id="emergency" class="emg" role="dialog" aria-modal="true" hidden></div>

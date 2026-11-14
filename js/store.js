@@ -8,6 +8,7 @@ export const state = {
   scenario: null,   // demo scenario: null | 'spe' | 'sleep' | 'fluid'
   entries: [],      // self-entered daily check-ins, sorted by date
   tasks: {},        // last done date of weekly / monthly routine tasks
+  model: 'detailed', // 3D figure: 'detailed' (anatomy models) or 'simple' (light fallback)
 };
 
 const subs = new Set();
