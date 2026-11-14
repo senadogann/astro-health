@@ -1,5 +1,5 @@
 // Offline support. Network-first (so new deploys show up), cache fallback (so it works with no internet).
-const CACHE = 'astroself-v9';
+const CACHE = 'astroself-v10';
 const ASSETS = [
   './',
   'index.html',
@@ -19,6 +19,8 @@ const ASSETS = [
   'js/spaceweather.js',
   'js/emergency.js',
   'js/outlook.js',
+  'js/routine.js',
+  'js/report.js',
   'data/i18n.json',
   'data/references.json',
   'data/content.json',

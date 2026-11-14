@@ -1,5 +1,5 @@
 import { loadI18n, setLang, t, L, applyI18n, esc, fmt } from './i18n.js';
-import { state, loadState, setState, subscribe, saveEntry } from './store.js';
+import { state, loadState, setState, subscribe, saveEntry, dateStr } from './store.js';
 import { renderCheckin } from './checkin.js';
 import { evaluate, evalMetric, computeBaseline, worst, SYSTEM_ORDER } from './rules.js';
 import { demoEntries, DEMO_NAME, SCENARIOS } from './demo.js';
@@ -8,6 +8,8 @@ import { renderPanel } from './panel.js';
 import { loadSpaceWeather, renderSpaceWeather } from './spaceweather.js';
 import { initEmergency, openEmergency, renderEmergency } from './emergency.js';
 import { computeOutlook, renderOutlook, riskDrivers } from './outlook.js';
+import { computeRoutine, renderRoutine } from './routine.js';
+import { renderReport } from './report.js';
 
 const $ = (sel) => document.querySelector(sel);
 const ENVS = ['iss', 'orion', 'moon', 'marsTransit', 'mars'];
@@ -149,6 +151,14 @@ function renderDashboard() {
   document.querySelectorAll('[data-horizon]').forEach((b) => b.classList.toggle('active', b.dataset.horizon === horizon));
   $('#projNote').hidden = !projected;
   if (view === 'outlook') renderOutlook($('#outlook'), out, { refs, content, sources });
+  if (view === 'report') {
+    renderReport($('#report'), {
+      res, out, entries, refs, content, envKey: state.env, spaceWx,
+      who: isDemo() ? DEMO_NAME : t('mode.mine'), simulated: isDemo(),
+    });
+  }
+  // Reminders and streak. Weekly and monthly tasks are remembered on this device.
+  renderRoutine($('#routine'), computeRoutine(entries, state.tasks, res), isDemo());
   const outlookHtml = selected && out.ready ? `<h3>${t('panel.outlook')}</h3>` + out.risks.filter((r) => r.system === selected).map((r) => `
     <div class="riskline"><span class="pill ${r.status}"><span class="dot ${r.status}"></span>${t('level.' + r.status)}</span><b>${t('risk.' + r.id)}</b></div>
     <ul>${riskDrivers(r, out, content, refs).map((x) => `<li>${esc(x)}</li>`).join('')}</ul>`).join('') : '';
@@ -261,6 +271,7 @@ function renderChrome() {
   $('#view-dashboard').hidden = view !== 'dashboard';
   $('#view-checkin').hidden = view !== 'checkin';
   $('#view-outlook').hidden = view !== 'outlook';
+  $('#view-report').hidden = view !== 'report';
 }
 
 function render() {
@@ -291,6 +302,8 @@ async function boot() {
   $('#view-dashboard').addEventListener('click', (e) => {
     const sys = e.target.closest('[data-system]');
     if (sys) return selectSystem(sys.dataset.system);
+    const task = e.target.closest('[data-task]');
+    if (task) return setState({ tasks: { ...state.tasks, [task.dataset.task]: dateStr() } });
     const hz = e.target.closest('[data-horizon]');
     if (hz) { horizon = hz.dataset.horizon; return render(); }
     const mode = e.target.closest('[data-mode]');
@@ -302,6 +315,7 @@ async function boot() {
     if (act.dataset.act === 'close') selectSystem(null);
     if (act.dataset.act === 'shelter') openEmergency('radiation');
     if (act.dataset.act === 'checkin') setView('checkin');
+    if (act.dataset.act === 'report') setView('report');
     if (act.dataset.act === 'demo') setState({ mode: 'demo' });
   });
 
@@ -311,6 +325,12 @@ async function boot() {
     who: isDemo() ? DEMO_NAME : t('mode.mine'), simulated: isDemo(),
   }));
   $('#emBtn').addEventListener('click', () => openEmergency());
+
+  $('#view-report').addEventListener('click', (e) => {
+    if (!e.target.closest('[data-act="print"]')) return;
+    setState({ tasks: { ...state.tasks, weekly: dateStr() } }); // printing the report completes the weekly task
+    window.print();
+  });
 
   subscribe(render);
   render();

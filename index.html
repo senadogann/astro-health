@@ -40,16 +40,13 @@
     <button type="button" class="tab" data-view="dashboard" data-i18n="nav.dashboard">Dashboard</button>
     <button type="button" class="tab" data-view="checkin" data-i18n="nav.checkin">Daily check-in</button>
     <button type="button" class="tab" data-view="outlook" data-i18n="nav.outlook">30-day outlook</button>
+    <button type="button" class="tab" data-view="report" data-i18n="nav.report">Report</button>
   </nav>
 
   <main>
     <section id="view-dashboard" class="view">
       <div class="demobar" id="demoBar"></div>
       <div id="alerts"></div>
-      <div class="missionrow">
-        <div id="spaceWeather"></div>
-        <div id="doseCard"></div>
-      </div>
       <div class="dash">
         <div class="card bodycard">
           <div class="seg horizon" role="group">
@@ -66,6 +63,11 @@
           <div id="organPanel" class="card panel" hidden></div>
         </div>
       </div>
+      <div class="missionrow">
+        <div id="spaceWeather"></div>
+        <div id="doseCard"></div>
+      </div>
+      <div class="missionrow" id="routine"></div>
     </section>
 
     <section id="view-checkin" class="view" hidden>
@@ -74,6 +76,10 @@
 
     <section id="view-outlook" class="view" hidden>
       <div id="outlook"></div>
+    </section>
+
+    <section id="view-report" class="view" hidden>
+      <div id="report"></div>
     </section>
   </main>
 

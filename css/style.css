@@ -101,7 +101,7 @@ main { padding: 16px; max-width: 1400px; margin: 0 auto; }
 @keyframes alertpulse { 50% { box-shadow: 0 0 0 6px rgba(255, 77, 94, .25); } }
 
 /* ---------- mission row: space weather + radiation dose ---------- */
-.missionrow { display: grid; gap: 16px; grid-template-columns: 1fr; margin-bottom: 16px; }
+.missionrow { display: grid; gap: 16px; grid-template-columns: 1fr; margin-top: 16px; }
 @media (min-width: 900px) { .missionrow { grid-template-columns: 7fr 5fr; } }
 .missionrow .card { height: 100%; border-left: 6px solid var(--border); }
 .missionrow .card.green { border-left-color: var(--green); }
@@ -305,3 +305,49 @@ main { padding: 16px; max-width: 1400px; margin: 0 auto; }
 .riskcard p { color: var(--muted); font-size: .92rem; }
 .riskline { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 6px 0; }
 .tabs { flex-wrap: wrap; }
+
+/* ---------- routine: reminders, streak, badges ---------- */
+.tasks { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.tasks li { display: flex; align-items: center; gap: 12px; min-height: var(--touch); padding: 8px 12px; border-radius: 12px; border: 1px solid var(--border); background: var(--panel2); }
+.tasks li.due { border-color: var(--yellow); }
+.tasks .ico { font-size: 1.5rem; }
+.tasks .tt { flex: 1; display: flex; flex-direction: column; }
+.tasks small { color: var(--muted); font-size: .82rem; }
+.tasks li.due small { color: var(--yellow); }
+.tasks .tick { color: var(--green); font-size: 1.4rem; font-weight: 800; padding: 0 12px; }
+.badges { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin-top: 12px; }
+.medal { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 12px; border: 1px dashed var(--border); opacity: .45; filter: grayscale(1); }
+.medal.earned { opacity: 1; filter: none; border: 1px solid var(--green); background: rgba(46, 229, 157, .07); }
+.medal .ico { font-size: 1.5rem; }
+.medal b { display: block; font-size: .9rem; }
+.medal small { color: var(--muted); font-size: .74rem; }
+
+/* ---------- printable report ---------- */
+.reportbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; max-width: 900px; margin: 0 auto 14px; }
+.paper { max-width: 900px; margin: 0 auto; background: #fff; color: #111; border-radius: 8px; padding: 28px 32px; font-size: 13px; line-height: 1.35; }
+.paper header { display: flex; justify-content: space-between; gap: 16px; border-bottom: 2px solid #111; padding-bottom: 8px; }
+.paper h1 { font-size: 20px; }
+.paper h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; margin: 14px 0 5px; }
+.paper .meta { text-align: right; }
+.paper table { width: 100%; border-collapse: collapse; }
+.paper th, .paper td { text-align: left; padding: 3px 6px; border-bottom: 1px solid #ccc; vertical-align: top; }
+.paper th { font-size: 11px; color: #444; }
+.paper .week td, .paper .week th { text-align: right; }
+.paper .week td:first-child { text-align: left; }
+.paper small { color: #555; }
+.rs { font-weight: 700; padding: 0 6px; border-radius: 4px; border: 1px solid #111; white-space: nowrap; }
+.rs.green { background: #d6f5e6; }
+.rs.yellow { background: #fff0b8; }
+.rs.red { background: #ffd0d4; }
+.syslist { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.paper .lines { height: 70px; background: repeating-linear-gradient(#fff 0 22px, #bbb 22px 23px); }
+.paper footer { margin-top: 12px; padding-top: 6px; border-top: 1px solid #111; font-size: 10.5px; color: #444; }
+
+@media print {
+  @page { size: A4; margin: 12mm; }
+  body { background: #fff !important; }
+  .topbar, .envstrip, .tabs, .footer, .reportbar, .toast, .emg, .view:not(#view-report) { display: none !important; }
+  main { padding: 0; max-width: none; }
+  .paper { max-width: none; padding: 0; border-radius: 0; font-size: 11.5px; }
+  .rs, .paper .lines { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}

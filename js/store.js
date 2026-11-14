@@ -7,6 +7,7 @@ export const state = {
   mode: 'demo',     // 'demo' = simulated astronaut, 'mine' = self-entered check-ins
   scenario: null,   // demo scenario: null | 'spe' | 'sleep' | 'fluid'
   entries: [],      // self-entered daily check-ins, sorted by date
+  tasks: {},        // last done date of weekly / monthly routine tasks
 };
 
 const subs = new Set();
@@ -17,6 +18,7 @@ export function loadState() {
     if (raw) Object.assign(state, JSON.parse(raw));
   } catch (e) { /* storage unavailable or corrupt: keep defaults */ }
   if (!Array.isArray(state.entries)) state.entries = [];
+  if (!state.tasks || typeof state.tasks !== 'object') state.tasks = {};
 }
 
 export function setState(patch) {
