@@ -1,7 +1,7 @@
 import { loadI18n, setLang, t, L, applyI18n, esc, fmt } from './i18n.js';
 import { state, loadState, setState, subscribe, saveEntry, dateStr } from './store.js';
 import { renderCheckin } from './checkin.js';
-import { evaluate, evalMetric, computeBaseline, worst, SYSTEM_ORDER } from './rules.js';
+import { evaluate, evalMetric, computeBaseline, worst, SYSTEM_ORDER, lowStreak, applyPersistence } from './rules.js';
 import { demoEntries, DEMO_NAME, SCENARIOS } from './demo.js';
 import { valueText, reasonText, statusText, delayText } from './ui.js';
 import { renderPanel } from './panel.js';
@@ -55,7 +55,9 @@ function renderCheckinView() {
   renderCheckin($('#checkin'), {
     refs, content, entries: state.entries,
     evalFn(key, value) {
-      const r = evalMetric(key, value, refs, baseline);
+      const rule = refs.metrics[key].persist;
+      const earlier = state.entries.filter((e) => e.date < dateStr());
+      const r = applyPersistence(evalMetric(key, value, refs, baseline), rule ? lowStreak(earlier, key, rule.at) : 0, refs);
       return { status: r.status, label: statusText(r), text: reasonText(r, refs) };
     },
     onSave(entry) {

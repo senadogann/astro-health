@@ -157,7 +157,11 @@
    ],
    "dir": "low",
    "sdFloor": 0.7,
-   "label": "illustrative"
+   "label": "illustrative",
+   "persist": {
+    "at": 2,
+    "days": 3
+   }
   },
   "vision": {
    "unit": "",
@@ -188,7 +192,7 @@
    "source": "ochmo_exercise"
   }
  },
- "metricsNote": "Earth reference = general adult clinical ranges, simplified for this prototype (illustrative cut-offs). Sleep: adults need 7 h or more; ISS crews average 6.09 h against 8.5 h scheduled (Barger et al. 2014).",
+ "metricsNote": "Earth reference = general adult clinical ranges, simplified for this prototype (illustrative cut-offs). Sleep: adults need 7 h or more; ISS crews average 6.09 h against 8.5 h scheduled (Barger et al. 2014). Mood: one low day (1–2) is at most 'Watch'; red needs 3 or more low days in a row (illustrative).",
  "zscore": {
   "minDays": 7,
   "maxDays": 14,

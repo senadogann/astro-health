@@ -36,6 +36,7 @@ export function reasonText(r, refs) {
   }
   if (r.key === 'bone') return t('reason.bone', { lo: fmt(r.lo, 1), hi: fmt(r.hi, 1) });
   if (r.key === 'vision' && r.value > 0) return t('reason.vision.' + r.value);
+  if (r.lowDays >= 2) return t('reason.lowDays', { n: r.lowDays }); // a trend says more than one value
 
   const m = refs.metrics[r.key];
   const isEarth = m.label === 'earth';

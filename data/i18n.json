@@ -271,7 +271,8 @@
     "status.caution": "Caution",
     "reason.above.strong": "Clearly higher than your normal ({mean} → {value} {unit})",
     "reason.below.strong": "Clearly lower than your normal ({mean} → {value} {unit})",
-    "reason.sigma": "Statistics: {z} standard deviations (σ) from your personal baseline"
+    "reason.sigma": "Statistics: {z} standard deviations (σ) from your personal baseline",
+    "reason.lowDays": "Low for {n} days in a row"
   },
   "tr": {
     "app.name": "AstroSelf",
@@ -545,6 +546,7 @@
     "status.caution": "Dikkat",
     "reason.above.strong": "Normalinizden belirgin yüksek ({mean} → {value} {unit})",
     "reason.below.strong": "Normalinizden belirgin düşük ({mean} → {value} {unit})",
-    "reason.sigma": "İstatistik: kişisel referansınızdan {z} standart sapma (σ)"
+    "reason.sigma": "İstatistik: kişisel referansınızdan {z} standart sapma (σ)",
+    "reason.lowDays": "{n} gündür düşük"
   }
 }

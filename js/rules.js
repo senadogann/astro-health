@@ -83,6 +83,31 @@ export function evalMetric(key, value, refs, baseline) {
   return { key, value, status, tier, earth, z, zStatus, driver, baseline: st || null, label: m.label };
 }
 
+// How many days in a row (ending with the last entry) a value has been at or below `at`.
+export function lowStreak(entries, key, at) {
+  let n = 0;
+  for (let i = entries.length - 1; i >= 0; i--) {
+    if (!(entries[i][key] <= at)) break;
+    if (n > 0 && Math.round((new Date(entries[i + 1].date) - new Date(entries[i].date)) / 86400000) !== 1) break;
+    n++;
+  }
+  return n;
+}
+
+// Some indicators (mood) only become serious when they stay low. One low day is "watch" at most;
+// red needs the configured number of low days in a row. `prior` = low days before this value.
+export function applyPersistence(r, prior, refs) {
+  const rule = refs.metrics[r.key].persist;
+  if (!rule) return r;
+  r.lowDays = r.value <= rule.at ? prior + 1 : 0;
+  if (r.lowDays >= rule.days) {
+    r.status = 'red'; r.tier = 'red'; r.driver = r.driver || refs.metrics[r.key].label;
+  } else if (r.status !== 'green') {
+    r.status = 'yellow'; r.tier = 'watch';
+  }
+  return r;
+}
+
 export function missionDay(entries) {
   if (!entries.length) return 0;
   const a = new Date(entries[0].date + 'T00:00:00');
@@ -99,7 +124,10 @@ export function evaluate(entries, envKey, refs) {
   const metrics = {};
 
   for (const key of CHECKIN_KEYS) {
-    if (Number.isFinite(latest[key])) metrics[key] = evalMetric(key, latest[key], refs, baseline);
+    if (!Number.isFinite(latest[key])) continue;
+    const rule = refs.metrics[key].persist;
+    const prior = rule ? lowStreak(entries.slice(0, -1), key, rule.at) : 0;
+    metrics[key] = applyPersistence(evalMetric(key, latest[key], refs, baseline), prior, refs);
   }
 
   // Radiation (NASA-derived): daily dose and mission total against the 600 mSv career limit.
