@@ -3,6 +3,7 @@
 import { t, L, esc } from './i18n.js';
 import { clearCharts, trendChart } from './charts.js';
 import { valueText, reasonText, driverLabel, delayText } from './ui.js';
+import { i4Html, i4Chart } from './i4.js';
 
 // Which indicators share one chart in each system's panel.
 const CHART_GROUPS = {
@@ -14,7 +15,7 @@ const CHART_GROUPS = {
   blood: [['glucose'], ['temp'], ['radiation']],
 };
 
-export function renderPanel(el, { id, res, entries, refs, content, sources, envKey, badge }) {
+export function renderPanel(el, { id, res, entries, refs, content, sources, envKey, badge, i4 }) {
   clearCharts();
   if (!id) { el.hidden = true; el.innerHTML = ''; return; }
 
@@ -42,6 +43,10 @@ export function renderPanel(el, { id, res, entries, refs, content, sources, envK
     }).join('');
   }
 
+  // Real NASA data comparison (Inspiration4), only in the blood panel.
+  const glucose = !res.empty && res.metrics.glucose ? res.metrics.glucose.value : null;
+  const i4Block = id === 'blood' ? i4Html(i4, glucose) : '';
+
   const srcLinks = sys.sources.map((sid) => sources[sid]).filter(Boolean).map((s) => (
     s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)} ↗</a>` : `<span>${esc(s.title)}</span>`
   )).join('');
@@ -59,6 +64,7 @@ export function renderPanel(el, { id, res, entries, refs, content, sources, envK
     <p>${esc(L(sys.space))}</p>
     <div class="tags">${sys.hazards.map((h) => `<span class="badge ill">${esc(L(content.hazards[h]))}</span>`).join('')}</div>
     ${current}
+    ${i4Block}
     <h3>${t('panel.todo')}</h3>
     ${list(L(sys.selfcare))}
     <h3>${t('panel.notify')}</h3>
@@ -72,6 +78,8 @@ export function renderPanel(el, { id, res, entries, refs, content, sources, envK
     <h3>${t('panel.sources')}</h3>
     <div class="sources">${srcLinks}</div>
     <p class="fine">${t('panel.fine')}</p>`;
+
+  if (i4Block) i4Chart(el, i4, glucose);
 
   // Trend charts (last 30 days).
   const recent = entries.slice(-30);

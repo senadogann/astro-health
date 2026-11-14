@@ -1,0 +1,506 @@
+{
+ "source": "NASA OSDR OSD-575 / OSD-569 (Inspiration4)",
+ "urls": [
+  "https://osdr.nasa.gov/bio/repo/data/studies/OSD-575",
+  "https://osdr.nasa.gov/bio/repo/data/studies/OSD-569"
+ ],
+ "note": "4 civilian astronauts, 3-day mission, samples only before (L-) and after (R+) flight. Low glucose at R+45 is probably a sample-handling artefact, not a spaceflight effect.",
+ "crew": 4,
+ "timepoints": [
+  "L-92",
+  "L-44",
+  "L-3",
+  "R+1",
+  "R+45",
+  "R+82",
+  "R+194"
+ ],
+ "analytes": {
+  "glucose": {
+   "unit": "mg/dL",
+   "digits": 0,
+   "rangeMin": 65.0,
+   "rangeMax": 99.0,
+   "preflightMean": 75.33,
+   "preflightMin": 56.0,
+   "preflightMax": 100.0,
+   "preflightN": 12,
+   "byTimepoint": {
+    "L-92": {
+     "mean": 82.25,
+     "min": 69.0,
+     "max": 100.0,
+     "n": 4
+    },
+    "L-44": {
+     "mean": 74.25,
+     "min": 62.0,
+     "max": 83.0,
+     "n": 4
+    },
+    "L-3": {
+     "mean": 69.5,
+     "min": 56.0,
+     "max": 78.0,
+     "n": 4
+    },
+    "R+1": {
+     "mean": 93.25,
+     "min": 83.0,
+     "max": 103.0,
+     "n": 4
+    },
+    "R+45": {
+     "mean": 51.75,
+     "min": 36.0,
+     "max": 84.0,
+     "n": 4
+    },
+    "R+82": {
+     "mean": 82.0,
+     "min": 77.0,
+     "max": 91.0,
+     "n": 4
+    },
+    "R+194": {
+     "mean": 82.0,
+     "min": 73.0,
+     "max": 87.0,
+     "n": 4
+    }
+   }
+  },
+  "sodium": {
+   "unit": "mmol/L",
+   "digits": 0,
+   "rangeMin": 135.0,
+   "rangeMax": 146.0,
+   "preflightMean": 140.25,
+   "preflightMin": 138.0,
+   "preflightMax": 143.0,
+   "preflightN": 12,
+   "byTimepoint": {
+    "L-92": {
+     "mean": 140.0,
+     "min": 138.0,
+     "max": 142.0,
+     "n": 4
+    },
+    "L-44": {
+     "mean": 139.75,
+     "min": 139.0,
+     "max": 141.0,
+     "n": 4
+    },
+    "L-3": {
+     "mean": 141.0,
+     "min": 138.0,
+     "max": 143.0,
+     "n": 4
+    },
+    "R+1": {
+     "mean": 138.0,
+     "min": 137.0,
+     "max": 140.0,
+     "n": 4
+    },
+    "R+45": {
+     "mean": 138.25,
+     "min": 136.0,
+     "max": 140.0,
+     "n": 4
+    },
+    "R+82": {
+     "mean": 139.75,
+     "min": 138.0,
+     "max": 141.0,
+     "n": 4
+    },
+    "R+194": {
+     "mean": 138.25,
+     "min": 137.0,
+     "max": 141.0,
+     "n": 4
+    }
+   }
+  },
+  "potassium": {
+   "unit": "mmol/L",
+   "digits": 1,
+   "rangeMin": 3.5,
+   "rangeMax": 5.3,
+   "preflightMean": 3.92,
+   "preflightMin": 3.3,
+   "preflightMax": 4.6,
+   "preflightN": 12,
+   "byTimepoint": {
+    "L-92": {
+     "mean": 4.1,
+     "min": 3.7,
+     "max": 4.6,
+     "n": 4
+    },
+    "L-44": {
+     "mean": 3.98,
+     "min": 3.5,
+     "max": 4.2,
+     "n": 4
+    },
+    "L-3": {
+     "mean": 3.67,
+     "min": 3.3,
+     "max": 3.9,
+     "n": 4
+    },
+    "R+1": {
+     "mean": 3.73,
+     "min": 3.0,
+     "max": 4.4,
+     "n": 4
+    },
+    "R+45": {
+     "mean": 4.6,
+     "min": 4.0,
+     "max": 5.9,
+     "n": 4
+    },
+    "R+82": {
+     "mean": 3.98,
+     "min": 3.7,
+     "max": 4.3,
+     "n": 4
+    },
+    "R+194": {
+     "mean": 4.08,
+     "min": 3.8,
+     "max": 4.4,
+     "n": 4
+    }
+   }
+  },
+  "calcium": {
+   "unit": "mg/dL",
+   "digits": 1,
+   "rangeMin": 8.6,
+   "rangeMax": 10.4,
+   "preflightMean": 9.83,
+   "preflightMin": 9.3,
+   "preflightMax": 10.3,
+   "preflightN": 12,
+   "byTimepoint": {
+    "L-92": {
+     "mean": 9.8,
+     "min": 9.3,
+     "max": 10.2,
+     "n": 4
+    },
+    "L-44": {
+     "mean": 10.03,
+     "min": 9.7,
+     "max": 10.3,
+     "n": 4
+    },
+    "L-3": {
+     "mean": 9.65,
+     "min": 9.3,
+     "max": 10.2,
+     "n": 4
+    },
+    "R+1": {
+     "mean": 9.53,
+     "min": 9.2,
+     "max": 9.8,
+     "n": 4
+    },
+    "R+45": {
+     "mean": 9.57,
+     "min": 9.3,
+     "max": 9.8,
+     "n": 4
+    },
+    "R+82": {
+     "mean": 9.95,
+     "min": 9.7,
+     "max": 10.1,
+     "n": 4
+    },
+    "R+194": {
+     "mean": 9.57,
+     "min": 9.4,
+     "max": 9.8,
+     "n": 4
+    }
+   }
+  },
+  "creatinine": {
+   "unit": "mg/dL",
+   "digits": 2,
+   "rangeMin": 0.5,
+   "rangeMax": 1.35,
+   "preflightMean": 1.07,
+   "preflightMin": 0.83,
+   "preflightMax": 1.37,
+   "preflightN": 12,
+   "byTimepoint": {
+    "L-92": {
+     "mean": 1.05,
+     "min": 0.83,
+     "max": 1.24,
+     "n": 4
+    },
+    "L-44": {
+     "mean": 1.02,
+     "min": 0.88,
+     "max": 1.1,
+     "n": 4
+    },
+    "L-3": {
+     "mean": 1.14,
+     "min": 0.96,
+     "max": 1.37,
+     "n": 4
+    },
+    "R+1": {
+     "mean": 1.03,
+     "min": 0.89,
+     "max": 1.15,
+     "n": 4
+    },
+    "R+45": {
+     "mean": 1.04,
+     "min": 0.94,
+     "max": 1.11,
+     "n": 4
+    },
+    "R+82": {
+     "mean": 1.02,
+     "min": 0.82,
+     "max": 1.25,
+     "n": 4
+    },
+    "R+194": {
+     "mean": 1.18,
+     "min": 1.02,
+     "max": 1.31,
+     "n": 4
+    }
+   }
+  },
+  "hemoglobin": {
+   "unit": "g/dL",
+   "digits": 1,
+   "rangeMin": 11.7,
+   "rangeMax": 17.1,
+   "preflightMean": 14.38,
+   "preflightMin": 11.5,
+   "preflightMax": 17.0,
+   "preflightN": 12,
+   "byTimepoint": {
+    "L-92": {
+     "mean": 14.38,
+     "min": 13.2,
+     "max": 17.0,
+     "n": 4
+    },
+    "L-44": {
+     "mean": 14.68,
+     "min": 12.8,
+     "max": 16.6,
+     "n": 4
+    },
+    "L-3": {
+     "mean": 14.07,
+     "min": 11.5,
+     "max": 16.8,
+     "n": 4
+    },
+    "R+1": {
+     "mean": 14.2,
+     "min": 12.1,
+     "max": 16.5,
+     "n": 4
+    },
+    "R+45": {
+     "mean": 14.47,
+     "min": 12.2,
+     "max": 16.8,
+     "n": 4
+    },
+    "R+82": {
+     "mean": 14.5,
+     "min": 11.5,
+     "max": 16.4,
+     "n": 4
+    },
+    "R+194": {
+     "mean": 14.15,
+     "min": 12.7,
+     "max": 16.5,
+     "n": 4
+    }
+   }
+  },
+  "hematocrit": {
+   "unit": "%",
+   "digits": 1,
+   "rangeMin": 35.0,
+   "rangeMax": 50.0,
+   "preflightMean": 43.3,
+   "preflightMin": 35.9,
+   "preflightMax": 50.0,
+   "preflightN": 12,
+   "byTimepoint": {
+    "L-92": {
+     "mean": 43.27,
+     "min": 40.7,
+     "max": 49.1,
+     "n": 4
+    },
+    "L-44": {
+     "mean": 43.88,
+     "min": 37.8,
+     "max": 50.0,
+     "n": 4
+    },
+    "L-3": {
+     "mean": 42.75,
+     "min": 35.9,
+     "max": 49.0,
+     "n": 4
+    },
+    "R+1": {
+     "mean": 42.42,
+     "min": 36.4,
+     "max": 48.3,
+     "n": 4
+    },
+    "R+45": {
+     "mean": 43.42,
+     "min": 37.1,
+     "max": 49.0,
+     "n": 4
+    },
+    "R+82": {
+     "mean": 43.23,
+     "min": 34.7,
+     "max": 47.5,
+     "n": 4
+    },
+    "R+194": {
+     "mean": 42.12,
+     "min": 38.3,
+     "max": 48.0,
+     "n": 4
+    }
+   }
+  },
+  "wbc": {
+   "unit": "10³/µL",
+   "digits": 1,
+   "rangeMin": 3.8,
+   "rangeMax": 10.8,
+   "preflightMean": 7.53,
+   "preflightMin": 5.4,
+   "preflightMax": 10.6,
+   "preflightN": 12,
+   "byTimepoint": {
+    "L-92": {
+     "mean": 7.3,
+     "min": 5.4,
+     "max": 9.6,
+     "n": 4
+    },
+    "L-44": {
+     "mean": 6.65,
+     "min": 5.4,
+     "max": 9.3,
+     "n": 4
+    },
+    "L-3": {
+     "mean": 8.65,
+     "min": 7.0,
+     "max": 10.6,
+     "n": 4
+    },
+    "R+1": {
+     "mean": 6.4,
+     "min": 5.0,
+     "max": 8.1,
+     "n": 4
+    },
+    "R+45": {
+     "mean": 6.47,
+     "min": 4.9,
+     "max": 7.8,
+     "n": 4
+    },
+    "R+82": {
+     "mean": 6.73,
+     "min": 4.9,
+     "max": 8.8,
+     "n": 4
+    },
+    "R+194": {
+     "mean": 6.75,
+     "min": 4.9,
+     "max": 8.3,
+     "n": 4
+    }
+   }
+  },
+  "platelets": {
+   "unit": "10³/µL",
+   "digits": 0,
+   "rangeMin": 140.0,
+   "rangeMax": 400.0,
+   "preflightMean": 244.41,
+   "preflightMin": 12.9,
+   "preflightMax": 367.0,
+   "preflightN": 12,
+   "byTimepoint": {
+    "L-92": {
+     "mean": 183.47,
+     "min": 12.9,
+     "max": 241.0,
+     "n": 4
+    },
+    "L-44": {
+     "mean": 259.5,
+     "min": 227.0,
+     "max": 345.0,
+     "n": 4
+    },
+    "L-3": {
+     "mean": 290.25,
+     "min": 241.0,
+     "max": 367.0,
+     "n": 4
+    },
+    "R+1": {
+     "mean": 269.5,
+     "min": 227.0,
+     "max": 359.0,
+     "n": 4
+    },
+    "R+45": {
+     "mean": 289.25,
+     "min": 228.0,
+     "max": 396.0,
+     "n": 4
+    },
+    "R+82": {
+     "mean": 261.25,
+     "min": 198.0,
+     "max": 345.0,
+     "n": 4
+    },
+    "R+194": {
+     "mean": 224.5,
+     "min": 185.0,
+     "max": 256.0,
+     "n": 4
+    }
+   }
+  }
+ }
+}
