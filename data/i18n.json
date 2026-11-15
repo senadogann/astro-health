@@ -288,7 +288,6 @@
     "body.loading": "Loading {what}…",
     "body.loadError": "A 3D layer could not be loaded.",
     "body.slow": "The detailed 3D model runs slowly on this device.",
-    "panel.structure": "Selected structure: {name}",
     "panel.hazards.note": "The five hazards of human spaceflight (NASA Human Research Program) that affect this system:",
     "credits.title": "Credits",
     "credits.models": "3D anatomy models",
@@ -333,7 +332,9 @@
     "dev.none": "No usable values were found in this file. Recognised columns: date, heart rate, systolic, diastolic (or blood pressure as 120/80), body temperature, blood glucose, sleep, exercise minutes.",
     "dev.error": "The file could not be read. Use a CSV or JSON file.",
     "dev.note.hrMulti": "Heart rate: the file has several readings a day, so their median was used. Check that it is your resting heart rate.",
-    "body.reset": "Reset view"
+    "body.reset": "Reset view",
+    "anat.title": "Anatomical name in the 3D model (Z-Anatomy)",
+    "anat.estimated": "region estimated from the tap position"
   },
   "tr": {
     "app.name": "AstroSelf",
@@ -624,7 +625,6 @@
     "body.loading": "{what} yükleniyor…",
     "body.loadError": "Bir 3D katman yüklenemedi.",
     "body.slow": "Ayrıntılı 3D model bu cihazda yavaş çalışıyor.",
-    "panel.structure": "Seçilen yapı: {name}",
     "panel.hazards.note": "İnsanlı uzay uçuşunun beş tehlikesinden (NASA İnsan Araştırma Programı) bu sistemi etkileyenler:",
     "credits.title": "Emeği geçenler",
     "credits.models": "3D anatomi modelleri",
@@ -669,6 +669,8 @@
     "dev.none": "Bu dosyada kullanılabilir değer bulunamadı. Tanınan sütunlar: tarih, nabız, sistolik, diastolik (ya da 120/80 biçiminde tansiyon), vücut sıcaklığı, kan şekeri, uyku, egzersiz dakikası.",
     "dev.error": "Dosya okunamadı. CSV ya da JSON dosyası kullanın.",
     "dev.note.hrMulti": "Nabız: dosyada günde birden fazla ölçüm var, ortancası alındı. Bunun dinlenme nabzınız olduğunu kontrol edin.",
-    "body.reset": "Görünümü sıfırla"
+    "body.reset": "Görünümü sıfırla",
+    "anat.title": "3D modeldeki anatomik ad (Z-Anatomy)",
+    "anat.estimated": "bölge dokunulan yerden tahmin edildi"
   }
 }

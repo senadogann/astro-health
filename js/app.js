@@ -6,6 +6,7 @@ import { applyScenario, SCENARIOS } from './demo.js';
 import { CREW, crewEntries } from './crew.js';
 import { valueText, reasonText, statusText, delayText } from './ui.js';
 import { renderPanel } from './panel.js';
+import { describeStructure } from './anatomy.js';
 import { loadSpaceWeather, renderSpaceWeather } from './spaceweather.js';
 import { initEmergency, openEmergency, renderEmergency } from './emergency.js';
 import { computeOutlook, renderOutlook, riskDrivers } from './outlook.js';
@@ -18,7 +19,7 @@ const VIEWS = ['dashboard', 'checkin', 'crew', 'outlook', 'report', 'mission'];
 
 let view = 'dashboard';
 let selected = null;      // selected body system id
-let selectedName = '';    // anatomical structure that was tapped on the detailed model
+let selectedPick = null;  // what was tapped on the detailed model: { name, layer, point }
 let horizon = 'today';    // what the 3D figure shows: 'today' or '30' (projected)
 let refs, content, sources;
 let i4 = null;            // Inspiration4 blood values (real NASA data)
@@ -67,9 +68,9 @@ function scheduleRender() {
   requestAnimationFrame(() => { renderQueued = false; render(); });
 }
 
-function selectSystem(id, name) {
+function selectSystem(id, pick) {
   selected = id;
-  selectedName = id ? name || '' : '';
+  selectedPick = id && pick && typeof pick === 'object' ? pick : null;
   render();
   if (id && window.matchMedia('(max-width: 899px)').matches) {
     $('#organPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -266,8 +267,13 @@ function renderDashboard() {
     <ul>${riskDrivers(r, out, content, refs).map((x) => `<li>${esc(x)}</li>`).join('')}</ul>`).join('') : '';
   // On wide screens the panel replaces the cards; "close" brings them back.
   $('#overview').hidden = !!selected;
+  // Plain-language name of the tapped structure ("Left hand · Index finger"), shown on the 3D view and the panel.
+  const structure = describeStructure(selectedPick);
+  const pickLabel = $('#pickLabel');
+  pickLabel.hidden = !structure;
+  if (structure) pickLabel.innerHTML = `<b>${esc(structure.label)}</b><span>${esc(structure.tissue)}</span>`;
   renderPanel($('#organPanel'), {
-    id: selected, res, entries, refs, content, sources, envKey: state.env, badge: dataBadge(), i4, outlookHtml, structure: selectedName,
+    id: selected, res, entries, refs, content, sources, envKey: state.env, badge: dataBadge(), i4, outlookHtml, structure,
   });
   if (body) {
     body.setStatuses(statuses);

@@ -180,6 +180,8 @@ export function createBody(container, { onSelect, onProgress, onLayers, onSlow }
   const outline = new THREE.Group();
   scene.add(outline);
   let picked = null; // { mesh, start, end } of the tapped structure
+  // Bounding box of the whole body (set when the first full-height layer loads); used to say where a tap landed.
+  const bodyBox = new THREE.Box3(new THREE.Vector3(-0.3, 0, -0.2), new THREE.Vector3(0.3, 1.8, 0.2));
   const systems = {};
   for (const id of ['cardio', 'lungs', 'brain', 'bones', 'eyes', 'blood']) {
     systems[id] = { status: 'none', material: newMaterial(), soft: id === 'bones' ? newMaterial() : null };
@@ -206,14 +208,26 @@ export function createBody(container, { onSelect, onProgress, onLayers, onSlow }
   // The files store positions as compressed integers with a transform per structure. Here they are unpacked
   // into plain numbers in world space and joined, so a layer is drawn with a few draw calls instead of hundreds.
   // The structure names are kept as index ranges, so a tap can still name what was hit.
-  function prepare(layer, root) {
+  // The structure name as written in the glTF file ("Fourth metatarsal bone.r"). Three.js renames objects
+  // ("Fourth_metatarsal_boner"), which loses the side, so the original node or mesh name is looked up instead.
+  function originalName(obj, parser) {
+    if (obj.userData.name) return obj.userData.name;
+    const json = parser && parser.json;
+    const assoc = parser && parser.associations && parser.associations.get(obj);
+    if (json && assoc) {
+      if (assoc.nodes !== undefined && json.nodes[assoc.nodes] && json.nodes[assoc.nodes].name) return json.nodes[assoc.nodes].name;
+      if (assoc.meshes !== undefined && json.meshes[assoc.meshes] && json.meshes[assoc.meshes].name) return json.meshes[assoc.meshes].name;
+    }
+    return (obj.parent && obj.parent.userData.name) || obj.name || '';
+  }
+
+  function prepare(layer, root, parser) {
     const hide = HIDE[layer.id];
     root.updateMatrixWorld(true);
     const parts = {}; // system -> [{ mesh, name }]
     root.traverse((obj) => {
       if (!obj.isMesh) return;
-      // GLTFLoader strips dots and spaces from node names; the original name is kept in userData.
-      const name = obj.userData.name || (obj.parent && obj.parent.userData.name) || obj.name || '';
+      const name = originalName(obj, parser);
       if (hide && hide.test(name.toLowerCase())) return;
       const system = systemOf(layer.id, name);
       (parts[system] = parts[system] || []).push({ mesh: obj, name });
@@ -278,13 +292,13 @@ export function createBody(container, { onSelect, onProgress, onLayers, onSlow }
       geometry.computeBoundingSphere();
       geometry.computeBoundingBox();
       const merged = new THREE.Mesh(geometry, layer.id === 'muscular' ? systems[system].soft : systems[system].material);
-      merged.userData = { system, ranges };
+      merged.userData = { system, ranges, layer: layer.id };
       group.add(merged);
     }
     return group;
   }
 
-  // Name of the structure that owns a triangle of a merged mesh.
+  // Index of the structure (in userData.ranges) that owns a triangle of a merged mesh.
   function rangeAt(mesh, faceIndex) {
     const ranges = mesh.userData.ranges;
     const index = faceIndex * 3;
@@ -296,17 +310,10 @@ export function createBody(container, { onSelect, onProgress, onLayers, onSlow }
     return lo;
   }
 
-  function structureAt(mesh, faceIndex) {
-    const ranges = mesh.userData.ranges;
-    const lo = rangeAt(mesh, faceIndex);
-    if (!ranges[lo]) return '';
-    // "Kidney.l" -> "Kidney (left)"; drop the numeric suffixes the loader adds to repeated names.
-    return ranges[lo].name.replace(/_\d+$/, '').replace(/\.l$/, ' (left)').replace(/\.r$/, ' (right)');
-  }
-
   // Frame the whole body once the first full-height layer (vessels) is in.
   function fit(group) {
     const box = new THREE.Box3().setFromObject(group);
+    bodyBox.copy(box);
     if (box.isEmpty()) return;
     const size = box.getSize(new THREE.Vector3());
     const center = box.getCenter(new THREE.Vector3());
@@ -332,7 +339,7 @@ export function createBody(container, { onSelect, onProgress, onLayers, onSlow }
       MODEL_DIR + layer.file,
       (gltf) => {
         if (disposed) return;
-        layer.group = prepare(layer, gltf.scene);
+        layer.group = prepare(layer, gltf.scene, gltf.parser);
         layer.group.visible = layer.on;
         scene.add(layer.group);
         layer.loaded = true;
@@ -462,7 +469,14 @@ export function createBody(container, { onSelect, onProgress, onLayers, onSlow }
     const ri = rangeAt(hit.object, hit.faceIndex);
     picked = { mesh: hit.object, start: ranges[ri].start, end: ri + 1 < ranges.length ? ranges[ri + 1].start : hit.object.geometry.index.count };
     if (selected === hit.object.userData.system) updateOutline();
-    if (onSelect) onSelect(hit.object.userData.system, structureAt(hit.object, hit.faceIndex));
+    // Pass the model's own structure name, its layer and where on the body the tap landed (0 = feet, 1 = top
+    // of the head; dx = distance from the midline, as a share of body height) so the app can name the region.
+    const size = bodyBox.getSize(new THREE.Vector3());
+    const center = bodyBox.getCenter(new THREE.Vector3());
+    // sx > 0: the body's left side (the model faces +z, so its left is +x).
+    const sx = size.y > 0 ? (hit.point.x - center.x) / size.y : 0;
+    const point = size.y > 0 ? { h: (hit.point.y - bodyBox.min.y) / size.y, dx: Math.abs(sx), sx } : null;
+    if (onSelect) onSelect(hit.object.userData.system, { name: ranges[ri].name, layer: hit.object.userData.layer, point });
   });
 
   /* ----- zoom toward a point on the body ----- */

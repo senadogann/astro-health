@@ -66,7 +66,8 @@ export function renderPanel(el, { id, res, entries, refs, content, sources, envK
   el.innerHTML = `
     <div class="phead">
       ${status ? `<span class="pill ${status}"><span class="dot ${status}"></span>${statusText(res.systems[id])}</span>` : ''}
-      <h2>${esc(L(sys.name))}${structure ? `<small>${esc(t('panel.structure', { name: structure }))}</small>` : ''}</h2>
+      <h2>${structure ? esc(structure.label) : esc(L(sys.name))}${structure ? `<small>${esc(structure.tissue)} · ${esc(L(sys.name))}</small>
+        <small class="anat" title="${esc(t('anat.title'))}">${esc(structure.anatomical)}${structure.exact ? '' : ` · ${esc(t('anat.estimated'))}`}</small>` : ''}</h2>
       <button type="button" class="close" data-act="close" aria-label="${t('panel.close')}">✕</button>
     </div>
     <h3>${t('panel.function')}</h3>

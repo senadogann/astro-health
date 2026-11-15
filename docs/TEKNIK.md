@@ -245,7 +245,15 @@ Kaynak: Z-Anatomy (BodyParts3D'den türetilmiş), CC BY-SA 4.0. Lisans ve atıf 
 4. **Birleştirme:** Yüzlerce küçük yapı sistem başına tek ağda birleştirilir. Dosyadaki sıkıştırılmış tam sayı konumları dünya koordinatına açılır. Sonuç: kare başına çizim çağrısı 1.945'ten 4'e (5 katman açıkken 8) düştü. Yapı adları üçgen aralıkları olarak saklanır, dokunulan yapının adı bulunabilir.
 5. Her yapının doğal rengi köşe rengi olarak yazılır (kemik fildişi, kas koyu kırmızı ve yarı saydam, atardamar kırmızı, toplardamar mavi, sinir açık sarı, karaciğer kahverengi-kırmızı, akciğer pembe vb.).
 
-### 8.3 Durum gösterimi
+### 8.3 Dokunulan yapının adı (`js/anatomy.js`)
+
+- Dokunulan yapının glTF dosyasındaki asıl adı okunur (ör. "Middle phalanx of second finger of hand.l"). Three.js nesne adlarını değiştirdiği için ad, yükleyicinin eşleme tablosundan (`parser.associations`) alınır.
+- Ad Türkçe/İngilizce bir bölge adına çevrilir: **"Sol el · İşaret parmağı"**, doku türüyle birlikte ("Kemik", "Kas", "Atardamar", "Sinir", "Organ"…). Organlarda organ adı da yazar ("Karın · Karaciğer"); el ve ayakta parmak adı (başparmak, işaret, orta, yüzük, serçe; ayakta başparmak ve 2.–5. parmak); parmak kaslarında "parmakları hareket ettirir".
+- **Taraf** dokunulan noktanın vücudun orta çizgisinin hangi yanında olduğundan hesaplanır, çünkü model sol taraftaki bazı parçaları sağdakinin aynalanmış kopyası olarak ve sağdaki adla saklıyor. Ağız, beyin, göğüs gibi tek bölgelerde taraf sona yazılır ("Ağız · Diş (sağ)").
+- **Kapsama:** Dokunulabilen yapıların %98'i anahtar kelimelerle doğrudan tanınıyor (iskelet, kas ve organlar %100, damarlar %95, sinir sistemi %98). Kalanlarda bölge, dokunulan noktanın yüksekliğinden standart vücut oranlarıyla tahmin edilir ve panelde "bölge dokunulan yerden tahmin edildi" yazar.
+- Ad 3D görünümün sol altında ve organ panelinin başlığında görünür; panelde altında doku türü, sistem adı ve modeldeki anatomik ad yazar.
+
+### 8.3b Durum gösterimi
 
 - Normal sistemlere hiçbir durum rengi uygulanmaz.
 - "İzle/Dikkat": hafif amber parlama (emissive).
