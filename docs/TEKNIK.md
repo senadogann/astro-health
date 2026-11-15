@@ -73,6 +73,7 @@ Kaydırıcının günü (`viewDay`) bilinçli olarak kaydedilmez, sayfa açılı
 | `js/spaceweather.js` | NOAA proton akısı + NASA DONKI, çevrimdışı yedekler |
 | `js/emergency.js` | Acil durum listeleri, Dünya cevap sayacı, uçuş doktoru raporu |
 | `js/checkin.js` | Günlük kontrol formu |
+| `js/deviceimport.js` | Cihaz dosyasını (CSV/JSON) okur, sütunları tanır, birimleri dönüştürür |
 | `js/routine.js` | Hatırlatıcılar, seri, rozetler |
 | `js/report.js` | Yazdırılabilir tek sayfalık rapor |
 | `js/store.js`, `js/database.js` | Durum ve kalıcı saklama (IndexedDB) |
@@ -161,6 +162,8 @@ Sistemin rengi en kötü göstergesinin rengidir.
 | Eşikler ve limitler | NASA kaynaklı / Dünya referansı / temsili | `data/references.json`, kaynaklar `data/sources.json` (19 kaynak) |
 | Mürettebat verisi ve senaryolar | Simüle | `js/crew.js`, `js/demo.js` |
 | Kullanıcı girişleri | Kendi girişi | Günlük kontrol formu |
+| Cihaz dosyasından gelen değerler | Cihaz | Astronotun seçtiği dosya (`js/deviceimport.js`) |
+| Örnek bileklik dosyası | Simüle | `assets/samples/sample-wearable-export.csv` |
 | Öz bakım adımları, bildirim ölçütleri, acil durum listeleri | Temsili | Takım yazdı; resmi NASA prosedürü değil |
 
 **Uzay havası yedekleri:** canlı veri → cihazda son kaydedilen veri → repodaki `data/swpc_snapshot.json`. Kart hangisinin gösterildiğini yazar. Akı ≥ 10 pfu (NOAA S1) olunca kırmızı "sığınağa geçin" uyarısı çıkar; ≥ 1 pfu sarıdır (*temsili*). DONKI tek istekte en fazla 60 gün kabul eder.
@@ -200,6 +203,23 @@ Seçili astronotun seçili güne kadarki verisinin son günlerini değiştirir: 
 ### 7.4 Mürettebat ekranı
 
 Dört astronot aynı gün için yan yana: genel durum, 5 değer, 6 sistem noktası, dikkat isteyen göstergeler, "Panelde aç".
+
+---
+
+## 7.5 Cihaz dosyasından veri alma (`js/deviceimport.js`)
+
+Uzayda bu ölçümler CSA'nın Bio-Monitor (Astroskin) giysisi gibi cihazlarla yapılabiliyor; ama onun herkese açık bir
+bağlantı arayüzü yok. Bu yüzden uygulama, cihazın ya da sağlık uygulamasının **dışa aktardığı dosyayı** okuyor.
+
+- **Biçimler:** CSV (virgül ya da noktalı virgül; ondalık virgül desteklenir) ve JSON (kayıt dizisi ya da dizi içeren nesne). `#` ile başlayan satırlar açıklama sayılır.
+- **Sütun tanıma:** Başlıklar küçük harfe çevrilip Türkçe karakterler ve simgeler sadeleştirilir; ad eşleşirse ya da adla başlıyorsa (`blood_glucose_mmol_l` → kan şekeri) tanınır. Tanınanlar: tarih, nabız, sistolik, diastolik, `120/80` biçiminde tansiyon, vücut sıcaklığı, kan şekeri, uyku, egzersiz dakikası. HRV, en yüksek nabız, uyku kalitesi ve uyku evreleri bilerek dışarıda bırakılır.
+- **Tarih:** `2026-11-15`, `15.11.2026`, `15/11/2026` (gün önce) ya da Unix zamanı.
+- **Birim dönüşümü** (sütun adından ya da sayının büyüklüğünden): mmol/L → mg/dL (× 18,016; değer 30'dan küçükse), °F → °C (değer 45'ten büyükse), uyku dakika → saat (24'ten büyükse), saniye → saat (1440'tan büyükse).
+- **Günde birden çok ölçüm:** nabızda ortanca (ve astronota "dinlenme nabzınız mı kontrol edin" notu), uyku ve egzersizde toplam, diğerlerinde ortalama.
+- **Kullanılmayanlar:** deri sıcaklığı (vücut sıcaklığı değildir), formun olası aralığı dışındaki değerler, tarihi okunamayan satırlar. Hepsi astronota tek tek söylenir.
+- **Akış:** Dosyada seçili tarih varsa o gün, yoksa en son gün alınır ve tarih değiştirilir. Değerler forma doldurulur, kaydedilmez. Doldurulan alanlarda "Cihaz" etiketi çıkar; elle değiştirilen alanın etiketi kalkar. Kaydedilen kayıtta `source: "device"`, `deviceFields` ve `deviceFile` saklanır. Ana ekranda bu alanların kartları "Cihaz" etiketi taşır.
+- **Test edilen dosyalar:** örnek CSV; Türkçe başlıklı ve noktalı virgüllü CSV; °F, mmol/L, saniye ve `121/79` içeren JSON; dakikalık nabız verisi; aralık dışı değer; tarihsiz dosya; bozuk JSON.
+- **Bluetooth yok:** Tarayıcıdan doğrudan cihaza bağlanma (Web Bluetooth) iPad'deki Safari'de çalışmadığı ve elimizde test cihazı olmadığı için eklenmedi.
 
 ---
 
@@ -248,7 +268,7 @@ Kaynak: Z-Anatomy (BodyParts3D'den türetilmiş), CC BY-SA 4.0. Lisans ve atıf 
 | Ekran | İçerik |
 |---|---|
 | Gösterge paneli | 3D vücut (Bugün/+30 gün, Katmanlar, sistem düğmeleri), 6 gösterge kartı, organ paneli |
-| Günlük kontrol | Zorunlu: nabız, tansiyon, sıcaklık, kan şekeri, uyku süresi, uyku kalitesi, ruh hâli. Görme varsayılan "değişiklik yok", egzersiz isteğe bağlı. Her alanda "Nasıl ölçülür?" |
+| Günlük kontrol | Cihaz dosyasından alma (isteğe bağlı). Zorunlu: nabız, tansiyon, sıcaklık, kan şekeri, uyku süresi, uyku kalitesi, ruh hâli. Görme varsayılan "değişiklik yok", egzersiz isteğe bağlı. Her alanda "Nasıl ölçülür?" |
 | Mürettebat | 4 astronot yan yana |
 | Diğer → 30 günlük görünüm | HRP riskleri, birikimli yükler, gidişat tablosu |
 | Diğer → Rapor | A4'e sığan uçuş doktoru raporu, yazdır/PDF |

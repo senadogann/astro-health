@@ -1,0 +1,10 @@
+# SIMULATED sample file for the AstroSelf demo. These are not real measurements.
+# Columns use the units a wristband export typically uses; AstroSelf converts mmol/L and minutes on import.
+date,resting_heart_rate,systolic,diastolic,body_temperature_c,blood_glucose_mmol_l,sleep_minutes,spo2_percent,skin_temperature_c,steps
+2026-11-09,61,116,74,36.7,4.4,372,98,33.6,8120
+2026-11-10,59,114,73,36.6,4.6,351,98,33.4,7410
+2026-11-11,62,118,75,36.8,4.3,389,97,33.8,9020
+2026-11-12,60,115,74,36.7,4.5,344,98,33.5,6880
+2026-11-13,63,119,76,36.7,4.7,366,99,33.7,8650
+2026-11-14,61,117,74,36.6,4.4,358,98,33.5,7730
+2026-11-15,64,120,77,36.8,4.6,337,97,33.9,5210

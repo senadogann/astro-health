@@ -102,6 +102,12 @@ const dataBadge = () => (isDemo()
   ? `<span class="badge sim">${t('badge.sim')}</span>`
   : `<span class="badge self">${t('badge.self')}</span>`);
 
+// In "My data" mode, a value that came from a device file carries a "Device" label.
+function srcTag(res, keys) {
+  const fields = (!isDemo() && res.latest && res.latest.deviceFields) || [];
+  return keys.some((k) => fields.includes(k)) ? `<span class="badge dev">${t('dev.badge')}</span>` : '';
+}
+
 function metricCard({ title, system, parts, value, extra, foot, tag }) {
   const top = parts.reduce((a, b) => (worst(a.status, b.status) === a.status ? a : b));
   return `
@@ -128,12 +134,12 @@ function renderOverview(res) {
   const m = res.metrics;
   const name = (key) => L(content.metrics[key].name);
   const cards = [];
-  if (m.hr) cards.push(metricCard({ title: name('hr'), system: 'cardio', parts: [m.hr], value: esc(valueText(m.hr, refs)) }));
-  if (m.sys && m.dia) cards.push(metricCard({ title: t('card.bp'), system: 'cardio', parts: [m.sys, m.dia], value: `${m.sys.value}/${m.dia.value}`, extra: 'mmHg' }));
-  if (m.temp) cards.push(metricCard({ title: name('temp'), system: 'lungs', parts: [m.temp], value: esc(valueText(m.temp, refs)) }));
-  if (m.glucose) cards.push(metricCard({ title: name('glucose'), system: 'blood', parts: [m.glucose], value: esc(valueText(m.glucose, refs)), tag: dataBadge(),
+  if (m.hr) cards.push(metricCard({ title: name('hr'), system: 'cardio', parts: [m.hr], value: esc(valueText(m.hr, refs)), tag: srcTag(res, ['hr']) }));
+  if (m.sys && m.dia) cards.push(metricCard({ title: t('card.bp'), system: 'cardio', parts: [m.sys, m.dia], value: `${m.sys.value}/${m.dia.value}`, extra: 'mmHg', tag: srcTag(res, ['sys', 'dia']) }));
+  if (m.temp) cards.push(metricCard({ title: name('temp'), system: 'lungs', parts: [m.temp], value: esc(valueText(m.temp, refs)), tag: srcTag(res, ['temp']) }));
+  if (m.glucose) cards.push(metricCard({ title: name('glucose'), system: 'blood', parts: [m.glucose], value: esc(valueText(m.glucose, refs)), tag: srcTag(res, ['glucose']) || dataBadge(),
     foot: i4 ? `<span class="badge real">${t('badge.real')}</span> ${t('i4.cardShort', { v: Math.round(i4.analytes.glucose.preflightMean) })}` : '' }));
-  if (m.sleepH && m.sleepQ) cards.push(metricCard({ title: t('card.sleep'), system: 'brain', parts: [m.sleepH, m.sleepQ], value: esc(valueText(m.sleepH, refs)), extra: t('card.sleepQ', { q: m.sleepQ.value }) }));
+  if (m.sleepH && m.sleepQ) cards.push(metricCard({ title: t('card.sleep'), system: 'brain', parts: [m.sleepH, m.sleepQ], value: esc(valueText(m.sleepH, refs)), extra: t('card.sleepQ', { q: m.sleepQ.value }), tag: srcTag(res, ['sleepH']) }));
   if (m.mood) cards.push(metricCard({ title: name('mood'), system: 'brain', parts: [m.mood], value: esc(valueText(m.mood, refs)) }));
 
   const env = currentEnv();

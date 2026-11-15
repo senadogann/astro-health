@@ -58,10 +58,32 @@ AstroSelf is a visual self-assessment tool that an astronaut can use alone, with
 5. Tap an organ on the 3D body to open its panel.
 6. Change the **environment** (top right) to see how the delay and the radiation dose change.
 7. Press **EMERGENCY** for the checklists. Under **More**: 30-day outlook, report, mission (space weather, dose).
-8. Open **Daily check-in** to enter your own values. The app then switches to "My data" and starts building your
+8. Open **Daily check-in** to enter your own values, or press **Choose file** to fill the form from a file
+   exported by a wristband, blood pressure monitor or health app (see "Importing device data"). The app then switches to "My data" and starts building your
    personal baseline (7 days).
 
 Check-ins and preferences stay in a local IndexedDB database in the browser (with a localStorage fallback). There is no account, telemetry, or shared cloud database; data is private to that browser/device and does not sync between computers.
+
+## Importing device data
+
+On the ISS, vital signs can be recorded by a wearable such as the CSA Bio-Monitor (Astroskin), which measures heart
+rate, a continuous systolic blood pressure estimate, skin temperature and blood oxygen
+([CSA](https://www.asc-csa.gc.ca/eng/sciences/astroskin.asp)). It has no public interface, so AstroSelf cannot
+connect to it directly. Instead, the check-in form reads the **file a device or health app exports**:
+
+- **Formats:** CSV (comma or semicolon, decimal comma allowed) and JSON (an array of records, or an object holding one).
+- **Recognised columns** (English or Turkish, any case): date, heart rate, systolic, diastolic, blood pressure as
+  `120/80`, body temperature, blood glucose, sleep duration, exercise minutes. Unknown columns are skipped.
+- **Units:** glucose in mmol/L is converted to mg/dL (× 18.016), °F to °C, sleep in minutes or seconds to hours.
+- **Several readings a day:** heart rate uses the median (the astronaut is asked to check that it is a resting
+  value), sleep and exercise are added up, the rest are averaged.
+- **Not used:** skin temperature, because it is not body temperature; values outside the possible range.
+- The values are only **filled into the form**. The astronaut checks them, enters sleep quality and mood (no device
+  measures these) and presses Save. Values that came from the file carry a **Device** label in the form and on the
+  dashboard; a value edited by hand becomes self-entered. The saved check-in records which fields came from which file.
+- Works offline and on iPad (it uses the normal file picker). Code: `js/deviceimport.js`.
+- A **simulated** sample export is included: `assets/samples/sample-wearable-export.csv` (marked as simulated in
+  the file and in the app).
 
 ## NASA data and sources: real vs simulated
 
@@ -77,6 +99,8 @@ written by the team from the NASA HRP sources and general clinical practice and 
 | ≥10 MeV proton flux; radiation storm alert at 10 pfu (NOAA S1) | **Real, live**; falls back to the last saved data, then to `data/swpc_snapshot.json` | [NOAA SWPC GOES proton flux](https://www.swpc.noaa.gov/products/goes-proton-flux) |
 | Solar energetic particle events and flares | **Real, live** | [NASA DONKI (CCMC)](https://ccmc.gsfc.nasa.gov/tools/DONKI/) |
 | Fictional four-person crew, 180 days, and the three what-if scenarios | **Simulated** (method below) | `js/crew.js`, `js/demo.js` |
+| Sample wristband export | **Simulated** | `assets/samples/sample-wearable-export.csv` |
+| Values imported from a device file | **Device** (the astronaut's own data) | file chosen by the astronaut |
 | Mission radiation dose | Model: mission days × environment dose rate | `js/rules.js` |
 | Bone loss | Model: NASA rate of 1–1.5% per month | `js/rules.js`, `js/outlook.js` |
 

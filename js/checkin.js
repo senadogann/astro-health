@@ -1,11 +1,13 @@
 // Daily check-in form. Renders into `root` and calls onSave(entry) with a validated entry.
 import { t, L, esc } from './i18n.js';
 import { dateStr } from './store.js';
+import { parseDeviceFile } from './deviceimport.js';
 
 const NUMERIC = ['hr', 'sys', 'dia', 'temp', 'glucose', 'sleepH'];
 const MOOD_FACES = ['😞', '🙁', '😐', '🙂', '😄'];
 
-let vals = null; // values being edited; survives re-renders (language switch etc.)
+let vals = null;   // values being edited; survives re-renders (language switch etc.)
+let devMsg = null; // result of the last device file import, shown above the fields
 
 export function renderCheckin(root, { refs, content, entries, evalFn, onSave }) {
   const M = refs.metrics;
@@ -20,7 +22,9 @@ export function renderCheckin(root, { refs, content, entries, evalFn, onSave }) 
     const text = L(content.metrics[key].how);
     return text ? `<details><summary>${t('checkin.how')}</summary><p>${esc(text)}</p></details>` : '';
   };
-  const label = (key) => `<div class="flabel"><span>${esc(L(content.metrics[key].name))}</span><small>${esc(M[key]?.unit || '')}${key === 'exercise' ? ' · ' + t('checkin.optional') : ''}</small></div>`;
+  const fromDevice = (keys) => (vals.deviceFields || []).some((k) => keys.includes(k));
+  const devTag = (keys, id) => (fromDevice(keys) ? ` <span class="badge dev" data-devtag="${id}">${t('dev.badge')}</span>` : '');
+  const label = (key) => `<div class="flabel"><span>${esc(L(content.metrics[key].name))}${devTag([key], key)}</span><small>${esc(M[key]?.unit || '')}${key === 'exercise' ? ' · ' + t('checkin.optional') : ''}</small></div>`;
   const stepper = (key, aria) => `
     <button type="button" data-step="-1" data-key="${key}" aria-label="−">−</button>
     <input type="number" inputmode="decimal" data-key="${key}" aria-label="${esc(aria)}"
@@ -44,13 +48,24 @@ export function renderCheckin(root, { refs, content, entries, evalFn, onSave }) 
       <h2>${t('checkin.title')}</h2>
       <p class="intro">${t('checkin.intro')}</p>
       <div class="fields">
+        <div class="field wide devbox">
+          <div class="flabel"><span>📥 ${t('dev.title')}</span></div>
+          <p class="why">${t('dev.intro')}</p>
+          <div class="devactions">
+            <label class="btn primary" for="devFile">${t('dev.choose')}</label>
+            <input type="file" id="devFile" accept=".csv,.json,.txt,text/csv,application/json" hidden>
+            <a class="linkbtn" href="assets/samples/sample-wearable-export.csv" download>${t('dev.sample')}</a>
+            <span class="badge sim">${t('badge.sim')}</span>
+          </div>
+          ${devMsg ? `<div class="devmsg ${devMsg.ok ? 'ok' : 'err'}">${devMsg.html}</div>` : ''}
+        </div>
         <div class="field wide">
           <div class="flabel"><span>${t('checkin.date')}</span></div>
           <input type="date" id="ciDate" value="${vals.date}" max="${dateStr()}">
         </div>
         ${numField('hr')}
         <div class="field" data-field="bp">
-          <div class="flabel"><span>${esc(L(content.metrics.bp.name))}</span><small>${t('checkin.sys')} / ${t('checkin.dia')} · mmHg</small></div>
+          <div class="flabel"><span>${esc(L(content.metrics.bp.name))}${devTag(['sys', 'dia'], 'bp')}</span><small>${t('checkin.sys')} / ${t('checkin.dia')} · mmHg</small></div>
           <div class="stepper">${stepper('sys', t('checkin.sys'))}</div>
           <div class="stepper" style="margin-top:8px">${stepper('dia', t('checkin.dia'))}</div>
           <div class="live" data-live="bp"></div>
@@ -107,8 +122,47 @@ export function renderCheckin(root, { refs, content, entries, evalFn, onSave }) 
   function setNum(key, raw) {
     const n = raw === '' ? NaN : Number(raw);
     if (Number.isFinite(n)) vals[key] = n; else delete vals[key];
+    if (vals.deviceFields && vals.deviceFields.includes(key)) {
+      vals.deviceFields = vals.deviceFields.filter((k) => k !== key);
+      // Blood pressure shares one tag: it stays while either of its two values still comes from the device.
+      const id = key === 'sys' || key === 'dia' ? 'bp' : key;
+      const tag = form.querySelector(`[data-devtag="${id}"]`);
+      if (tag && !(id === 'bp' && fromDevice(['sys', 'dia']))) tag.remove();
+    }
     live(key);
   }
+
+  // Read a file exported by a device and fill the form. Nothing is saved until the astronaut presses Save.
+  form.querySelector('#devFile').addEventListener('change', async (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const names = (keys) => keys.map((k) => (k === 'sys' || k === 'dia' ? L(content.metrics.bp.name) : L(content.metrics[k].name)))
+      .filter((v, i, a) => a.indexOf(v) === i).join(', ');
+    try {
+      const res = parseDeviceFile(await file.text(), file.name, M);
+      const dates = Object.keys(res.days).filter((d) => d <= dateStr()).sort();
+      if (!dates.length) {
+        devMsg = { ok: false, html: esc(t('dev.none')) };
+      } else {
+        const date = res.days[vals.date] ? vals.date : dates[dates.length - 1];
+        const moved = date !== vals.date;
+        const day = res.days[date];
+        vals = { ...load(date), ...day, deviceFields: Object.keys(day), deviceFile: file.name };
+        const parts = [t('dev.found', { n: dates.length, file: esc(file.name), date, fields: esc(names(Object.keys(day))) })];
+        if (moved) parts.push(t('dev.dateMoved', { date }));
+        if (res.conversions.length) parts.push(t('dev.converted', { list: res.conversions.map((c) => t('dev.conv.' + c)).join(', ') }));
+        const ignored = res.ignored.map((x) => (x.startsWith('range:') ? t('dev.skip.range', { field: names([x.slice(6)]) }) : t('dev.skip.' + x)));
+        if (res.badDates) ignored.push(t('dev.skip.dates', { n: res.badDates }));
+        if (ignored.length) parts.push(t('dev.ignored', { list: esc(ignored.join('; ')) }));
+        res.notes.forEach((n) => parts.push(t('dev.note.' + n)));
+        parts.push(t('dev.fillRest'));
+        devMsg = { ok: true, html: parts.map((p) => `<p>${p}</p>`).join('') };
+      }
+    } catch (err) {
+      devMsg = { ok: false, html: esc(t('dev.error')) };
+    }
+    renderCheckin(root, { refs, content, entries, evalFn, onSave });
+  });
 
   form.addEventListener('input', (e) => {
     const key = e.target.dataset.key;
@@ -138,6 +192,7 @@ export function renderCheckin(root, { refs, content, entries, evalFn, onSave }) 
   form.querySelector('#ciDate').addEventListener('change', (e) => {
     if (!e.target.value) return;
     vals = load(e.target.value);
+    devMsg = null;
     renderCheckin(root, { refs, content, entries, evalFn, onSave });
   });
 
@@ -152,7 +207,12 @@ export function renderCheckin(root, { refs, content, entries, evalFn, onSave }) 
     const entry = { date: vals.date, vision: vals.vision || 0, sleepQ: vals.sleepQ, mood: vals.mood };
     NUMERIC.forEach((k) => { entry[k] = vals[k]; });
     if (Number.isFinite(vals.exercise) && vals.exercise >= 0 && vals.exercise <= M.exercise.max) entry.exercise = vals.exercise; // optional
+    // Where each value came from: the device file or the astronaut.
+    const fromFile = (vals.deviceFields || []).filter((k) => Number.isFinite(entry[k]));
+    entry.source = fromFile.length ? 'device' : 'manual';
+    if (fromFile.length) { entry.deviceFields = fromFile; entry.deviceFile = vals.deviceFile; }
     vals = null;
+    devMsg = null;
     onSave(entry);
   });
 

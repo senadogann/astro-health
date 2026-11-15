@@ -1,5 +1,5 @@
 // Offline support. Network-first (so new deploys show up), cache fallback (so it works with no internet).
-const CACHE = 'astroself-v20';
+const CACHE = 'astroself-v21';
 const ASSETS = [
   './',
   'index.html',
@@ -10,6 +10,8 @@ const ASSETS = [
   'js/store.js',
   'js/database.js',
   'js/checkin.js',
+  'js/deviceimport.js',
+  'assets/samples/sample-wearable-export.csv',
   'js/rules.js',
   'js/demo.js',
   'js/ui.js',
