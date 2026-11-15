@@ -3,6 +3,7 @@
 > *"When Earth is minutes away, the crew needs answers now."*
 
 **Live demo:** https://senadogann.github.io/astro-health/ (no login, works offline after the first visit)
+**Presentation (7 slides, PDF):** [docs/AstroSelf-presentation.pdf](docs/AstroSelf-presentation.pdf)
 
 NASA Space Apps Challenge 2026 · Bursa · Team **İstikbal Göklerdedir**
 Challenge: [Create Health Monitoring Software for Astronauts on Space Missions](https://www.spaceappschallenge.org/2026/challenges/health-monitoring-software/)
