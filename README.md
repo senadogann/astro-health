@@ -164,7 +164,8 @@ Converted, compressed and simplified; colors applied at runtime.
   the structures of a system into one mesh, and colours it green / yellow / red.
 - The models are educational reference anatomy, not a scan of a real astronaut.
 - A light, code-generated figure (`js/body.js`) remains as a fallback: Demo menu → 3D model → Simple. The app offers
-  it when the detailed model runs slowly, and uses it automatically if the detailed model cannot be loaded.
+  it when the detailed model runs slowly, and switches to it automatically if the detailed model cannot start
+  (if a single model file fails to download, only that layer is switched off).
 
 ### Run locally
 
@@ -190,4 +191,4 @@ Then open http://localhost:8765. Static checks for translations and the offline 
 
 The team name is a quote from Mustafa Kemal Atatürk: *"İstikbal göklerdedir"* — *"The future is in the skies."*
 
-Submission documents: [project page text](docs/project-page.md) · [video script](docs/video-script.md) · [slide outline](docs/slides.md)
+Technical documentation (Turkish): [docs/TEKNIK.md](docs/TEKNIK.md) · Submission documents: [project page text](docs/project-page.md) · [video script](docs/video-script.md) · [slide outline](docs/slides.md)
