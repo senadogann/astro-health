@@ -255,7 +255,7 @@ Kaynak: Z-Anatomy (BodyParts3D'den türetilmiş), CC BY-SA 4.0. Lisans ve atıf 
 
 ### 8.4 Kamera
 
-- **İmlece doğru yakınlaşma:** Fare tekerleği imlecin altındaki noktaya, iki parmakla yakınlaştırma parmakların ortasındaki noktaya doğru yaklaşır (OrbitControls `zoomToCursor`). Vücut yerinde kalır, kamera o noktaya gider; böylece doğrudan kafaya yakınlaşılabilir.
+- **Vücut üzerindeki noktaya yakınlaşma:** Fare tekerleğinde imlecin, iki parmakla yakınlaştırmada parmakların ortasının altındaki nokta ışın atışıyla vücudun yüzeyinde bulunur. Kamera ve döndürme merkezi bu noktaya doğru aynı oranda yaklaşır. Nokta ekranda yerinde kalır ve döndürme merkezi vücudun üzerine oturur; ayağa yakınlaşıp döndürünce ayağın etrafında döner, boşluğa kaymaz. Işın atışı her tekerlek hareketinde değil, hareket başında bir kez yapılır (yaklaşık 20 ms). İmlecin altında vücut yoksa mevcut merkezin derinliğindeki nokta kullanılır. En yakın mesafe 0,12 m.
 - **Ortaya dönüş:** Uzaklaşırken (görünüm bütün vücudun %60'ından uzaktayken) ya da tamamen uzaklaşınca bakılan nokta yumuşakça vücudun merkezine geri kayar.
 - **Sıfırlama:** 3D görünümün üstündeki ⟲ düğmesi, 0,45 sn'lik bir geçişle önden bütün vücut görünümüne döner. Basit modelde de aynı düğme ve yakınlaşma davranışı var.
 

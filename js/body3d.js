@@ -124,13 +124,13 @@ export function createBody(container, { onSelect, onProgress, onLayers, onSlow }
   controls.target.set(0, 0.9, 0);
   controls.enablePan = false;
   controls.enableDamping = true;
-  controls.minDistance = 0.25;
+  controls.minDistance = 0.12;
   controls.maxDistance = 7;
   controls.autoRotate = true;
   controls.autoRotateSpeed = 0.8;
   controls.addEventListener('start', () => { controls.autoRotate = false; homing = null; });
-  // Zoom toward the point under the mouse, or between the two fingers of a pinch, instead of the centre.
-  controls.zoomToCursor = true;
+  // Zooming is handled by zoomAt() below, so it can pivot on the body surface under the pointer.
+  controls.enableZoom = false;
 
   // "Home" view: the whole body, centred. Zooming back out drifts the view back to it; resetView() returns to it.
   const home = { target: new THREE.Vector3(0, 0.9, 0), distance: 3.4 };
@@ -439,10 +439,12 @@ export function createBody(container, { onSelect, onProgress, onLayers, onSlow }
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2();
   let down = null;
+  let pinched = false; // a two-finger gesture is never a tap
   const el = renderer.domElement;
-  el.addEventListener('pointerdown', (e) => { down = { x: e.clientX, y: e.clientY }; });
+  el.addEventListener('pointerdown', (e) => { if (e.isPrimary) { down = { x: e.clientX, y: e.clientY }; pinched = false; } });
   el.addEventListener('pointerup', (e) => {
     if (!down) return;
+    if (pinched) { down = null; return; }
     const moved = Math.hypot(e.clientX - down.x, e.clientY - down.y);
     down = null;
     if (moved > 8) return; // a drag rotates; only a tap selects
@@ -462,6 +464,86 @@ export function createBody(container, { onSelect, onProgress, onLayers, onSlow }
     if (selected === hit.object.userData.system) updateOutline();
     if (onSelect) onSelect(hit.object.userData.system, structureAt(hit.object, hit.faceIndex));
   });
+
+  /* ----- zoom toward a point on the body ----- */
+  // The camera and the orbit centre both move toward the point under the mouse (or between two fingers) by the
+  // same factor. That point stays still on screen, and the orbit centre ends up on the body, so turning the view
+  // after zooming in on the foot keeps the foot in front of you instead of swinging it out of view.
+  const zoomRay = new THREE.Raycaster();
+  const zoomNdc = new THREE.Vector2();
+  const depthPlane = new THREE.Plane();
+  const viewDir = new THREE.Vector3();
+
+  function pivotAt(clientX, clientY) {
+    const rect = el.getBoundingClientRect();
+    zoomNdc.set(((clientX - rect.left) / rect.width) * 2 - 1, -((clientY - rect.top) / rect.height) * 2 + 1);
+    zoomRay.setFromCamera(zoomNdc, camera);
+    const groups = Object.values(layers).filter((l) => l.group && l.on).map((l) => l.group);
+    // The first surface that is not ghosted (faded systems are see-through and should not catch the zoom).
+    const hit = zoomRay.intersectObjects(groups, true).find((h) => h.object.material && h.object.material.opacity > 0.2);
+    if (hit) return hit.point.clone();
+    // Nothing under the pointer: use the point at the depth of the current orbit centre.
+    depthPlane.setFromNormalAndCoplanarPoint(camera.getWorldDirection(viewDir), controls.target);
+    return zoomRay.ray.intersectPlane(depthPlane, new THREE.Vector3()) || controls.target.clone();
+  }
+
+  function zoomAt(pivot, scale) {
+    const dist = camera.position.distanceTo(controls.target);
+    const s = Math.min(controls.maxDistance, Math.max(controls.minDistance, dist * scale)) / dist;
+    if (Math.abs(s - 1) < 1e-4) return;
+    if (s < 1) {
+      // Zoom in: scale camera and orbit centre toward the pivot.
+      camera.position.sub(pivot).multiplyScalar(s).add(pivot);
+      controls.target.sub(pivot).multiplyScalar(s).add(pivot);
+    } else {
+      // Zoom out: move straight back; the view then drifts back to the centre of the body (see frame()).
+      camera.position.sub(controls.target).multiplyScalar(s).add(controls.target);
+    }
+    controls.autoRotate = false;
+    homing = null;
+    invalidate();
+  }
+
+  // Mouse wheel. The pivot is found once per wheel gesture (ray casting the whole body on every wheel event
+  // would be slow) and found again when the pointer moves or the wheel pauses.
+  let wheelPivot = null, wheelAt = 0, wheelXY = null;
+  el.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const now = performance.now();
+    const moved = !wheelXY || Math.hypot(e.clientX - wheelXY.x, e.clientY - wheelXY.y) > 6;
+    if (!wheelPivot || moved || now - wheelAt > 250) {
+      wheelPivot = pivotAt(e.clientX, e.clientY);
+      wheelXY = { x: e.clientX, y: e.clientY };
+    }
+    wheelAt = now;
+    const dy = e.deltaMode === 1 ? e.deltaY * 33 : e.deltaMode === 2 ? e.deltaY * 400 : e.deltaY; // lines/pages -> pixels
+    zoomAt(wheelPivot, Math.exp(Math.max(-300, Math.min(300, dy)) * 0.0012));
+  }, { passive: false });
+
+  // Two-finger pinch on touch screens (one finger still rotates through OrbitControls).
+  const touches = new Map();
+  let pinch = null; // { dist, pivot }
+  el.addEventListener('pointerdown', (e) => {
+    if (e.pointerType !== 'touch') return;
+    touches.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (touches.size === 2) {
+      const [a, b] = [...touches.values()];
+      pinch = { dist: Math.hypot(a.x - b.x, a.y - b.y), pivot: pivotAt((a.x + b.x) / 2, (a.y + b.y) / 2) };
+      pinched = true;
+    }
+  });
+  el.addEventListener('pointermove', (e) => {
+    if (!touches.has(e.pointerId)) return;
+    touches.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pinch && touches.size === 2) {
+      const [a, b] = [...touches.values()];
+      const d = Math.hypot(a.x - b.x, a.y - b.y);
+      if (d > 0) { zoomAt(pinch.pivot, pinch.dist / d); pinch.dist = d; }
+    }
+  });
+  const endTouch = (e) => { touches.delete(e.pointerId); if (touches.size < 2) pinch = null; };
+  el.addEventListener('pointerup', endTouch);
+  el.addEventListener('pointercancel', endTouch);
 
   /* ----- size and render loop ----- */
   function resize() {
