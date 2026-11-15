@@ -269,9 +269,13 @@ function renderDashboard() {
   $('#overview').hidden = !!selected;
   // Plain-language name of the tapped structure ("Left hand · Index finger"), shown on the 3D view and the panel.
   const structure = describeStructure(selectedPick);
+  // Right after a deploy, GitHub Pages can serve an older index.html (cached up to 10 min) with newer scripts.
+  // Optional elements are therefore checked, so a missing one never stops the whole dashboard.
   const pickLabel = $('#pickLabel');
-  pickLabel.hidden = !structure;
-  if (structure) pickLabel.innerHTML = `<b>${esc(structure.label)}</b><span>${esc(structure.tissue)}</span>`;
+  if (pickLabel) {
+    pickLabel.hidden = !structure;
+    if (structure) pickLabel.innerHTML = `<b>${esc(structure.label)}</b><span>${esc(structure.tissue)}</span>`;
+  }
   renderPanel($('#organPanel'), {
     id: selected, res, entries, refs, content, sources, envKey: state.env, badge: dataBadge(), i4, outlookHtml, structure,
   });
