@@ -550,3 +550,7 @@ details.menu > summary { list-style: none; display: flex; align-items: center; c
 .devmsg.ok { border-color: #2b6f8a; }
 .devmsg.err { border-color: var(--red); color: #ffb3ba; }
 .devmsg p + p { margin-top: 6px; }
+
+/* reset-view button on the 3D view */
+.stagebar .resetview { margin-left: auto; font-size: 1.2rem; padding: 0 12px; }
+.stagebar .resetview + .layersmenu { margin-left: 0; }

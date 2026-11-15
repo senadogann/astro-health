@@ -128,7 +128,14 @@ export function createBody(container, { onSelect, onProgress, onLayers, onSlow }
   controls.maxDistance = 7;
   controls.autoRotate = true;
   controls.autoRotateSpeed = 0.8;
-  controls.addEventListener('start', () => { controls.autoRotate = false; });
+  controls.addEventListener('start', () => { controls.autoRotate = false; homing = null; });
+  // Zoom toward the point under the mouse, or between the two fingers of a pinch, instead of the centre.
+  controls.zoomToCursor = true;
+
+  // "Home" view: the whole body, centred. Zooming back out drifts the view back to it; resetView() returns to it.
+  const home = { target: new THREE.Vector3(0, 0.9, 0), distance: 3.4 };
+  let homing = null;   // { fromT, fromP, toT, toP, t0 } while the view animates back home
+  let prevDist = null; // camera distance in the previous frame, to tell zooming in from zooming out
 
   // Soft, natural lighting: sky/ground fill, a warm key light and a weak back light for depth.
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -309,6 +316,8 @@ export function createBody(container, { onSelect, onProgress, onLayers, onSlow }
     controls.target.copy(center);
     camera.position.set(center.x, center.y, center.z + dist);
     ring.position.set(center.x, box.min.y, center.z);
+    home.target.copy(center);
+    home.distance = dist;
     fitted = true;
   }
 
@@ -473,7 +482,30 @@ export function createBody(container, { onSelect, onProgress, onLayers, onSlow }
   function frame(now) {
     raf = requestAnimationFrame(frame);
     if (!container.offsetParent) { lastFrame = 0; return; } // hidden view: do nothing
-    const moving = controls.update();
+    let moving = controls.update();
+
+    if (homing) {
+      // Animated return to the home view (about 0.45 s, eased).
+      const k = Math.min(1, (now - homing.t0) / 450);
+      const e = 1 - Math.pow(1 - k, 3);
+      controls.target.lerpVectors(homing.fromT, homing.toT, e);
+      camera.position.lerpVectors(homing.fromP, homing.toP, e);
+      camera.lookAt(controls.target);
+      if (k >= 1) homing = null;
+      moving = true;
+    } else {
+      // After zooming in on a spot (e.g. the head), zooming back out brings the body back to the centre.
+      const dist = camera.position.distanceTo(controls.target);
+      const zoomingOut = prevDist != null && dist > prevDist + 1e-4;
+      const off = controls.target.distanceTo(home.target);
+      if (off > 0.002 && (dist >= home.distance * 0.95 || (zoomingOut && dist > home.distance * 0.6))) {
+        const step = home.target.clone().sub(controls.target).multiplyScalar(zoomingOut ? 0.25 : 0.12);
+        controls.target.add(step);
+        camera.position.add(step);
+        moving = true;
+      }
+      prevDist = dist;
+    }
 
     // Red systems pulse (glow only). About 30 updates a second is enough.
     const anyRed = Object.values(systems).some((s) => s.status === 'red');
@@ -528,6 +560,15 @@ export function createBody(container, { onSelect, onProgress, onLayers, onSlow }
     },
     setLayer,
     getLayers: layerList,
+    // Back to the whole body, seen from the front.
+    resetView() {
+      controls.autoRotate = false;
+      homing = {
+        fromT: controls.target.clone(), fromP: camera.position.clone(),
+        toT: home.target.clone(), toP: home.target.clone().add(new THREE.Vector3(0, 0, home.distance)), t0: performance.now(),
+      };
+      invalidate();
+    },
     dispose() {
       disposed = true;
       cancelAnimationFrame(raf);

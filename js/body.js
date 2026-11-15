@@ -31,6 +31,7 @@ export function createBody(container, { onSelect } = {}) {
   controls.autoRotate = true;
   controls.autoRotateSpeed = 0.8;
   controls.addEventListener('start', () => { controls.autoRotate = false; });
+  controls.zoomToCursor = true; // zoom toward the point under the mouse / between the fingers
 
   scene.add(new THREE.AmbientLight(0xffffff, 0.9));
   const key = new THREE.DirectionalLight(0xffffff, 1.6);
@@ -226,6 +227,12 @@ export function createBody(container, { onSelect } = {}) {
   applyLook();
 
   return {
+    resetView() {
+      controls.autoRotate = false;
+      controls.target.set(0, 0.9, 0);
+      camera.position.set(0, 1.0, 3.2);
+      controls.update();
+    },
     setStatuses(map) {
       for (const id of Object.keys(systems)) systems[id].status = (map && map[id]) || 'none';
       applyLook();

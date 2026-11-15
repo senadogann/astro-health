@@ -67,7 +67,7 @@
     "empty.body": "Enter today's measurements, or explore the app with 30 days of simulated astronaut data.",
     "empty.cta": "Start check-in",
     "empty.demo": "View demo data",
-    "body.hint": "Drag to rotate, pinch or scroll to zoom, tap an organ. Use \"Layers\" to show the skeleton, muscles or nervous system; a layer loads the first time it is switched on.",
+    "body.hint": "Drag to rotate. Scroll or pinch to zoom: the view zooms toward the point under the mouse or between your fingers, so you can zoom straight into the head. Zoom back out, or press ⟲, to see the whole body again. Tap an organ to open its panel. Use \"Layers\" to show the skeleton, muscles or nervous system; a layer loads the first time it is switched on.",
     "body.fallback": "3D view is not available on this device. Use the buttons below.",
     "panel.function": "What it does",
     "panel.space": "How space affects it",
@@ -332,7 +332,8 @@
     "dev.fillRest": "Check the values, then enter the other fields yourself: sleep quality and mood are not measured by a device.",
     "dev.none": "No usable values were found in this file. Recognised columns: date, heart rate, systolic, diastolic (or blood pressure as 120/80), body temperature, blood glucose, sleep, exercise minutes.",
     "dev.error": "The file could not be read. Use a CSV or JSON file.",
-    "dev.note.hrMulti": "Heart rate: the file has several readings a day, so their median was used. Check that it is your resting heart rate."
+    "dev.note.hrMulti": "Heart rate: the file has several readings a day, so their median was used. Check that it is your resting heart rate.",
+    "body.reset": "Reset view"
   },
   "tr": {
     "app.name": "AstroSelf",
@@ -402,7 +403,7 @@
     "empty.body": "Bugünün ölçümlerini girin ya da uygulamayı 30 günlük simüle astronot verisiyle keşfedin.",
     "empty.cta": "Kontrole başla",
     "empty.demo": "Demo verisini göster",
-    "body.hint": "Döndürmek için sürükleyin, yakınlaştırmak için kıstırın ya da kaydırın, bir organa dokunun. İskelet, kas ya da sinir sistemini \"Katmanlar\" menüsünden açın; bir katman ilk açıldığında yüklenir.",
+    "body.hint": "Döndürmek için sürükleyin. Kaydırarak ya da iki parmakla yakınlaştırın: görünüm imlecin ya da parmaklarınızın olduğu noktaya doğru yaklaşır, böylece doğrudan kafaya yakınlaşabilirsiniz. Bütün vücudu yeniden görmek için uzaklaşın ya da ⟲ düğmesine basın. Bir organa dokunursanız paneli açılır. İskelet, kas ya da sinir sistemini \"Katmanlar\" menüsünden açın; bir katman ilk açıldığında yüklenir.",
     "body.fallback": "Bu cihazda 3D görünüm kullanılamıyor. Aşağıdaki düğmeleri kullanın.",
     "panel.function": "Ne işe yarar",
     "panel.space": "Uzay onu nasıl etkiler",
@@ -667,6 +668,7 @@
     "dev.fillRest": "Değerleri kontrol edin, sonra diğer alanları kendiniz girin: uyku kalitesi ve ruh hâli cihazla ölçülmez.",
     "dev.none": "Bu dosyada kullanılabilir değer bulunamadı. Tanınan sütunlar: tarih, nabız, sistolik, diastolik (ya da 120/80 biçiminde tansiyon), vücut sıcaklığı, kan şekeri, uyku, egzersiz dakikası.",
     "dev.error": "Dosya okunamadı. CSV ya da JSON dosyası kullanın.",
-    "dev.note.hrMulti": "Nabız: dosyada günde birden fazla ölçüm var, ortancası alındı. Bunun dinlenme nabzınız olduğunu kontrol edin."
+    "dev.note.hrMulti": "Nabız: dosyada günde birden fazla ölçüm var, ortancası alındı. Bunun dinlenme nabzınız olduğunu kontrol edin.",
+    "body.reset": "Görünümü sıfırla"
   }
 }

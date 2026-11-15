@@ -492,6 +492,7 @@ function onClick(e) {
   if (!(el = pick('act'))) return undefined;
   const act = el.dataset.act;
   if (act === 'close') selectSystem(null);
+  if (act === 'resetview' && body && body.resetView) body.resetView();
   if (act === 'shelter') openEmergency('radiation');
   if (act === 'checkin') setView('checkin');
   if (act === 'report') setView('report');

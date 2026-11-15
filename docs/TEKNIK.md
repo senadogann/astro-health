@@ -253,7 +253,13 @@ Kaynak: Z-Anatomy (BodyParts3D'den türetilmiş), CC BY-SA 4.0. Lisans ve atıf 
 - Durum değişince yalnızca sistemin tek malzemesi değişir, yüzlerce ağ değil.
 - Seçilen organ ince beyaz dış çizgi alır; çizgi kalınlığı kameranın uzaklığına göre ayarlanır. Sistem düğmeyle seçilince yalnızca organlar çizilir, ince damar ve sinir dalları çizilmez.
 
-### 8.4 Performans
+### 8.4 Kamera
+
+- **İmlece doğru yakınlaşma:** Fare tekerleği imlecin altındaki noktaya, iki parmakla yakınlaştırma parmakların ortasındaki noktaya doğru yaklaşır (OrbitControls `zoomToCursor`). Vücut yerinde kalır, kamera o noktaya gider; böylece doğrudan kafaya yakınlaşılabilir.
+- **Ortaya dönüş:** Uzaklaşırken (görünüm bütün vücudun %60'ından uzaktayken) ya da tamamen uzaklaşınca bakılan nokta yumuşakça vücudun merkezine geri kayar.
+- **Sıfırlama:** 3D görünümün üstündeki ⟲ düğmesi, 0,45 sn'lik bir geçişle önden bütün vücut görünümüne döner. Basit modelde de aynı düğme ve yakınlaşma davranışı var.
+
+### 8.5 Performans
 
 - Yalnızca bir şey değişince çizer (döndürme, katman, durum, nabız); duran sahnede GPU boşta kalır.
 - Piksel oranı küçük ekranda (kısa kenar 700 px altı) en fazla 1,5, diğerlerinde 2.
