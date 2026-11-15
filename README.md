@@ -209,6 +209,14 @@ Then open http://localhost:8765. Static checks for translations and the offline 
 - The app icon was drawn in code. **No NASA logo was generated with SI and no NASA logo is used.**
 - The app itself contains no SI chat assistant: all assessments come from fixed rules in `js/rules.js` and `js/outlook.js`.
 
+## License
+
+- Our own code and texts are released under the **Apache License 2.0** — see [LICENSE](LICENSE).
+- Third-party parts keep their own licences:
+  - 3D anatomy models in `assets/model/`: Z-Anatomy, **CC BY-SA 4.0** (see `assets/model/ATTRIBUTION.md` and `assets/model/NOTICE.md`).
+  - Three.js, Chart.js and the meshoptimizer decoder in `vendor/`: **MIT**.
+  - NASA and NOAA data: public data from their agencies, cited where used.
+
 ## Team
 
 **İstikbal Göklerdedir** — Management Information Systems students, Bursa Uludağ University.
